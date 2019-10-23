@@ -1,9 +1,7 @@
-<mat-toolbar color="primary" class="toolbar">
-        
-    </mat-toolbar>
+<mat-toolbar color="primary" class="toolbar"></mat-toolbar>
 <div class="container-fluid contenedor-principal" style="height: 100%;">
-        
-    <div class="row justify-content-center" style="">
+
+    <div class="row justify-content-center">
         <div class="col-lg-5 col-md-9 col-sm-10 align-self-center " style="margin-top: 10%;">
             <mat-card class="loginCard sin-borde card">
                 <div class="card-body">
@@ -12,34 +10,52 @@
                             <h2 class="text-center">Iniciar sesion</h2>
                         </div>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-lg-9 col-md-8" style="margin-top: 8%;">
-                            <div class="text-center">
-                                <mat-form-field style="width:100%" appearance="outline">
-                                    <mat-label>Nombre de usuario</mat-label>
-                                    <input matInput placeholder="Nombre de usuario">
-                                    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-                                </mat-form-field>
-                            </div>
-
-                        </div>
-                        <div class="col-lg-9 col-md-8" style="margin-top: 2%;">
-                            <div class="text-center">
-                                <mat-form-field style="width:100%" appearance="outline">
-                                    <mat-label>Contraseña</mat-label>
-                                    <input matInput type="password" placeholder="Contraseña">
-                                    <mat-icon matSuffix>vpn_key</mat-icon>
-                                </mat-form-field>
-                            </div>
-
-                        </div>
-                        <div class=" col-lg-9 col-md-8" style="margin-top: 2%;">
-                            <div class="text-center">
-                                    <button mat-raised-button class="loginBoton" color="primary">Iniciar sesión</button>
+                    <form #usuarioDatos="ngForm">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-9 col-md-8" style="margin-top: 8%;">
+                                <div class="text-center">
+                                    <mat-form-field style="width:100%" appearance="outline">
+                                        <mat-label>Nombre de usuario</mat-label>
+                                        <input matInput [(ngModel)]="datosUsuario.username" #username="ngModel"
+                                            name="username" type="text" pattern="^[a-zA-Z0-9]+$"
+                                            placeholder="Nombre de usuario" required>
+                                        <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                                        <mat-error
+                                            *ngIf="(username.invalid && (username.dirty || username.touched) && username.errors.required)">
+                                            Porfavor ingresa el campo
+                                        </mat-error>
+                                        <mat-error
+                                            *ngIf="(username.invalid && (username.dirty || username.touched) && username.errors.pattern)">
+                                            Ingresa solo letras y numeros
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
 
                             </div>
+                            <div class="col-lg-9 col-md-8" style="margin-top: 2%;">
+                                <div class="text-center">
+                                    <mat-form-field style="width:100%" appearance="outline">
+                                        <mat-label>Contraseña</mat-label>
+                                        <input matInput [(ngModel)]="datosUsuario.contrasena" #contrasena="ngModel"
+                                            name="contrasena" type="password" placeholder="Contraseña" required>
+                                        <mat-icon matSuffix>vpn_key</mat-icon>
+                                        <mat-error
+                                            *ngIf="(contrasena.invalid && (contrasena.dirty || contrasena.touched) && contrasena.errors.required)">
+                                            Porfavor ingresa el campo
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                            <div class=" col-lg-9 col-md-8" style="margin-top: 2%;">
+                                <div class="text-center">
+                                    <button mat-raised-button class="loginBoton" color="primary" [disabled]="!usuarioDatos.valid" (click)="login()">Iniciar sesión</button>
+
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    </form>
+
                 </div>
 
 
