@@ -1,0 +1,38 @@
+<mat-sidenav-container class="sidenav-container" *ngIf="autenticacionService.estaAutenticado()">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    <mat-toolbar color="primary">Menu</mat-toolbar>
+    <mat-nav-list>
+      <mat-list>
+        <h3 mat-subheader>Clientes</h3>
+        <mat-list-item routerLink="/usuario/registrar">
+          <mat-icon mat-list-icon>person_add</mat-icon>
+          <h5 mat-line>Registrar cliente</h5>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+      <mat-list>
+        <h3 mat-subheader>Opciones de perfil</h3>
+        <mat-list-item>
+          <div class="row">
+            <div class="col-6">
+              <button mat-raised-button color="primary" class="botonesPerfil">Editar perfil</button>
+            </div>
+            <div class="col-6">
+              <button mat-raised-button color="warn" class="botonesPerfil" (click)="cerrarSesion()">Cerrar sesion</button>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <span>Usuario</span>
+    </mat-toolbar>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -8,6 +8,7 @@ import { map } from 'rxjs/operators';
 const jwt = new JwtHelperService();
 import * as momento from 'moment';
 import 'rxjs/Rx';
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -15,7 +16,7 @@ import 'rxjs/Rx';
 })
 export class ServicioAutenticacionService {
   private tokenDesencriptado;
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private rutas: Router) { 
     this.tokenDesencriptado = JSON.parse(localStorage.getItem('usuario_meta')) || new tokenDesencriptado();
   }
   private guardarToken(token: string){
@@ -43,6 +44,23 @@ export class ServicioAutenticacionService {
   }
   public estaAutenticado():boolean{
     return momento().isBefore(this.getExpiracion());
+  }
+  public redireccionarUsuario(){
+    switch(this.tokenDesencriptado.rol){
+      case 0:
+        //Usuario normal, trabajador
+        this.rutas.navigate(['/usuario/perfil']);
+        break;
+      case 1:
+        //Supervisor
+        this.rutas.navigate(['/supervisor/perfil']);
+        break;
+      case 2:
+        //Administrador
+        this.rutas.navigate(['/admin/perfil']);
+        break;
+
+    }
   }
   public getTipoUsuario(): any{
     return this.tokenDesencriptado.rol;

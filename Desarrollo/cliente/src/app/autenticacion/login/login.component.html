@@ -1,5 +1,5 @@
-<mat-toolbar color="primary" class="toolbar"></mat-toolbar>
-<div class="container-fluid contenedor-principal" style="height: 100%;">
+<mat-toolbar *ngIf="!estaLogueado()" color="primary" class="toolbar"></mat-toolbar>
+<div *ngIf="!estaLogueado()" class="container-fluid contenedor-principal" style="height: 100%;">
 
     <div class="row justify-content-center">
         <div class="col-lg-5 col-md-9 col-sm-10 align-self-center " style="margin-top: 10%;">
@@ -49,17 +49,20 @@
                             </div>
                             <div class=" col-lg-9 col-md-8" style="margin-top: 2%;">
                                 <div class="text-center">
-                                    <button mat-raised-button class="loginBoton" color="primary" [disabled]="!usuarioDatos.valid" (click)="login()">Iniciar sesión</button>
+                                    <button mat-raised-button class="loginBoton text-center" color="primary"
+                                        [disabled]="!usuarioDatos.valid" (click)="login()">
+                                        <ng-container *ngIf="cargando">Iniciando sesion...</ng-container>
+                                        <ng-container *ngIf="!cargando">Iniciar sesion</ng-container>
+                                    </button>
 
                                 </div>
                             </div>
                         </div>
                     </form>
-
                 </div>
-
-
             </mat-card>
+            <mat-progress-bar *ngIf="cargando"  mode="indeterminate"></mat-progress-bar>
+
         </div>
     </div>
 

@@ -11,9 +11,9 @@ export class AutenticacionGuard implements CanActivate {
 
     private manejarAutenticacion(): boolean {
         if (this.loginOHomeOCuentaInvalida()) {
-
-            this.router.navigate()
+            return false;
         }
+        return true;
     }
     private getTipoUsuario() {
         return this.authService.getTipoUsuario();
@@ -26,19 +26,45 @@ export class AutenticacionGuard implements CanActivate {
         const usuario = this.getTipoUsuario();
         switch (usuario) {
             case 0:
-                const trabajador = this.getTipoTrabajador();
+                //const trabajador = this.getTipoTrabajador();
                 //si trabajador es un fotografo no puede ver lo de recepcionista
-                if (trabajador == 0) {
-                    if (this.url.includes('login') || this.url.includes('administrador') || this.url.includes('supervisor') || this.url.includes('recepcion')) {
-                        return true;
-                    }
+                if (this.url.includes('login') || this.url.includes('admin') || this.url.includes('supervisor')) {
+                    this.router.navigate(['/usuario/perfil']);
+                    return true;
                 }
+                return false;
+                break;
+            case 1:
+                if (this.url.includes('login') || this.url.includes('admin') || this.url.includes('usuario')) {
+                    this.router.navigate(['/supervisor/perfil']);
+                    return true;
+                }
+                return false;
+                break;
+            case 2:
+                if (this.url.includes('login') || this.url.includes('supervisor') || this.url.includes('usuario')) {
+                    this.router.navigate(['/admin/perfil']);
+                    return true;
+                }
+                return false;
+                break;
+
 
 
         }
-        if (this.url.includes('login')) {
+    }
+    private urlInvalida(): boolean {
+        if (this.url.includes('usuario') || this.url.includes('admin') || this.url.includes('supervisor')) {
             return true;
         }
+        return false;
+    }
+    private noManejarAutenticacion(): boolean {
+        if (this.urlInvalida()) {
+            this.router.navigate(['/login']);
+            return true;
+        }
+        
         return false;
     }
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -47,6 +73,7 @@ export class AutenticacionGuard implements CanActivate {
         if (this.authService.estaAutenticado()) {
             return this.manejarAutenticacion();
         }
-        return this.notHandleAuthentication();
+        return this.noManejarAutenticacion()
+
     }
 }
