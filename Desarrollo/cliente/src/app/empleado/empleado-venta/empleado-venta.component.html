@@ -1,0 +1,79 @@
+<mat-card class="container-fluid margin-top contenedor" style="padding-bottom: 0 ;">
+    <div class="row">
+        <div class="col-12">
+            <h4 class="text-center titulo">Realizar un nuevo pedido</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-12 familias" style="padding: 0;">
+            <mat-divider></mat-divider>
+            <mat-list style="padding: 0;">
+                <ng-container *ngFor="let familia of familias; let i = index">
+                    <mat-list-item class="familias-item" (click)="obtenerProductos(familia.nombre)">
+                        <h4 mat-line>{{familia.nombre}}</h4>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                </ng-container>
+            </mat-list>
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12" style="padding: 0;">
+            <mat-divider></mat-divider>
+            <div class="container-fluid">
+                <div class="row">
+                    <ng-container *ngIf="grupo">
+                        <div class="col-12">
+                            <h4 class="text-left titulo-orden">Selecciona los productos a ordenar</h4>
+                        </div>
+                        <div class="col-12">
+                            <mat-spinner style="margin-left: 40%;" *ngIf="cargandoProductos"></mat-spinner>
+                        </div>
+                        <div class="col-12" *ngIf="familiaSeleccionada !== ''">
+                            <h5 class="text-left titulo-productos">Productos de la familia {{familiaSeleccionada}}</h5>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngIf="!grupo">
+                        <div class="col-12">
+                            <h4 class="text-left titulo-productos2">Selecciona una familia de productos</h4>
+                        </div>
+                    </ng-container>
+                    <ng-container *ngFor="let g of grupo">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                            <mat-card class="sin-borde productos card" style="padding: 0;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{g._id}} fotos</h5>
+                                    <p class="card-text">Da clic en seleccionar para obtener los detalles de los
+                                        paquetes con {{g._id}} fotos</p>
+                                    <button mat-raised-button color="primary"
+                                        (click)="abrirModal(g._id)">Seleccionar</button>
+                                </div>
+                            </mat-card>
+                        </div>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12" style="background-color: red;">
+            <h4>Basic mat-select</h4>
+            <mat-form-field>
+                <mat-label>Favorite food</mat-label>
+                <mat-select>
+                    <mat-option value="fasdas">
+                        asdasdasdas
+                    </mat-option>
+                    <mat-option value="fasdas">
+                        asdasdasdas
+                    </mat-option>
+                    <mat-option value="fasdas">
+                        asdasdasdas
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+
+
+
+
+</mat-card>

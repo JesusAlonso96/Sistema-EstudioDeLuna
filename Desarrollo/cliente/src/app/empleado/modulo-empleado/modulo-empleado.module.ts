@@ -10,10 +10,15 @@ import { MainNavEmpleadoComponent } from '../main-nav-empleado/main-nav-empleado
 import { EmpleadoPerfilComponent } from '../empleado-perfil/empleado-perfil.component';
 import { EmpleadoRoutingModule } from './empleado-routing.module';
 import { RegistroUsuarioComponent } from '../registro-usuario/registro-usuario.component';
+import { EmpleadoVentaComponent, Modal } from '../empleado-venta/empleado-venta.component';
+
 //servicios
 import { EmpleadoService } from '../servicio-empleado/empleado.service';
-import { EmpleadoGuard } from '../compartido/empleado.guard';
 import { EstadosService } from 'src/app/comun/servicios/estados.service';
+import { ProductosService } from 'src/app/comun/servicios/productos.service';
+import { EmpleadoGuard } from '../compartido/empleado.guard';
+//pipes
+import { ProductosFiltroPipe } from '../compartido/productos-filtro.pipe';
 
 
 @NgModule({
@@ -21,7 +26,10 @@ import { EstadosService } from 'src/app/comun/servicios/estados.service';
     EmpleadoComponent,
     MainNavEmpleadoComponent,
     EmpleadoPerfilComponent,
-    RegistroUsuarioComponent
+    RegistroUsuarioComponent,
+    EmpleadoVentaComponent,
+    ProductosFiltroPipe,
+    Modal
 
   ],
   imports: [
@@ -35,7 +43,9 @@ import { EstadosService } from 'src/app/comun/servicios/estados.service';
   providers: [
     EmpleadoService,
     EmpleadoGuard,
-    EstadosService
-  ]
+    EstadosService,
+    ProductosService
+  ],
+  entryComponents: [ Modal ]
 })
 export class EmpleadoModule { }

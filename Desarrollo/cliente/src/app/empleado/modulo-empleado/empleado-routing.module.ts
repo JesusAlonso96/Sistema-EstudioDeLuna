@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { EmpleadoComponent } from '../empleado.component';
 import { EmpleadoPerfilComponent } from '../empleado-perfil/empleado-perfil.component';
 import { RegistroUsuarioComponent } from '../registro-usuario/registro-usuario.component';
+import { EmpleadoVentaComponent } from '../empleado-venta/empleado-venta.component';
 //guardia
 import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticacion.guard';
 
@@ -17,7 +18,8 @@ const routes: Routes = [
         canActivate: [AutenticacionGuard],
         children: [
             { path: 'perfil', component: EmpleadoPerfilComponent },
-            { path: 'registrar', component: RegistroUsuarioComponent }
+            { path: 'registrar', component: RegistroUsuarioComponent },
+            { path: 'nuevaVenta', component: EmpleadoVentaComponent}
         ]
     }
 ]

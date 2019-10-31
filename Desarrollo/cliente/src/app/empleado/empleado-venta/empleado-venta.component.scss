@@ -1,0 +1,36 @@
+@import 'variables';
+
+.contenedor{
+    margin-bottom: 40px;
+}
+.productos{
+    margin-bottom: 10px;
+}
+.titulo-productos{
+    margin: 10px 0;
+    color: $light-gray-color;
+}
+.titulo-productos2{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.familias{
+    border-right: 2px solid $light-gray-color2;
+}
+.titulo{
+    margin: 10px 10px;
+}
+.titulo-orden{
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+.familias-item{
+    width: 100%;
+    &:hover{
+        cursor: pointer;
+        background-color: $light-gray-color2;
+    }
+}
+.agregar{
+    margin-right: 7%;
+}

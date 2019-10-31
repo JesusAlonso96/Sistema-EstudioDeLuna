@@ -1,0 +1,60 @@
+<div mat-dialog-title>
+    <h5 class="text-center" style="margin-bottom:2%">Agregar pedido</h5>
+
+</div>
+<div mat-dialog-content style="height: 80%;">
+    <div class="col-12">
+        <h6 style="margin-top:3%">¿El pedido ocupa retoque?</h6>
+        <mat-radio-group [(ngModel)]="productoBuscar.c_r" name="c_r" #c_r="ngModel" color="primary">
+            <mat-radio-button [value]=true style="margin-right: 3%; margin-left: 2%;">
+                Si
+            </mat-radio-button>
+            <mat-radio-button [value]=false>
+                No
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <div class="col-12" >
+        <h6 style="margin-top:3%">¿Blanco y negro o Color?</h6>
+        <mat-radio-group  [(ngModel)]="productoBuscar.b_n" name="b_n" #b_n="ngModel" color="primary">
+            <mat-radio-button [value]=true style="margin-right: 3%; margin-left: 2%;">
+                Blanco y negro
+            </mat-radio-button>
+            <mat-radio-button [value]=false>
+                Color
+            </mat-radio-button>
+        </mat-radio-group>
+    </div>
+
+    <div class="col-12">
+        <h6 style="margin-top:3%">¿Lleva adherible?</h6>
+        <mat-radio-group [(ngModel)]="productoBuscar.c_ad" name="c_ad" #c_ad="ngModel" color="primary">
+            <mat-radio-button [value]=true style="margin-right: 3%; margin-left: 2%;">
+                Si
+            </mat-radio-button>
+            <mat-radio-button [value]=false>
+                No
+            </mat-radio-button>
+        </mat-radio-group>
+        
+    </div>
+
+    <div class="col-12" *ngIf="!buscador">
+        <button mat-raised-button style="margin-top:3%" (click)="buscar()"> Buscar producto</button>
+
+    </div>
+
+    <ng-container *ngIf="buscador">
+        <div class="col-12" style="margin-top: 2%;">
+            <span> <strong>Costo: </strong> 90</span>
+            <h5 style="margin-top:2%">¿Desea agregar al pedido?</h5>
+        </div>
+
+        <div class="col-12" style="margin-top: 5%;">
+            <button class="float-left" mat-raised-button color="primary">Agregar</button>
+            <button class="float-right" mat-raised-button color="warn" (click)="onNoClick()">Cancelar</button>
+        </div>
+    </ng-container>
+
+</div>

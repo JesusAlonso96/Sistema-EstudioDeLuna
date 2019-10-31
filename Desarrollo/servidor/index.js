@@ -1,25 +1,65 @@
 const express = require('express'),
-      mongoose = require('mongoose'),
-      config = require('./configuracion/dev'),
-      bodyParser = require('body-parser'),
-      rutasUsuario = require('./rutas/usuario'),
-      rutasEstados = require('./rutas/estados'),
-      Usuario = require('./modelos/usuario'),
-      Municipio = require('./modelos/municipio');
+    mongoose = require('mongoose'),
+    config = require('./configuracion/dev'),
+    bodyParser = require('body-parser'),
+    rutasUsuario = require('./rutas/usuario'),
+    rutasEstados = require('./rutas/estados'),
+    rutasProducto = require('./rutas/productos'),
+    Usuario = require('./modelos/usuario'),
+    Producto = require('./modelos/producto'),
+    Municipio = require('./modelos/municipio');
 
-      
+
 //Conexion a la base de datos
 mongoose.set('useUnifiedTopology', true);
-mongoose.connect(config.DB_URL,{ useNewUrlParser: true });
+mongoose.connect(config.DB_URL, { useNewUrlParser: true });
 
 
 //Inicializando el servidor
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-    extended:true
+    extended: true
 }));
+
 /*
+prod = new Producto({
+    nombre: 'Infantil',
+    num_fotos: 12,
+    precio: 100,
+    familia: '5db730bfbecb90002031cce6',
+    b_n: true,
+    c_r: false,
+    c_ad: false
+})
+prod.save();
+
+prod.save();
+prod = new Producto({
+    nombre: 'Credencial rect',
+    num_fotos: 12,
+    precio: 110,
+    familia: '5db730bfbecb90002031cce7',
+    detalles: {
+        b_n: true,
+        c_r: true,
+        c_ad: false
+    }
+})
+prod.save();
+prod = new Producto({
+    nombre: 'Credencial rect',
+    num_fotos: 14,
+    precio: 120,
+    familia: '5db730bfbecb90002031cce7',
+    detalles: {
+        b_n: true,
+        c_r: true,
+        c_ad: false
+    }
+})
+prod.save();
+
 const est = new Municipio( {
     nombre: "Malinaltepec",
     estado: '5db33328019cec161853ae84'
@@ -256,10 +296,11 @@ est46.save();
 
 
 //Endpoints
-app.use('/api/v1/usuarios',rutasUsuario);
+app.use('/api/v1/usuarios', rutasUsuario);
 app.use('/api/v1/estados', rutasEstados);
+app.use('/api/v1/productos', rutasProducto);
 
 const PORT = process.env.PORT || 3002;
-app.listen(PORT, function(){
+app.listen(PORT, function () {
     console.log("servidor funcionando...");
 });

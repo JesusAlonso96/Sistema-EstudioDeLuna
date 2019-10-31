@@ -13,7 +13,7 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $cliente-primary: mat-palette($mat-indigo);
-$cliente-accent: mat-palette($mat-pink, A200, A100, A400);
+$cliente-accent: mat-palette($mat-yellow, 600);
 
 // The warn palette is optional (defaults to red).
 $cliente-warn: mat-palette($mat-red);
@@ -38,4 +38,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .full-width{
     width: 100% !important;
+}
+.full-height{
+    height:  100% !important;
 }
