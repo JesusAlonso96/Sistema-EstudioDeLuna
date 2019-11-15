@@ -24,11 +24,12 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import {MatBadgeModule} from '@angular/material/badge';
+import {MatMenuModule} from '@angular/material/menu';
 
 
 @NgModule({
   declarations: [
-
 
   ],
   imports: [
@@ -60,7 +61,9 @@ import { MatRadioModule } from '@angular/material/radio';
     MatExpansionModule,
     MatTooltipModule,
     MatDialogModule,
-    MatRadioModule
+    MatRadioModule,
+    MatBadgeModule,
+    MatMenuModule
 
   ],
   providers: [],

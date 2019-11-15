@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioLogin } from '../compartido/usuarioLogin.model';
 import { ServicioAutenticacionService } from '../servicio-autenticacion/servicio-autenticacion.service';
 import swal from 'sweetalert2';
+import { UsuarioService } from 'src/app/comun/servicios/usuario.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class LoginComponent implements OnInit {
   cargando: boolean;
   datosUsuario: UsuarioLogin;
 
-  constructor(private autServicio: ServicioAutenticacionService) { }
+  constructor(private autServicio: ServicioAutenticacionService, private usuarioService: UsuarioService) { }
 
   ngOnInit() {
     this.cargando = false;
@@ -25,7 +26,9 @@ export class LoginComponent implements OnInit {
   login() {
     this.cargando = true;
     this.autServicio.login(this.datosUsuario).subscribe(
-      () => {
+      (usr) => {
+        console.log();
+        this.usuarioService.crearAsistencia(this.autServicio.getIdUsuario()).subscribe((ok)=>{},(err)=>{});
         this.cargando = false;
         swal.fire({
           position: 'top-end',

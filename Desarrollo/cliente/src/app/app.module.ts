@@ -10,15 +10,13 @@ import { MaterialModule } from './comun/material.module';
 import { AdministradorModule } from './administrador/modulo-administrador/modulo-administrador.module';
 import { EmpleadoModule } from './empleado/modulo-empleado/modulo-empleado.module';
 import { SupervisorModule } from './supervisor/modulo-supervisor/modulo-supervisor.module';
+import { ComunModule } from './comun/comun.module';
+
 //componentes
 import { LoginComponent } from './autenticacion/login/login.component';
 import { TokenInterceptor } from './autenticacion/compartido/token.interceptor';
-import { LayoutModule } from '@angular/cdk/layout';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
+import { ToastrModule } from 'ngx-toastr';
+
 //guardias
 import { AutenticacionGuard } from './autenticacion/compartido/autenticacion.guard';
 
@@ -26,7 +24,7 @@ import { AutenticacionGuard } from './autenticacion/compartido/autenticacion.gua
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,12 +37,9 @@ import { AutenticacionGuard } from './autenticacion/compartido/autenticacion.gua
     AdministradorModule,
     EmpleadoModule,
     SupervisorModule,
-    LayoutModule,
-    MatToolbarModule,
-    MatButtonModule,
-    MatSidenavModule,
-    MatIconModule,
-    MatListModule
+    ComunModule,
+    ToastrModule.forRoot() // ToastrModule added
+
   ],
   providers: [
     AutenticacionGuard,

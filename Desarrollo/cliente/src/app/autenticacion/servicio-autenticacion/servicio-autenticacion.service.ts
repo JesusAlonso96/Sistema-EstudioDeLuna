@@ -62,6 +62,9 @@ export class ServicioAutenticacionService {
 
     }
   }
+  public getIdUsuario(): any{
+    return this.tokenDesencriptado.id;
+  }
   public getTipoUsuario(): any{
     return this.tokenDesencriptado.rol;
   }

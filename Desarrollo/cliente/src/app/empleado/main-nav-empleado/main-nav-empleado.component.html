@@ -1,33 +1,33 @@
 <mat-sidenav-container class="sidenav-container" *ngIf="autenticacionService.estaAutenticado()">
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="false">
     <mat-toolbar color="primary">Menu</mat-toolbar>
     <mat-nav-list>
       <mat-list>
-        <h3 mat-subheader>Clientes</h3>
-        <mat-list-item routerLink="/usuario/registrar">
-          <mat-icon mat-list-icon>person_add</mat-icon>
-          <h5 mat-line>Registrar cliente</h5>
-        </mat-list-item>
-        <mat-list-item routerLink="/usuario/nuevaVenta">
-          <mat-icon mat-list-icon>person_add</mat-icon>
-          <h5 mat-line>Realizar pedido</h5>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </mat-list>
-      
-      <mat-list>
-        <h3 mat-subheader>Opciones de perfil</h3>
-        <mat-list-item>
-          <div class="row">
-            <div class="col-6">
-              <button mat-raised-button color="primary" class="botonesPerfil">Editar perfil</button>
-            </div>
-            <div class="col-6">
-              <button mat-raised-button color="warn" class="botonesPerfil" (click)="cerrarSesion()">Cerrar sesion</button>
-            </div>
-          </div>
-        </mat-list-item>
+        <ng-container *ngIf="esRecepcionista()">
+          <h3 mat-subheader>Clientes</h3>
+          <mat-list-item routerLink="/usuario/registrar">
+            <mat-icon mat-list-icon>person_add</mat-icon>
+            <h5 mat-line>Registrar cliente</h5>
+          </mat-list-item>
+          <mat-list-item routerLink="/usuario/nuevaVenta">
+            <mat-icon mat-list-icon>person_add</mat-icon>
+            <h5 mat-line>Realizar pedido</h5>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </ng-container>
+        <ng-container *ngIf="!esRecepcionista()">
+          <h3 mat-subheader>Pedidos</h3>
+          <mat-list-item routerLink="/usuario/pedidos-realizados">
+            <mat-icon mat-list-icon>person_add</mat-icon>
+            <h5 mat-line>Pedidos realizados</h5>
+          </mat-list-item>
+          <mat-list-item routerLink="/usuario/pedidos-proceso">
+            <mat-icon mat-list-icon>person_add</mat-icon>
+            <h5 mat-line>Pedidos en proceso</h5>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </ng-container>
       </mat-list>
     </mat-nav-list>
   </mat-sidenav>
@@ -37,6 +37,11 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>Usuario</span>
+      <span class="espaciador"></span>
+        <app-empleado-notificaciones></app-empleado-notificaciones>
+      <button mat-button class="botonesPerfil">Editar perfil</button>
+      <button mat-button class="botonesPerfil" (click)="cerrarSesion()">Cerrar
+        sesion</button>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

@@ -17,7 +17,6 @@ exports.obtenerMunicipios = function (req, res) {
                 if (err) {
                     return res.status(422).send({ title: 'Error', details: 'No se pudieron cargar los municipios' });
                 }
-                console.log(municipios);
                 return res.json(municipios);
              })
 }

@@ -47,6 +47,7 @@ exports.obtenerProductosPorCantidad = function (req, res) {
 }
 exports.buscarProducto = function (req, res) {
     const { b_n, c_r, familia, num_fotos } = req.body;
+   
     Producto.aggregate()
         .lookup({
             from: 'familias',
@@ -65,7 +66,7 @@ exports.buscarProducto = function (req, res) {
             if (err) {
                 return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un problema en el servidor' });
             }
-            if (productos) {
+            if (productos.length > 0) {
                 return res.json(productos);
             } else {
                 return res.status(422).send({ titulo: 'Error', detalles: 'No existe un producto con estas especificaciones' });

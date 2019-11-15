@@ -10,13 +10,23 @@ import { MainNavEmpleadoComponent } from '../main-nav-empleado/main-nav-empleado
 import { EmpleadoPerfilComponent } from '../empleado-perfil/empleado-perfil.component';
 import { EmpleadoRoutingModule } from './empleado-routing.module';
 import { RegistroUsuarioComponent } from '../registro-usuario/registro-usuario.component';
-import { EmpleadoVentaComponent, Modal } from '../empleado-venta/empleado-venta.component';
+import { EmpleadoVentaComponent, Modal, Modal2 } from '../empleado-venta/empleado-venta.component';
+import { EmpleadoPedidosRealizadosComponent } from '../empleado-pedidos-realizados/empleado-pedidos-realizados.component';
+import { EmpleadoPedidosProcesoComponent } from '../empleado-pedidos-proceso/empleado-pedidos-proceso.component';
+import { EmpleadoNotificacionesComponent } from '../empleado-notificaciones/empleado-notificaciones.component';
+import { ModalDetallesProductoComponent } from '../empleado-venta/modal-detalles-producto/modal-detalles-producto.component';
 
 //servicios
 import { EmpleadoService } from '../servicio-empleado/empleado.service';
 import { EstadosService } from 'src/app/comun/servicios/estados.service';
 import { ProductosService } from 'src/app/comun/servicios/productos.service';
 import { EmpleadoGuard } from '../compartido/empleado.guard';
+import { UsuarioService } from 'src/app/comun/servicios/usuario.service';
+import { WebSocketService } from 'src/app/comun/servicios/socket.service';
+
+//modulos
+import { ComunModule } from 'src/app/comun/comun.module';
+
 //pipes
 import { ProductosFiltroPipe } from '../compartido/productos-filtro.pipe';
 
@@ -29,7 +39,13 @@ import { ProductosFiltroPipe } from '../compartido/productos-filtro.pipe';
     RegistroUsuarioComponent,
     EmpleadoVentaComponent,
     ProductosFiltroPipe,
-    Modal
+    Modal,
+    Modal2,
+    ModalDetallesProductoComponent,
+    EmpleadoPedidosRealizadosComponent,
+    EmpleadoPedidosProcesoComponent,
+    EmpleadoNotificacionesComponent
+
 
   ],
   imports: [
@@ -38,14 +54,17 @@ import { ProductosFiltroPipe } from '../compartido/productos-filtro.pipe';
     MaterialModule,
     EmpleadoRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ComunModule
   ],
   providers: [
     EmpleadoService,
     EmpleadoGuard,
     EstadosService,
-    ProductosService
+    ProductosService,
+    UsuarioService,
+    WebSocketService
   ],
-  entryComponents: [ Modal ]
+  entryComponents: [ Modal,Modal2, ModalDetallesProductoComponent ]
 })
 export class EmpleadoModule { }

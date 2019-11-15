@@ -11,7 +11,10 @@ const usuarioSchema = new Schema({
     telefono: {type:Number, required:false},
     contrasena: {type:String, required:true},
     rol: {type:Number, required:true},
-    rol_sec: {type:Number, required:false}
+    rol_sec: {type:Number, required:false},
+    ocupado: {type:Boolean, required:false},
+    asistencia: [{type: Schema.Types.ObjectId,ref:'Asistencia'}],
+    pedidosTomados: [{type: Schema.Types.ObjectId,ref:'Pedido'}]
 });
 //funcion para verificar la contrasena encriptada
 usuarioSchema.methods.verificarContrasena = function(contrasena){

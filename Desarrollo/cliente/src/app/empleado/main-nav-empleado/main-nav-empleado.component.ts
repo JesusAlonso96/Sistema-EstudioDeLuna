@@ -23,4 +23,10 @@ export class MainNavEmpleadoComponent {
     this.autenticacionService.cerrarSesion();
     this.rutas.navigate(['/login']);
   }
+  esRecepcionista(): boolean{
+    if(this.autenticacionService.getTipoTrabajador()==2){
+      return true;
+    }
+    return false
+  }
 }

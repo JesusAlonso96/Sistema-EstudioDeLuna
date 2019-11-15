@@ -4,7 +4,7 @@ const mongoose = require('mongoose'),
 
 const clienteSchema = new Schema({
     nombre: { type: String, required: true },
-    username: { type: String, required: true },
+    username: { type: String, required: false },
     ape_pat: { type: String, required: true },
     ape_mat: { type: String, required: true },
     email: { type: String, required: false },

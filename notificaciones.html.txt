@@ -1,0 +1,44 @@
+<div class="contain">
+    <button mat-icon-button  class=" notificationicon on">
+        <mat-icon [matBadge]="notificaciones.length" matBadgeColor="warn" >notifications</mat-icon>
+      </button>
+    <ul id="notificationMenu" class="notifications">
+        <li class="titlebar">
+            <span class="title">Notificaciones</span>
+        </li>
+        <div class="notifbox">
+            <li class="notif unread">
+                <a href="#">
+                    <div class="imageblock">
+                        <img src="https://si0.twimg.com/profile_images/3186728694/7a0e012910e06dd1476c5edac8b9a28d_bigger.jpeg"
+                            class="notifimage" />
+                    </div>
+                    <div class="messageblock">
+                        <div class="message">This guy <strong>Jonesy</strong> has just built a tower.
+                        </div>
+                        <div class="messageinfo">
+                            <i class="icon-trophy"></i>2 hours ago
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class=" notif">
+                <a href="#">
+                    <div class="imageblock"><img
+                            src="https://si0.twimg.com/profile_images/3312733808/5caeaec6d93114657c40fb257f933d28_bigger.jpeg"
+                            class="notifimage" />
+                    </div>
+                    <div class="messageblock">
+                        <div class="message"><strong>Gary LaPlante</strong> has talked some trash: "<em>Buncha
+                                bitches.</em>
+                        </div>
+                        <div class="messageinfo">
+                            <i class="icon-comment"></i>4 hours ago
+                        </div>
+                    </div>
+                </a>
+            </li>           
+        </div>
+    
+    </ul>
+</div>

@@ -1,4 +1,4 @@
-
+@import 'variables';
 mat-radio-group{
     display: flex;
   flex-direction: column;
@@ -6,4 +6,32 @@ mat-radio-group{
 }
 mat-radio-button{
     margin: 5px;
+}
+.precio{
+  font-size: 15px;
+}
+.precio-titulo{
+  font-size: 20px;
+}
+.cancelar{
+  position: absolute;
+  right: 0;
+  margin-top:3% ;
+}
+.aceptar{
+  position: absolute;
+  left: 0;
+  margin-top: 3%;
+}
+.cerrar{
+  position: absolute;
+  right: 0;
+  cursor: pointer;
+  top: 0;
+}
+.contenedor-productos{
+  background-color: $light-gray-color2;
+}
+.items{
+  padding-top: 40%;
 }

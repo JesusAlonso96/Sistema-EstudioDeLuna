@@ -1,29 +1,40 @@
-<mat-card class="container-fluid margin-top contenedor" style="padding-bottom: 0 ;">
-    <div class="row">
-        <div class="col-12">
-            <h4 class="text-center titulo">Realizar un nuevo pedido</h4>
+<div class="container-fluid contenedor sin-borde">
+
+    <div class="row" style="height: 100%;">
+        <div *ngIf="cargando" class="cargando ">
+            <mat-spinner class="spinner"></mat-spinner>
+            <h3>Cargando elementos...</h3>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-12 familias" style="padding: 0;">
-            <mat-divider></mat-divider>
+        <div *ngIf="cargandoFotografo" class="cargando ">
+            <mat-spinner class="spinner"></mat-spinner>
+            <h3>Asignando fotografo...</h3>
+        </div>
+        <div class="col-lg-1 col-md-4 col-sm-12 familias" style="padding: 0;">
+            <div class="row headers">
+                <div class="col-12" class="titulo-productos3">
+                    <h4 class="text-center titulo-orden">Familias</h4>
+                </div>
+                <mat-divider></mat-divider>
+            </div>
             <mat-list style="padding: 0;">
                 <ng-container *ngFor="let familia of familias; let i = index">
-                    <mat-list-item class="familias-item" (click)="obtenerProductos(familia.nombre)">
+                    <mat-list-item class="familias-item" (click)="obtenerProductos(familia.nombre, familia._id)">
                         <h4 mat-line>{{familia.nombre}}</h4>
                     </mat-list-item>
                     <mat-divider></mat-divider>
                 </ng-container>
             </mat-list>
         </div>
-        <div class="col-lg-9 col-md-8 col-sm-12" style="padding: 0;">
-            <mat-divider></mat-divider>
+        <div class="col-lg-7 col-md-8 col-sm-12 productos">
+            <div class="row headers">
+                <div class="col-12" class="titulo-productos3">
+                    <h4 class="text-center titulo-orden">Selecciona los productos a ordenar</h4>
+                </div>
+                <mat-divider></mat-divider>
+            </div>
             <div class="container-fluid">
                 <div class="row">
                     <ng-container *ngIf="grupo">
-                        <div class="col-12">
-                            <h4 class="text-left titulo-orden">Selecciona los productos a ordenar</h4>
-                        </div>
                         <div class="col-12">
                             <mat-spinner style="margin-left: 40%;" *ngIf="cargandoProductos"></mat-spinner>
                         </div>
@@ -32,48 +43,228 @@
                         </div>
                     </ng-container>
                     <ng-container *ngIf="!grupo">
-                        <div class="col-12">
-                            <h4 class="text-left titulo-productos2">Selecciona una familia de productos</h4>
-                        </div>
+
+
                     </ng-container>
-                    <ng-container *ngFor="let g of grupo">
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-                            <mat-card class="sin-borde productos card" style="padding: 0;">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{g._id}} fotos</h5>
-                                    <p class="card-text">Da clic en seleccionar para obtener los detalles de los
-                                        paquetes con {{g._id}} fotos</p>
-                                    <button mat-raised-button color="primary"
-                                        (click)="abrirModal(g._id)">Seleccionar</button>
-                                </div>
-                            </mat-card>
-                        </div>
+                    <ng-container *ngIf="!esFamiliaEspecial()">
+                        <ng-container *ngFor="let g of grupo">
+                            <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                                <mat-card class="sin-borde productos card" style="padding: 0;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{g._id}} fotos</h5>
+                                        <p class="card-text">Da clic para ver paquetes con {{g._id}} fotos disponibles
+                                        </p>
+                                        <button mat-raised-button color="primary"
+                                            (click)="abrirModal(g._id)">Seleccionar</button>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </ng-container>
                     </ng-container>
+                    <ng-container *ngIf="esFamiliaEspecial()">
+                        <ng-container *ngFor="let g of grupo">
+                            <div class="col-lg-2 col-md-6 col-sm-6 col-xs-12">
+                                <mat-card class="sin-borde productos card" style="padding: 0%;">
+                                    <div class="card-header text-muted">
+                                        {{g.nombre}}
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{g.num_fotos}} fotos</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">${{g.precio}} MXN</h6>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button mat-mini-fab matTooltip="Agregar producto" color="primary"
+                                            (click)="agregarProducto(g)">
+                                            <mat-icon>add</mat-icon>
+                                        </button>
+                                        <button mat-mini-fab matTooltip="Ver detalles" class="float-right"
+                                            (click)="verDetalles(g)">
+                                            <mat-icon>visibility</mat-icon>
+                                        </button>
+                                    </div>
+                                </mat-card>
+                            </div>
+
+                        </ng-container>
+                    </ng-container>
+
+
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12" style="background-color: red;">
-            <h4>Basic mat-select</h4>
-            <mat-form-field>
-                <mat-label>Favorite food</mat-label>
-                <mat-select>
-                    <mat-option value="fasdas">
-                        asdasdasdas
-                    </mat-option>
-                    <mat-option value="fasdas">
-                        asdasdasdas
-                    </mat-option>
-                    <mat-option value="fasdas">
-                        asdasdasdas
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
+        <div class="col-lg-2 agregados">
+            <div class="row headers">
+                <div class="col-12" class="titulo-productos3">
+                    <h4 class="text-center titulo-orden">Productos agregados</h4>
+                </div>
+                <mat-divider></mat-divider>
+            </div>
+            <div class="row">
+                <div class="col-12" style="padding:0; ">
+                    <div class="container-fluid" style="padding:0;">
+                        <mat-list style="padding:0;">
+                            <ng-container *ngFor="let producto of pedido.productos">
+                                <mat-list-item>
+                                    <mat-icon mat-list-icon color="warn" matTooltip="Quitar producto"
+                                        class="quitarProducto" (click)="quitarProducto(producto)">close</mat-icon>
+                                    <h4 mat-line>{{producto.nombre}} {{producto.num_fotos}} fotos
+                                        ${{producto.precio}}MXN</h4>
+                                </mat-list-item>
+                                <mat-divider></mat-divider>
+                            </ng-container>
+                        </mat-list>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12" style="bottom: 0; position: absolute;">
+                    <span class="total1 text-left" style="margin-right: 2%;"> <strong>Total: </strong>${{pedido.total}}</span>
+                    <span class="total text-right"> <strong>Pagado: </strong>${{pagado}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 agregados">
+            <div class="row headers">
+                <div class="col-12" class="titulo-productos3">
+                    <h4 class="text-center titulo-orden">Completar pedido</h4>
+
+                </div>
+                <mat-divider></mat-divider>
+            </div>
+            <div class="row">
+                <form class="col-12 formulario" #pedidoForm="ngForm">
+                    <ng-container *ngIf="pedido.c_retoque">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label id="example-radio-group-label" style="margin-top: 5px; padding-bottom:0 ;">¿Es
+                                    urgente?</label>
+                                <mat-radio-group [(ngModel)]="pedido.importante" #importante="ngModel"
+                                    name="importante">
+                                    <mat-radio-button [value]=true>
+                                        Si
+                                    </mat-radio-button>
+                                    <mat-radio-button [value]=false>
+                                        No
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                                <img class="imagen" src="../../../assets/imagenes/profile_user.gif" alt="">
+                                <button mat-raised-button class="btn-img">Subir imagen</button>
+                            </div>
+                            <div class="col-lg-6">
+                                
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label id="example-radio-group-label" style="margin-top: 5px; padding-bottom:0 ;">¿Con
+                                    adherible?</label>
+                                <mat-radio-group [(ngModel)]="pedido.c_adherible" #c_adherible="ngModel"
+                                    name="c_adherible">
+                                    <mat-radio-button [value]=true>
+                                        Si
+                                    </mat-radio-button>
+                                    <mat-radio-button [value]=false>
+                                        No
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <ng-container>
+                            <h5 style="margin-top: 2%;">Ingresar anticipo</h5>
+                            <mat-form-field style="width:100%" appearance="outline">
+                                <mat-label>Favor de ingresar el anticipo</mat-label>
+                                <input matInput [(ngModel)]="pagado" #pagado2="ngModel" name="pagado2"
+                                    pattern="^[0-9]+$" placeholder="Monto de compra" required>
+                                <mat-icon matSuffix>payment</mat-icon>
+                                <mat-error
+                                    *ngIf="(pagado2.invalid && (pagado2.dirty || pagado2.touched) && pagado2.errors.required)">
+                                    Porfavor ingresa el campo
+                                </mat-error>
+                                <mat-error
+                                    *ngIf="(pagado2.invalid && (pagado2.dirty || pagado2.touched) && pagado2.errors.pattern)">
+                                    Ingresa solo numeros
+                                </mat-error>
+
+                            </mat-form-field>
+                        </ng-container>
+                    </ng-container>
+                    <ng-container *ngIf="!pedido.c_retoque">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label id="example-radio-group-label" style="margin-top: 5px; padding-bottom:0 ;">¿Con
+                                    adherible?</label>
+                                <mat-radio-group [(ngModel)]="pedido.c_adherible" #c_adherible="ngModel"
+                                    name="c_adherible">
+                                    <mat-radio-button [value]=true>
+                                        Si
+                                    </mat-radio-button>
+                                    <mat-radio-button [value]=false>
+                                        No
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                        <h5 style="margin-top: 5%;">Ingresar anticipo</h5>
+                        <mat-form-field style="width:100%" appearance="outline">
+                            <mat-label>Favor de ingresar el anticipo</mat-label>
+                            <input matInput [(ngModel)]="pagado" #pagado2="ngModel" name="pagado2" pattern="^[0-9]+$"
+                                placeholder="Monto de compra" required>
+                            <mat-icon matSuffix>payment</mat-icon>
+                            <mat-error
+                                *ngIf="(pagado2.invalid && (pagado2.dirty || pagado2.touched) && pagado2.errors.required)">
+                                Porfavor ingresa el campo
+                            </mat-error>
+                            <mat-error
+                                *ngIf="(pagado2.invalid && (pagado2.dirty || pagado2.touched) && pagado2.errors.pattern)">
+                                Ingresa solo numeros
+                            </mat-error>
+
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngIf="clientes.length > 0">
+                        <h5 style="margin-top: 1%;">Seleccionar cliente</h5>
+                        <mat-form-field appearance="outline" style="width:100%">
+                            <mat-label>Buscar cliente</mat-label>
+                            <input matInput appearance="outline" placeholder="Cliente" aria-label="Cliente"
+                                [matAutocomplete]="auto" [formControl]="clienteCtrl" required>
+                            <mat-error
+                                *ngIf="(clienteCtrl.invalid && (clienteCtrl.dirty || clienteCtrl.touched) && clienteCtrl.errors.required)">
+                                Porfavor ingresa el campo
+                            </mat-error>
+                            <mat-autocomplete #auto="matAutocomplete">
+                                <mat-option *ngFor="let cliente of clientesFiltrados | async"
+                                    [value]="cliente.nombre + ' | '+ cliente.email">
+                                    <span>{{cliente.nombre}}</span> |
+                                    <small>Correo: {{cliente.email}}</small>
+                                </mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                        <h5 style="margin-top: 1%;">¿Existe alguna observacion?</h5>
+                        <mat-form-field appearance="outline" style="width:100%;">
+                            <mat-label>Anotar observación</mat-label>
+                            <textarea matInput cols="20" rows="3" #input appearance="outline"
+                                placeholder="Observaciones" [(ngModel)]="pedido.comentarios" maxlength="256"
+                                #comentarios="ngModel" name="comentarios"></textarea>
+                            <mat-hint align="start"><strong>Escribe las observaciones</strong> </mat-hint>
+                            <mat-hint align="end">{{input.value.length}} / 256</mat-hint>
+
+                        </mat-form-field>
+                    </ng-container>
+                    <ng-container *ngIf="pedido.productos.length > 0 && pagado != 0 && !pedido.c_retoque">
+                        <button mat-raised-button (click)="abrirCrearPedido()" [disabled]="" color="accent">Crear
+                            pedido</button>
+                    </ng-container>
+                    <ng-container
+                        *ngIf="pedido.productos.length > 0 && pagado != null && pedido.c_retoque && clienteCtrl.value !== null">
+                        <button mat-raised-button (click)="abrirCrearPedido()" [disabled]="" color="accent">Crear
+                            pedido</button>
+                    </ng-container>
+                </form>
+
+            </div>
         </div>
     </div>
 
-
-
-
-</mat-card>
+</div>

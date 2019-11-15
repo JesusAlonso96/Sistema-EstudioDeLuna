@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+declare var $:any;
 @Component({
   selector: 'app-empleado-perfil',
   templateUrl: './empleado-perfil.component.html',
@@ -10,6 +10,7 @@ export class EmpleadoPerfilComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }

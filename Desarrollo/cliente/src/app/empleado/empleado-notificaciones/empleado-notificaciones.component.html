@@ -1,0 +1,54 @@
+<div class="contain">
+    <button mat-icon-button class=" notificationicon on">
+        <mat-icon [matBadge]="notificaciones.length" matBadgeColor="warn">notifications</mat-icon>
+    </button>
+    <ul id="notificationMenu" class="notifications">
+        <li class="titlebar">
+            <span class="title">Notificaciones</span>
+        </li>
+        <div class="notifbox">
+            <!--<li class="notif unread">
+                <a href="#">
+                    <div class="imageblock">
+                        <img src="https://si0.twimg.com/profile_images/3186728694/7a0e012910e06dd1476c5edac8b9a28d_bigger.jpeg"
+                            class="notifimage" />
+                    </div>
+                    <div class="messageblock">
+                        <div class="message">This guy <strong>Jonesy</strong> has just built a tower.
+                        </div>
+                        <div class="messageinfo">
+                            <i class="icon-trophy"></i>2 hours ago
+                        </div>
+                    </div>
+                </a>
+            </li>-->
+            <li class=" notif" *ngFor="let not of notificaciones; let i = index">
+                <a >
+
+                    <div class="messageblock">
+                        <div class="message">
+                            <div class="float-left" style="margin-right: 40px;">
+                                    <strong>{{not.titulo}}</strong> <br>
+
+                            </div>
+                            <div class="float-right" style="margin-left: 20px;">
+                                <span style="text-align: right;" (click)="quitarNotificacion()">Marcar como leida</span>
+                            </div> <br>
+                            <em>{{not.mensaje}}</em><br>
+                                <div class="float-left" style="margin-right: 10px;">
+                                    <strong>Numero de pedido </strong> <em>{{not.num_pedido}}</em><br>
+                                </div>
+                                <div class="float-rigth">
+                                    <strong>Fecha de creacion del pedido: </strong> <em>{{not.fecha_pedido | date: 'short'}}</em><br>
+                                </div>
+                        </div>
+                        <div class="messageinfo">
+                            <i class="icon-comment"></i>{{not.fecha | date:'shortDate'}}
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </div>
+
+    </ul>
+</div>

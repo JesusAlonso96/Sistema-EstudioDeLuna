@@ -1,3 +1,5 @@
+import { Pedido } from './pedido.model';
+
 export class Cliente {
     nombre: string;
     username: string;
@@ -15,7 +17,7 @@ export class Cliente {
     cp:number;
     num_ext:number;
     num_int:number;
-    //pedidos: Pedido;
+    pedidos: Pedido;
     fecha_registro:Date;
     constructor(){
         this.nombre =  "";

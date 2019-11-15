@@ -6,6 +6,7 @@ const productoSchema = new Schema({
     familia: { type:Schema.Types.ObjectId, ref:'Familia'},
     num_fotos: { type: Number, required: false },
     precio: { type: Number, required: true },
+    descripcion: { type: String, required:false},
     b_n: { type: Boolean },
     c_r: { type: Boolean },
     c_ad: { type: Boolean }

@@ -1,0 +1,6 @@
+$(document).ready(function () {
+      $(".on").click(function () {
+        $(this).toggleClass("open");
+        $("#notificationMenu").toggleClass("open");
+      });
+    });
