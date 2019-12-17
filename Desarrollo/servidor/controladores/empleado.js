@@ -1,20 +1,17 @@
 const Usuario = require('../modelos/usuario'),
-    jwt = require('jsonwebtoken'),
     mongoose = require('mongoose'),
-    Asistencia = require('../modelos/asistencia'),
     Pedido = require('../modelos/pedido'),
     Venta = require('../modelos/venta'),
     Notificacion = require('../modelos/notificacion'),
     momento = require('moment'),
     Cliente = require('../modelos/cliente');
-let app = require("express")();
-let http = require("http").Server(app);
-let io = require("socket.io")(http);
+//let app = require("express")();
+//let http = require("http").Server(app);
+//let io = require("socket.io")(http);
 
 exports.asignarFotografo = function (req, res) {
     var fecha = new Date(req.params.fecha);
     Usuario.aggregate()
-        .unwind("asistencia")
         .lookup({
             from: "asistencias",
             localField: "asistencia",
@@ -27,14 +24,14 @@ exports.asignarFotografo = function (req, res) {
             rol: 0,
             rol_sec: 1,
             ocupado: false
-            //_id: mongoose.Types.ObjectId(req.params.id)
         })
         .project({
             _id: 1,
             nombre: 1,
             ape_pat: 1,
             ape_mat: 1,
-            ocupado: 1
+            ocupado: 1,
+            pedidosTomados: 1
         })
         .exec(function (err, asistencia) {
             if (err) {
@@ -71,7 +68,6 @@ exports.numPedidosFotografo = function (req, res) {
             _id: 1,
             count: 1
         })
-
         .exec(function (err, respuesta) {
             if (err) {
                 return res.json(err);
@@ -117,54 +113,69 @@ exports.tieneAsistenciaTrabajador = function (req, res) {
 exports.crearPedido = function (req, res) {
     pedido = req.body;
     if (pedido.fotografo.nombre == '') {
-        console.log("no se asigna fotografo")
         pedido.fotografo = null;
     }
-
     pedidoAlta = new Pedido(pedido);
-    pedidoAlta.save(function (err, exito) {
+    pedidoAlta.save(function (err, pedidoGuardado) {
         if (err) {
-            console.log(err);
             return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo crear el pedido' });
         }
         if (pedidoAlta.fotografo) {
-            Usuario.findByIdAndUpdate(req.params.id, {
+            Usuario.findOneAndUpdate({ _id: req.params.id }, {
                 $push: {
-                    pedidosTomados: exito
+                    pedidosTomados: pedidoGuardado
                 }
-            }, function (err, ok) {
-                if(err){
-                    console.log(err)
-                }
-                
-            })
+            }, function (err, ok) { if (err) { } })
         }
         if (pedidoAlta.cliente) {
             Cliente.findByIdAndUpdate(pedidoAlta.cliente, {
                 $push: {
                     pedidos: pedidoAlta
                 }
-            }, function (err, ok) {
-                if(err){
-                    console.log(err)
-                }
-
-            })
+            }, function (err, ok) { if (err) { } })
         }
-        return res.json(exito);
+        Pedido.findById(pedidoGuardado._id)
+            .populate('productos')
+            .populate('cliente')
+            .exec(function (err, pedidoEncontrado) {
+                if (err) {
+                    return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo guardar el pedido' });
+                }
+                return res.json(pedidoEncontrado);
+            });
+    });
+}
+exports.crearFoto = function (req, res) {
+    var path = req.file.path.split('\\', 2)[1];
+    Pedido.updateOne({ _id: req.params.id }, {
+        $set: {
+            foto: path
+        }
+    }).exec(function (err, pedidoActualizado) {
+        if (err) {
+            return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo subir la foto' });
+        }
+        return res.json(pedidoActualizado);
     })
 }
 exports.realizarVenta = function (req, res) {
+    var hora = new Date(Date.now());
+    var fecha = new Date(Date.now());
+    fecha = momento().format('YYYY-MM-DD');
+    hora = momento().format('h:mm:ss a');
     const venta = new Venta({
         pedido: req.body,
-        fecha: new Date(Date.now()),
+        fecha: fecha,
+        hora: hora,
         vendedor: res.locals.usuario._id
     })
     venta.save(function (err, exito) {
         if (err) {
-            console.log(err);
+            console.log(err)
+
             return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo crear la venta' });
         }
+        console.log(exito)
         return res.json(exito);
     })
 }
@@ -203,10 +214,10 @@ exports.obtenerPedidosPorEmpleado = function (req, res) {
                 }
             ]
         })
-
         .project(
             {
-                _id: 0, num_pedido: '$pedidosTomados.num_pedido',
+                _id: '$pedidosTomados._id',
+                num_pedido: '$pedidosTomados.num_pedido',
                 status: '$pedidosTomados.status',
                 nombre_cliente: { $arrayElemAt: ['$cliente.nombre', 0] },
                 ape_pat_cliente: { $arrayElemAt: ['$cliente.ape_pat', 0] },
@@ -216,11 +227,13 @@ exports.obtenerPedidosPorEmpleado = function (req, res) {
                 comentarios: '$pedidosTomados.comentarios',
                 total: '$pedidosTomados.total',
                 anticipo: '$pedidosTomados.anticipo',
+                foto: '$pedidosTomados.foto'
             })
         .group({
             _id: '$pedidosTomados._id',
             pedido: {
                 $push: {
+                    _id: '$_id',
                     num_pedido: '$num_pedido',
                     status: '$status',
                     fecha_creacion: '$fecha_creacion',
@@ -231,14 +244,13 @@ exports.obtenerPedidosPorEmpleado = function (req, res) {
                     },
                     anticipo: '$anticipo',
                     total: '$total',
-
+                    foto: '$foto'
                 }
             },
 
         })
         .exec(function (err, pedidos) {
             if (err) {
-                console.log(err);
                 return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar los pedidos' })
             }
             if (pedidos.length > 0) {
@@ -249,7 +261,7 @@ exports.obtenerPedidosPorEmpleado = function (req, res) {
 
         })
 }
-exports.obtenerPedidosEnProceso = function (req, res) {
+exports.obtenerNumPedidosPorEmpleado = function (req, res) {
     Usuario.aggregate()
         .lookup({
             from: "pedidos",
@@ -261,11 +273,45 @@ exports.obtenerPedidosEnProceso = function (req, res) {
             path: "$pedidosTomados",
             preserveNullAndEmptyArrays: true
         })
+        .match({
+            $and: [
+                { _id: mongoose.Types.ObjectId(res.locals.usuario._id) },
+                {
+                    $or: [
+                        { "pedidosTomados.status": 'Vendido' },
+                        { "pedidosTomados.status": 'Finalizado' }
+                    ]
+                }
+            ]
+        })
+        .group({
+            _id: null,
+            contador: {
+                $sum: 1
+            }
+        })
+        .project(
+            {
+                _id: 0
+            })
+        .exec(function (err, pedidos) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar los pedidos' })
+            }
+            return res.json(pedidos);
+        })
+}
+exports.obtenerPedidosEnProceso = function (req, res) {
+    Usuario.aggregate()
         .lookup({
-            from: "clientes",
-            localField: "pedidosTomados.cliente",
+            from: "pedidos",
+            localField: "pedidosTomados",
             foreignField: "_id",
-            as: "cliente"
+            as: "pedidosTomados",
+        })
+        .unwind({
+            path: "$pedidosTomados",
+            preserveNullAndEmptyArrays: true
         })
         .lookup({
             from: "productos",
@@ -273,22 +319,30 @@ exports.obtenerPedidosEnProceso = function (req, res) {
             foreignField: "_id",
             as: "productos"
         })
+        .lookup({
+            from: "clientes",
+            localField: "pedidosTomados.cliente",
+            foreignField: "_id",
+            as: "cliente"
+        })
         .match({
             $and: [
-                { _id: mongoose.Types.ObjectId(req.params.id) },
+                { _id: mongoose.Types.ObjectId(res.locals.usuario._id) },
                 {
                     $or: [
                         { "pedidosTomados.status": 'En retoque' },
                         { "pedidosTomados.status": 'Imprimiendo' },
-                        { "pedidosTomados.status": 'Adherible' }
+                        { "pedidosTomados.status": 'Poniendo adherible' },
+                        { "pedidosTomados.status": 'Cortando fotografias' }
                     ]
                 }
             ]
         })
-
         .project(
             {
-                _id: 0, num_pedido: '$pedidosTomados.num_pedido',
+                _id: '$pedidosTomados._id',
+                num_pedido: '$pedidosTomados.num_pedido',
+                foto: '$pedidosTomados.foto',
                 status: '$pedidosTomados.status',
                 nombre_cliente: { $arrayElemAt: ['$cliente.nombre', 0] },
                 ape_pat_cliente: { $arrayElemAt: ['$cliente.ape_pat', 0] },
@@ -298,37 +352,93 @@ exports.obtenerPedidosEnProceso = function (req, res) {
                 comentarios: '$pedidosTomados.comentarios',
                 total: '$pedidosTomados.total',
                 anticipo: '$pedidosTomados.anticipo',
+                c_ad: '$pedidosTomados.c_adherible',
+                c_retoque: '$pedidosTomados.c_retoque',
+                comentarios: '$pedidosTomados.comentarios',
+                productos: '$pedidosTomados.productos'
             })
         .group({
             _id: '$pedidosTomados._id',
             pedido: {
                 $push: {
+                    _id: '$_id',
                     num_pedido: '$num_pedido',
                     status: '$status',
                     fecha_creacion: '$fecha_creacion',
                     fecha_entrega: '$fecha_entrega',
-                    comentarios: '$comentarios',
                     cliente: {
                         $concat: ['$nombre_cliente', ' ', '$ape_pat_cliente', ' ', '$ape_mat_cliente']
                     },
                     anticipo: '$anticipo',
                     total: '$total',
-
+                    foto: '$foto',
+                    c_adherible: '$c_ad',
+                    c_retoque: '$c_retoque',
+                    comentarios: '$comentarios',
+                    productos: '$productos'
                 }
             },
 
         })
         .exec(function (err, pedidos) {
             if (err) {
-                console.log(err);
                 return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar los pedidos' })
             }
             if (pedidos.length > 0) {
                 return res.json(pedidos);
             } else {
-                return res.status(422).send({ titulo: 'No existen pedidos', detalles: 'El usuario no cuenta con ningun pedido realizado' })
+                return res.status(422).send({ titulo: 'No existen pedidos', detalles: 'El usuario no cuenta con ningun pedido realizandose' })
             }
 
+        })
+}
+exports.obtenerNumPedidosEnProceso = function (req, res) {
+    Usuario.aggregate()
+        .lookup({
+            from: "pedidos",
+            localField: "pedidosTomados",
+            foreignField: "_id",
+            as: "pedidosTomados",
+        })
+        .unwind({
+            path: "$pedidosTomados",
+            preserveNullAndEmptyArrays: true
+        })
+        .match({
+            $and: [
+                { _id: mongoose.Types.ObjectId(res.locals.usuario._id) },
+                {
+                    $or: [
+                        { "pedidosTomados.status": 'En retoque' },
+                        { "pedidosTomados.status": 'Imprimiendo' },
+                        { "pedidosTomados.status": 'Poniendo adherible' },
+                        { "pedidosTomados.status": 'Cortando fotografias' }
+                    ]
+                }
+            ]
+        })
+        .group({
+            _id: null,
+            contador: {
+                $sum: 1
+            }
+        })
+        .project(
+            {
+                _id: 0
+            })
+        .exec(function (err, pedidos) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar los pedidos' })
+            }
+            return res.json(pedidos);
+        })
+}
+exports.obtenerProductosPorPedido = function (req, res) {
+    Pedido.findById(req.params.id)
+        .populate('productos')
+        .exec(function (err, pedidos) {
+            return res.json(pedidos.productos);
         })
 }
 exports.crearNotificacion = function (req, res) {
@@ -340,11 +450,11 @@ exports.crearNotificacion = function (req, res) {
         fecha: hoy,
         usuario: req.body.usuario,
         num_pedido: req.body.num_pedido,
-        fecha_pedido: req.body.fecha_pedido
+        fecha_pedido: req.body.fecha_pedido,
+        tipo_pedido: req.body.tipo_pedido
     });
     notificacion.save(function (err, notificacion) {
         if (err) {
-            console.log(err);
             return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al mandar las notificaciones a los empleados' })
         }
         return res.json({ titulo: 'Notificacion creada con exito' });
@@ -358,21 +468,129 @@ exports.obtenerFotografos = function (req, res) {
         return res.json(fotografosEncontrados);
     })
 }
-exports.obtenerFotografo = function (req,res){
-    Usuario.findById(req.params.id).exec(function(err, fotografo){
-        if(err){
-            return res.status(422).send({titulo:'Error', detalles:'No se encontro al fotografo'})
+exports.obtenerFotografo = function (req, res) {
+    Usuario.findById(req.params.id).exec(function (err, fotografo) {
+        if (err) {
+            return res.status(422).send({ titulo: 'Error', detalles: 'No se encontro al fotografo' })
         }
         return res.json(fotografo);
     })
 }
 exports.obtenerNotificaciones = function (req, res) {
     var fecha = new Date(req.params.fecha);
-    Notificacion.find({ usuario: req.params.id, fecha: fecha }).exec(function (err, notificaciones) {
+    Notificacion.find({ usuario: req.params.id, fecha: fecha })
+        .sort({ num_pedido: -1 })
+        .exec(function (err, notificaciones) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar a las notificaciones' })
+            }
+            return res.json(notificaciones);
+        })
+}
+exports.obtenerPedidosEnCola = function (req, res) {
+    Pedido.find({ fotografo: null }).exec(function (err, pedidosEncontrados) {
         if (err) {
-            return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar a las notificaciones' })
+            return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar a los pedidos' })
         }
-        return res.json(notificaciones);
+        return res.json(pedidosEncontrados)
+    })
+}
+exports.obtenerNumPedidosEnCola = function (req, res) {
+    Pedido.find({ fotografo: null })
+        .countDocuments()
+        .exec(function (err, pedidosEncontrados) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar a los pedidos' })
+            }
+            return res.json(pedidosEncontrados)
+        })
+}
+exports.tomarPedido = function (req, res) {
+    const pedido = new Pedido(req.body);
+    Pedido.findOneAndUpdate({ _id: req.params.idPedido }, {
+        $set: {
+            fotografo: req.params.id,
+            status: 'En retoque'
+        }
+    }).exec(function (err, pedidoActualizado) {
+        if (err) {
+            return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al actualizar el pedido' })
+        }
+        Usuario.updateOne({ _id: req.params.id }, {
+            $push: {
+                pedidosTomados: pedidoActualizado
+            },
+            $set: {
+                ocupado: true,
+            }
+        }).exec(function (err, actualizado) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al actualizar el pedido' })
+            }
+        })
+        Pedido.find({ fotografo: null }).exec(function (err, pedidos) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al actualizar el pedido' })
+            }
+            return res.json(pedidos);
+        })
+    })
+
+}
+exports.actualizarEstadoPedido = function (req, res) {
+    Pedido.findOneAndUpdate({ _id: req.body._id }, {
+        $set: {
+            status: req.body.status
+        }
+    }).exec(function (err, pedidoActualizado) {
+        if (err) {
+            return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al actualizar el pedido' })
+        }
+        Pedido.findById(pedidoActualizado._id).exec(function (err, pedido) {
+            return res.json(pedido)
+        })
+    })
+}
+exports.actualizarAnticipoPedido = function (req, res) {
+    Pedido.findOneAndUpdate({ _id: req.params.id }, {
+        $set: {
+            anticipo: req.params.anticipo
+        }
+    }).exec(function (err, pedidoActualizado) {
+        if (err) {
+            return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al actualizar el pedido' })
+        }
+        Pedido.findById(pedidoActualizado._id).exec(function (err, pedido) {
+            return res.json(pedido)
+        })
+    })
+}
+exports.eliminarNotificacion = function (req, res) {
+    Notificacion.remove({ _id: req.params.id }).exec(function (err, eliminada) { if (err) { } })
+}
+exports.eliminarNotificacionPorPedido = function (req, res) {
+    Notificacion.remove({ num_pedido: req.params.num }).exec(function (err, eliminada) { if (err) { } })
+}
+exports.eliminarNotificaciones = function () {
+    Notificacion.remove({}).exec(function (err, eliminadas) { if (err) { } })
+}
+exports.actualizarOcupado = function (req, res) {
+    Usuario.findOneAndUpdate({ _id: req.params.id }, {
+        $set: {
+            ocupado: false
+        }
+    }).exec(function (err, actualizado) {
+        if (err) {
+            return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo actualizar el estado del fotografo' })
+        }
+    })
+}
+exports.obtenerPedidos = function (req, res) {
+    Pedido.find().exec(function (err, pedidos) {
+        if (err) {
+            return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener todos los pedidos' })
+        }
+        return res.json(pedidos);
     })
 }
 

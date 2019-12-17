@@ -9,6 +9,7 @@ export class Producto{
     b_n: Boolean;
     c_r: Boolean;
     c_ad: Boolean;
+    descripcion: String;
     constructor(){
         this.nombre = '';
         this.precio = 0;

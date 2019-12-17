@@ -3,14 +3,14 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 
-import { ServicioAutenticacionService} from '../../autenticacion/servicio-autenticacion/servicio-autenticacion.service';
+import { ServicioAutenticacionService } from '../../autenticacion/servicio-autenticacion/servicio-autenticacion.service';
 import { Router } from '@angular/router';
 @Component({
   selector: 'app-main-nav-empleado',
   templateUrl: './main-nav-empleado.component.html',
   styleUrls: ['./main-nav-empleado.component.scss']
 })
-export class MainNavEmpleadoComponent {
+export class MainNavEmpleadoComponent  {
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -18,13 +18,13 @@ export class MainNavEmpleadoComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private autenticacionService: ServicioAutenticacionService, private rutas: Router) {}
-  cerrarSesion(){
+  constructor(private breakpointObserver: BreakpointObserver, private autenticacionService: ServicioAutenticacionService, private rutas: Router) { }
+  cerrarSesion() {
     this.autenticacionService.cerrarSesion();
     this.rutas.navigate(['/login']);
   }
-  esRecepcionista(): boolean{
-    if(this.autenticacionService.getTipoTrabajador()==2){
+  esRecepcionista(): boolean {
+    if (this.autenticacionService.getTipoTrabajador() == 2) {
       return true;
     }
     return false

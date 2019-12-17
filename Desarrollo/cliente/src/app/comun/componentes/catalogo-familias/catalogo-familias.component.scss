@@ -1,0 +1,14 @@
+@import 'variables';
+.card-familias{
+    margin: 10px 10px;
+    background: $info;
+    h3{
+        color: #ffffff;
+    }
+    span{
+        color: $light-gray-color;
+    }
+}
+.tituloFam{
+    margin: 10px 10px;
+}

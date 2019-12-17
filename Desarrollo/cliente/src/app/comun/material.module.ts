@@ -24,8 +24,14 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
-import {MatBadgeModule} from '@angular/material/badge';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
 
 
 @NgModule({
@@ -41,6 +47,7 @@ import {MatMenuModule} from '@angular/material/menu';
     MatSidenavModule,
     MatIconModule,
     MatListModule,
+    MatDatepickerModule
   ],
   exports: [
     MatToolbarModule,
@@ -63,8 +70,13 @@ import {MatMenuModule} from '@angular/material/menu';
     MatDialogModule,
     MatRadioModule,
     MatBadgeModule,
-    MatMenuModule
-
+    MatMenuModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTabsModule,
+    MatDatepickerModule,
+    MatMomentDateModule
   ],
   providers: [],
   bootstrap: []

@@ -1,1 +1,3 @@
-Terminar de ingresar los estados y municipios, ultimo = Guerrero, sigue = Hidalgo
+1.-Terminar de ingresar los estados y municipios, ultimo = Guerrero, sigue = Hidalgo
+2.-Obtener solo ventas rapidas en reportes
+3.-peticion para obtener dinero ganado en ventas o apartados

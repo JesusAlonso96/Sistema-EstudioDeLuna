@@ -7,6 +7,7 @@ const notificacionSchema = new Schema({
     fecha: {type: Date, required:true},
     num_pedido: {type: Number},
     fecha_pedido: {type: Date},
+    tipo_pedido: {type: Number},
     usuario: {type: Schema.Types.ObjectId, ref: 'Usuario'}
 });
 

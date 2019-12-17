@@ -1,0 +1,37 @@
+<mat-toolbar color="primary">
+    <span>Ventas</span>
+</mat-toolbar>
+<div class="container-fluid margin-top">
+    <div class="row margen-contenedor">
+        <mat-tab-group class="col-lg-12">
+            <mat-tab label="Reportes">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-6 margen">
+                            <app-reporte-ventas-mes></app-reporte-ventas-mes>
+                        </div>
+                        <div class="col-lg-4 margen">
+                            <app-reporte-ventas-dia></app-reporte-ventas-dia>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <app-reporte-ventas-fecha></app-reporte-ventas-fecha>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Corte de caja">
+                <div class="col-lg-12 margen">
+                    <app-corte-caja></app-corte-caja>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+
+
+
+    </div>
+</div>

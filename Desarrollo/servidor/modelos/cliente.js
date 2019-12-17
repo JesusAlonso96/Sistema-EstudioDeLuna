@@ -23,20 +23,5 @@ const clienteSchema = new Schema({
     fecha_registro: { type: Date, required: true }
 
 });
-//funcion para verificar la contrasena encriptada
-clienteSchema.methods.verificarContrasena = function (contrasena) {
-    return bcrypt.compareSync(contrasena, this.contrasena);
-}
-//funcion para encriptar contrasena
-clienteSchema.pre('save', function (next) {
-    const usuario = this;
-    //generar contrasena aleatoria
-    bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(usuario.contrasena, salt, function (err, hash) {
-            usuario.contrasena = hash;
-            next();
-        })
-    })
-})
 
 module.exports = mongoose.model('Cliente', clienteSchema);

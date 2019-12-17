@@ -20,6 +20,65 @@ exports.obtenerProductos = function (req, res) {
             return res.json(productosEncontrados);
         })
 }
+exports.obtenerFamiliasYProductos = function (req, res) {
+    Producto.aggregate()
+        .lookup({
+            from: "familias",
+            localField: "familia",
+            foreignField: "_id",
+            as: "familia"
+        })
+        .group({
+            _id: "$familia",
+            
+            productos: {
+                $push:{
+                    nombre:'$nombre',
+                    num_fotos: '$num_fotos',
+                    precio: '$precio',
+                    descripcion: '$descripcion',
+                    b_n:'$b_n',
+                    c_r:'$c_r',
+                    c_ad:'$c_ad'
+                }
+            }            
+        })
+        .exec(function (err, response) {
+            if (err) {
+                console.log(err);
+            }
+            res.json(response);
+        })
+}
+exports.obtenerProductosPorTam = function (req, res) {
+    Producto
+        .aggregate()
+        .lookup({
+            from: "familias",
+            localField: "familia",
+            foreignField: "_id",
+            as: "familia"
+        })
+        .match({
+            "familia.nombre": req.params.nombre
+        })
+        .group({
+            _id: { ancho: '$ancho', alto: '$alto' }
+        })
+        .project({
+            _id: 1, precio: 1
+        })
+        .sort({
+            _id: 1,
+
+        })
+        .exec(function (err, response) {
+            if (err) {
+                console.log(err);
+            }
+            res.json(response);
+        })
+}
 exports.obtenerProductosPorCantidad = function (req, res) {
     Producto
         .aggregate()
@@ -45,9 +104,18 @@ exports.obtenerProductosPorCantidad = function (req, res) {
             res.json(response);
         })
 }
+exports.buscarProductoPorTam = function (req, res) {
+    Producto.find({ ancho: parseInt(req.params.ancho, 10), alto: parseInt(req.params.alto, 10) })
+        .exec(function (err, productos) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un problema intentando obtener los productos' });
+            }
+            return res.json(productos);
+        })
+}
 exports.buscarProducto = function (req, res) {
     const { b_n, c_r, familia, num_fotos } = req.body;
-   
+
     Producto.aggregate()
         .lookup({
             from: 'familias',

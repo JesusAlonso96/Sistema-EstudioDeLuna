@@ -4,6 +4,7 @@ const mongoose = require('mongoose'),
 const ventaSchema = new Schema({
     pedido: { type: Schema.Types.ObjectId, ref:'Pedido' },
     fecha: {type: Date, required:true},
+    hora: {type: String, required:true},
     vendedor: { type: Schema.Types.ObjectId, ref:'Usuario' }
 });
 

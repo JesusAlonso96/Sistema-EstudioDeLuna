@@ -11,6 +11,9 @@ import { EmpleadoPedidosRealizadosComponent } from '../empleado-pedidos-realizad
 //guardia
 import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticacion.guard';
 import { EmpleadoPedidosProcesoComponent } from '../empleado-pedidos-proceso/empleado-pedidos-proceso.component';
+import { EmpleadoPedidosColaComponent } from '../empleado-pedidos-cola/empleado-pedidos-cola.component';
+import { EmpleadoPedidosComponent } from '../empleado-pedidos/empleado-pedidos.component';
+import { EmpleadoDashboardFotografoComponent } from '../empleado-dashboard-fotografo/empleado-dashboard-fotografo.component';
 
 
 
@@ -21,10 +24,13 @@ const routes: Routes = [
         canActivate: [AutenticacionGuard],
         children: [
             { path: 'perfil', component: EmpleadoPerfilComponent },
+            { path: 'dashboard', component: EmpleadoDashboardFotografoComponent},
             { path: 'registrar', component: RegistroUsuarioComponent },
             { path: 'nuevaVenta', component: EmpleadoVentaComponent },
             { path: 'pedidos-realizados', component: EmpleadoPedidosRealizadosComponent },
-            { path: 'pedidos-proceso', component:EmpleadoPedidosProcesoComponent}
+            { path: 'pedidos-proceso', component:EmpleadoPedidosProcesoComponent},
+            { path: 'pedidos-cola', component: EmpleadoPedidosColaComponent},
+            { path: 'pedidos', component: EmpleadoPedidosComponent}
         ]
     }
 ]

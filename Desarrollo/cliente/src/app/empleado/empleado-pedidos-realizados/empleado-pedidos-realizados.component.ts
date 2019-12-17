@@ -3,6 +3,9 @@ import { EmpleadoService } from '../servicio-empleado/empleado.service';
 import { Pedido } from 'src/app/comun/modelos/pedido.model';
 import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-autenticacion/servicio-autenticacion.service';
 import Swal from 'sweetalert2';
+import {environment} from '../../../environments/environment'
+import { MatDialog } from '@angular/material';
+import { DetallesModalComponent } from '../empleado-pedidos-proceso/detalles-modal/detalles-modal.component';
 
 @Component({
   selector: 'app-empleado-pedidos-realizados',
@@ -13,9 +16,13 @@ export class EmpleadoPedidosRealizadosComponent implements OnInit {
   status = ['En retoque','Imprimiendo', 'Adherible', 'Finalizado','Vendido']
   pedidos: any[];
   cargandoPedidos: boolean;
-  constructor(private empleadoService: EmpleadoService, private autenticacionService: ServicioAutenticacionService) {
+  url_fotos: string;
+  parametroBusqueda: string;
+  constructor(public dialog: MatDialog,private empleadoService: EmpleadoService, private autenticacionService: ServicioAutenticacionService) {
     this.pedidos = [];
+    this.parametroBusqueda = '';
     this.cargandoPedidos = false;
+    this.url_fotos = environment.url_fotos;
   }
 
   ngOnInit() {
@@ -24,7 +31,7 @@ export class EmpleadoPedidosRealizadosComponent implements OnInit {
       (pedidos) => {
         this.pedidos = pedidos[0].pedido;
         this.cargandoPedidos = false;
-        this.statusActual(0);
+        console.log(this.pedidos);
       },
       (err) => {
         Swal.fire({
@@ -38,21 +45,23 @@ export class EmpleadoPedidosRealizadosComponent implements OnInit {
     );
 
   }
-  statusActual(indicePedido){
-    let indice = 0;
-    for(let i =0 ; i < this.status.length; i++){
-      if(this.status[i] == this.pedidos[indicePedido].status){
-        indice = i;
-        break;
-      }
-    }
-    console.log(indice);
+  borrarBusqueda(){
+    this.parametroBusqueda = '';
   }
-  ultimo(indice): boolean{
-    if(indice == (this.status.length - 1)){
-      return true;
-    }
-    return false;
-  }
+  verDetalles(pedido){
+    console.log(pedido._id)
+    this.empleadoService.obtenerProductosPorPedido(pedido._id).subscribe(
+      (productos)=>{
+        pedido.productos = productos;
+        console.log(pedido.productos)
+        const dialogRef = this.dialog.open(DetallesModalComponent, {
+          width:'60%',
+          data: pedido
+        });
+      },
+      ()=>{
 
+      }
+    );
+  }
 }

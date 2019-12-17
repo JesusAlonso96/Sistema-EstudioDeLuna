@@ -1,0 +1,44 @@
+<h1 mat-dialog-title>Estado del pedido</h1>
+<div mat-dialog-content>
+    <nav aria-label="breadcrumb ">
+        <ol class="breadcrumb sin-borde">
+            <ng-container *ngFor="let estado of estadosNuevo;let i = index">
+                <li class="breadcrumb-item">
+                    <a class="text-success">{{estado}}</a>
+                </li>
+            </ng-container>
+            <li class="breadcrumb-item"> <a class="text-muted">{{estadoActual}}</a> </li>
+        </ol>
+    </nav>
+    <mat-list>
+        <h3 mat-subheader>Colores</h3>
+        <mat-list-item>
+            <mat-icon class="text-success" mat-list-icon>fiber_manual_record
+            </mat-icon>
+            <h4 mat-line>Terminado</h4>
+        </mat-list-item>
+        <mat-list-item>
+            <mat-icon class="text-muted" mat-list-icon>fiber_manual_record
+            </mat-icon>
+            <h4 mat-line>Estado actual</h4>
+        </mat-list-item>
+    </mat-list>
+    <div align="end">
+        <span><strong>Total: </strong>${{data.total}}</span> <br>
+        <span><strong> Anticipo: </strong>${{data.anticipo}}</span>
+    </div>
+
+    <hr>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button *ngIf="montoCumplido()">
+        <mat-icon>done</mat-icon>
+        Pedido pagado
+    </button>
+    <mat-form-field *ngIf="!montoCumplido() && estadoActual == 'Finalizado'">
+        <input type="number" matInput [(ngModel)]="inputDebe" placeholder="Cubrir monto">
+    </mat-form-field>
+    <button class="boton" *ngIf="estadoActual == 'Finalizado'" [disabled]="!montoCumplido()" mat-raised-button
+        color="primary" (click)="marcarEntregado()">Marcar como entregado</button>
+    <button mat-button (click)="onNoClick()" cdkFocusInitial>Cancelar</button>
+</div>

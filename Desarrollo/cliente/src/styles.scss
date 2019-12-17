@@ -42,6 +42,39 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .full-height{
     height:  100% !important;
 }
+.toast-success {
+    background-color: #5cb85c !important;
+  }
+  .toast-error {
+    background-color: #d9534f !important;
+  }
+  .toast-info {
+    background-color: #5bc0de !important;
+  }
+  .toast-warning {
+    background-color: #f0ad4e !important;
+  }
 .espaciador {
     flex: 1 1 auto !important;
   }
+  .cargando{
+    position: absolute !important;
+    height: 100% !important;
+    width: 100% !important;
+    background: rgba(0,0,0,.6) !important;
+    z-index: 1000000000000000000000000000000 !important;
+    .spinner{
+        margin-left: auto !important;
+        margin-right: auto !important;
+        margin-top: 20% !important;
+    }
+    h3{
+        z-index: 100000 !important;
+        color: #ffffff !important;
+        margin-top: 2% !important;
+        text-align: center !important;
+    }
+}
+.margen-contenedor{
+    margin: 10px 10px !important;
+}

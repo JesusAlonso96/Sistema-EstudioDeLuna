@@ -1,18 +1,17 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container class="sidenav-container" *ngIf="autenticacionService.estaAutenticado()">
   <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === false">
     <mat-toolbar color="primary">
       Menu
     </mat-toolbar>
     <mat-nav-list>
-
       <mat-list>
-        <h3 mat-subheader>Reportes</h3>
-        <mat-list-item>
+        <h3 mat-subheader>SECCIONES</h3>
+        <mat-list-item routerLink="/admin/ventas/reportes-ventas">
           <mat-icon mat-list-icon>credit_card</mat-icon>
           <h5 mat-line>Ventas</h5>
         </mat-list-item>
-        <mat-list-item>
+        <mat-list-item >
           <mat-icon mat-list-icon>credit_card</mat-icon>
           <h5 mat-line>Compras</h5>
         </mat-list-item>
@@ -32,9 +31,9 @@
           <mat-icon mat-list-icon>credit_card</mat-icon>
           <h5 mat-line>Clientes</h5>
         </mat-list-item>
-        <mat-list-item>
-          <mat-icon mat-list-icon>credit_card</mat-icon>
-          <h5 mat-line>Usuarios</h5>
+        <mat-list-item routerLink="/admin/usuarios">
+            <mat-icon mat-list-icon>credit_card</mat-icon>
+            <h5 mat-line>Usuarios</h5>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>credit_card</mat-icon>
@@ -43,6 +42,10 @@
         <mat-list-item>
           <mat-icon mat-list-icon>credit_card</mat-icon>
           <h5 mat-line>Activos</h5>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon mat-list-icon>credit_card</mat-icon>
+          <h5 mat-line>Familias</h5>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>credit_card</mat-icon>
@@ -60,31 +63,17 @@
       </mat-list>
       <mat-list>
         <h3 mat-subheader>Informacion</h3>
-        <mat-list-item>
+        <mat-list-item routerLink="/admin/info/familias">
           <mat-icon mat-list-icon>credit_card</mat-icon>
           <h5 mat-line>Catalogo de familias</h5>
         </mat-list-item>
-        <mat-list-item>
+        <mat-list-item routerLink="/admin/info/productos">
           <mat-icon mat-list-icon>credit_card</mat-icon>
           <h5 mat-line>Catalogo de productos</h5>
         </mat-list-item>
         <mat-list-item>
           <mat-icon mat-list-icon>credit_card</mat-icon>
           <h5 mat-line>Sucursales</h5>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </mat-list>
-      <mat-list>
-        <h3 mat-subheader>Opciones de perfil</h3>
-        <mat-list-item>
-          <div class="row">
-            <div class="col-6">
-              <button mat-raised-button color="primary" class="botonesPerfil">Editar perfil</button>
-            </div>
-            <div class="col-6">
-              <button mat-raised-button color="warn" class="botonesPerfil">Cerrar sesion</button>
-            </div>
-          </div>
         </mat-list-item>
       </mat-list>
     </mat-nav-list>
@@ -95,6 +84,10 @@
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
       <span>Administrador</span>
+      <span class="espaciador"></span>
+      <button mat-button class="botonesPerfil">Editar perfil</button>
+      <button mat-button class="botonesPerfil" (click)="cerrarSesion()">Cerrar
+        sesion</button>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

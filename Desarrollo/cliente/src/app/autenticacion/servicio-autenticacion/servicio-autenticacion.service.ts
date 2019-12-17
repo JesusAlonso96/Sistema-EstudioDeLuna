@@ -49,7 +49,11 @@ export class ServicioAutenticacionService {
     switch(this.tokenDesencriptado.rol){
       case 0:
         //Usuario normal, trabajador
-        this.rutas.navigate(['/usuario/perfil']);
+        if(this.tokenDesencriptado.rol_sec == 1){
+          this.rutas.navigate(['/usuario/dashboard'])
+        } else {
+          this.rutas.navigate(['/usuario/nuevaVenta']);
+        }
         break;
       case 1:
         //Supervisor
@@ -64,6 +68,9 @@ export class ServicioAutenticacionService {
   }
   public getIdUsuario(): any{
     return this.tokenDesencriptado.id;
+  }
+  public getNombreUsuario(): any {
+    return this.tokenDesencriptado.nombre;
   }
   public getTipoUsuario(): any{
     return this.tokenDesencriptado.rol;

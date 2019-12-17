@@ -27,11 +27,9 @@ export class LoginComponent implements OnInit {
     this.cargando = true;
     this.autServicio.login(this.datosUsuario).subscribe(
       (usr) => {
-        console.log();
         this.usuarioService.crearAsistencia(this.autServicio.getIdUsuario()).subscribe((ok)=>{},(err)=>{});
         this.cargando = false;
         swal.fire({
-          position: 'top-end',
           type: 'success',
           title: 'Bienvenido',
           showConfirmButton: false,

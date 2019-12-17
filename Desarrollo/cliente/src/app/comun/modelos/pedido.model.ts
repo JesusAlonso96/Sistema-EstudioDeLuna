@@ -3,6 +3,7 @@ import { Cliente } from './cliente.model';
 import { Producto } from './producto.model';
 
 export class Pedido {
+    _id: string;
     fotografo: Usuario;
     cliente: Cliente;
     fecha_creacion: Date;
@@ -16,6 +17,8 @@ export class Pedido {
     c_adherible: Boolean;
     importante: Boolean;
     anticipo: Number;
+    foto: any;
+    num_pedido: Number;
     constructor() {
         this.total = 0;
         this.c_retoque = false;
@@ -25,5 +28,6 @@ export class Pedido {
         this.productos = [];
         this.fotografo = new Usuario();
         this.comentarios=' ';
+        this.foto = '';
     }
 }

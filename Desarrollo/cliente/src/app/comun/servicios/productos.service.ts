@@ -19,7 +19,16 @@ export class ProductosService {
     public obtenerProductosPorCantidad(nombre): Observable<any>{
         return this.http.get(`/api/v1/productos/obtenerProductosPorCantidad/${nombre}`)
     }
+    public obtenerProductosPorTam(nombre): Observable<any>{
+        return this.http.get(`/api/v1/productos/obtenerProductosPorTam/${nombre}`)
+    }
+    public obtenerProductosPorFamilia(): Observable<any>{
+        return this.http.get('/api/v1/productos/obtenerFamiliasYProductos')
+    }
     public buscarProducto(especificaciones: Producto): Observable<any>{
         return this.http.post('/api/v1/productos/buscarProducto', especificaciones);
+    }
+    public buscarProductoPorTam(ancho,alto): Observable<any>{
+        return this.http.get(`/api/v1/productos/buscarProductoPorTam/${ancho}/${alto}`);
     }
 }

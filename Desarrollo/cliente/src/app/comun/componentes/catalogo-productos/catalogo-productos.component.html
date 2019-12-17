@@ -1,0 +1,47 @@
+<div class="container-fluid margin-top">
+        <div *ngIf="cargando" class="cargando ">
+                <mat-spinner class="spinner"></mat-spinner>
+                <h3>Cargando elementos...</h3>
+            </div>
+    <div class="row margen">
+        <div class="col-lg-12">
+            <h4>Catalogo de productos disponibles</h4>
+            <hr>
+        </div>
+        <div class="col-lg-12">
+            <mat-tab-group class="tab">
+                <mat-tab ScrollDirection='before' *ngFor="let agrupado of agrupados; let i = index" [label]="agrupado._id[0].nombre">
+                    <ng-template matTabContent >
+                        <div class="container-fluid margin-top tabcontenido">
+                            <div class="row">
+                                <ng-container *ngFor="let producto of agrupado.productos">
+                                    <div class="col-lg-3">
+                                        <mat-card class="card-productos">
+                                            <mat-card-header>
+                                                <button class="eliminarProducto" mat-icon-button color="warn">
+                                                    <mat-icon>close</mat-icon>
+                                                </button>
+                                                <mat-card-title>{{producto.nombre}} {{producto.num_fotos}} fotos
+                                                </mat-card-title>
+                                                <mat-card-subtitle>${{producto.precio}} pesos</mat-card-subtitle>
+                                            </mat-card-header>
+                                            <mat-card-content>
+                                                <p *ngIf="producto.descripcion">{{producto.descripcion}}</p>
+                                                <p *ngIf="!producto.descripcion">Producto sin descripcion</p>
+                                            </mat-card-content>
+                                            <mat-card-actions align="start">
+                                                <button mat-raised-button color="primary" (click)="verDetalles(producto)">Ver detalles</button>
+                                            </mat-card-actions>
+                                        </mat-card>
+                                    </div>
+                                </ng-container>
+                            </div>
+    
+                        </div>
+                      </ng-template>
+                    
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>

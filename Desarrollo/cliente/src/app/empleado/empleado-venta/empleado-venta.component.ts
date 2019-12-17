@@ -18,6 +18,9 @@ import { UsuarioService } from 'src/app/comun/servicios/usuario.service';
 import Swal from 'sweetalert2';
 import { Notificacion } from 'src/app/comun/modelos/notificacion.model';
 import { ModalDetallesProductoComponent } from './modal-detalles-producto/modal-detalles-producto.component';
+import { ModaDetallesTamComponent } from './modal-detalles-tam/modal-detalles-tam.component';
+import { ModalConfirmarCompraComponent } from './modal-confirmar-compra/modal-confirmar-compra.component';
+import { ModalGenerarTicketComponent } from './modal-generar-ticket/modal-generar-ticket.component';
 
 export interface DialogData {
   num: number,
@@ -25,17 +28,9 @@ export interface DialogData {
 }
 export interface DialogData2 {
   crear: boolean,
-  fecha_creacion: string,
-  fecha_entrega: string,
-  cliente: Cliente,
-  productos: Producto[],
-  total: Number,
-  anticipo: Number,
-  fotografo: Usuario
+  pedido: Pedido
 }
-export interface DialogData3 {
-  pedido: Pedido;
-}
+
 @Component({
   selector: 'app-empleado-venta',
   templateUrl: './empleado-venta.component.html',
@@ -54,20 +49,25 @@ export class EmpleadoVentaComponent implements OnInit {
   fotografosDisponibles: Usuario[];
   cargando: boolean;
   cargandoFotografo: boolean;
+  cargandoPedido: boolean;
   grupo: any[];
   num_fotos: number;
   pagado: Number;
   montoInvalido: boolean;
+  imagen: any;
+  pedidoCreado: Pedido;
   constructor(private usuarioService: UsuarioService, private toastr: ToastrService, private productosService: ProductosService, private clientesService: ClienteService, private empleadoService: EmpleadoService, public dialog: MatDialog) {
     this.familiaSeleccionada = '';
     this.cargando = false;
     this.cargandoFotografo = false;
+    this.cargandoPedido = false;
     this.pedido = new Pedido();
     this.fecha_creacion = '';
     this.fecha_entrega = '';
     this.pagado = 0;
     this.montoInvalido = false;
     this.clientes = [];
+    this.pedidoCreado =  new Pedido();
     this.clientesService.obtenerClientes().subscribe(
       (clientes) => {
         this.clientes = clientes;
@@ -114,14 +114,24 @@ export class EmpleadoVentaComponent implements OnInit {
       }
     )
   }
+  obtenerProductosPorTam(nombreFamilia) {
+    this.cargando = true;
+    this.productosService.obtenerProductosPorTam(nombreFamilia).subscribe(
+      (respuesta) => {
+        this.grupo = respuesta;
+        this.cargando = false;
+      },
+      () => {
+        this.cargando = false;
+      }
+    );
+  }
   obtenerProductosEspeciales(idFamilia) {
     this.cargando = true;
     this.productosService.obtenerProductos(idFamilia).subscribe(
       (productos) => {
         this.grupo = productos;
         this.cargando = false;
-        console.log(this.grupo);
-
       },
       () => {
         this.cargando = false;
@@ -134,18 +144,23 @@ export class EmpleadoVentaComponent implements OnInit {
     this.familiaSeleccionada = nombreFamilia;
     //si es filiacion
     if (this.esFamiliaEspecial()) {
-      this.obtenerProductosEspeciales(idFamilia);
+      if (this.familiaSeleccionada == 'Sesiones') {
+        this.obtenerProductosPorTam(nombreFamilia);
+      } else {
+        this.obtenerProductosEspeciales(idFamilia);
+      }
+
     } else {
       this.obtenerProductosPorCantidad(nombreFamilia);
     }
   }
   esFamiliaEspecial(): boolean {
-    if (this.familiaSeleccionada == 'Filiacion' || this.familiaSeleccionada == 'Pasaporte' || this.familiaSeleccionada == 'Visas' || this.familiaSeleccionada == 'Universidades' || this.familiaSeleccionada == 'Visas' || this.familiaSeleccionada == 'Sesiones' || this.familiaSeleccionada == 'Instituciones') return true;
+    if (this.familiaSeleccionada == 'Filiacion' || this.familiaSeleccionada == 'Pasaporte' || this.familiaSeleccionada == 'Visas' || this.familiaSeleccionada == 'Universidades' || this.familiaSeleccionada == 'Visas' || this.familiaSeleccionada == 'Sesiones' || this.familiaSeleccionada == 'Instituciones' || this.familiaSeleccionada == 'Combinadas') return true;
     return false
   }
   pedidoValido() {
     if (this.pedido.c_retoque) {
-      this.pedido.status = 'En retoque';
+      this.pedido.status = 'En espera';
       if (this.pedido.importante) {
         this.pedido.total = <number>this.pedido.total + 30;
         this.toastr.warning("Se agregaron $30 pesos por ser pedido urgente")
@@ -166,7 +181,7 @@ export class EmpleadoVentaComponent implements OnInit {
     return true;
   }
   obtenerCliente() {
-    if (this.clienteCtrl.value !== null) {
+    if (this.clienteCtrl.value !== null && this.clienteCtrl.value !== '') {
       var valores = this.clienteCtrl.value;
       var separado = valores.split(" | ", 2);
       this.clientesService.obtenerClientePorEmailYNombre(separado[0], separado[1]).subscribe(
@@ -184,6 +199,14 @@ export class EmpleadoVentaComponent implements OnInit {
   tieneRetoque(): boolean {
     for (let p of this.pedido.productos) {
       if (p.c_r) {
+        return true;
+      }
+    }
+    return false;
+  }
+  llevaAdherible(): boolean {
+    for (let p of this.pedido.productos) {
+      if (p.c_ad) {
         return true;
       }
     }
@@ -245,20 +268,12 @@ export class EmpleadoVentaComponent implements OnInit {
   }
   mandarNotificacion(pedidoCreado) {
     this.cargandoFotografo = true;
-    console.log(pedidoCreado);
     this.empleadoService.obtenerFotografo(pedidoCreado.fotografo).subscribe(
       (fotografo) => {
-        var notificacion: Notificacion = new Notificacion('Nuevo pedido rapido', 'Existe un nuevo pedido rapido, verifica la seccion de pedidos realizados', fotografo, pedidoCreado.fecha_creacion, pedidoCreado.num_pedido);
-        this.empleadoService.crearNotificacion(notificacion).subscribe((ok) => {
-          console.log(ok)
-        }, (err) => { }
-        );
-      },
-      (err) => {
-        console.log(err)
-      }
-    );
-
+        var notificacion: Notificacion = new Notificacion('Nuevo pedido rapido', 'Existe un nuevo pedido rapido, verifica la seccion de pedidos realizados', fotografo, pedidoCreado.fecha_creacion, pedidoCreado.num_pedido,0);
+        this.empleadoService.crearNotificacion(notificacion).subscribe((ok) => { }, (err) => { });
+        this.cargandoFotografo = false;
+      }, (err) => { });
   }
   mandarNotificaciones(pedidoCreado) {
     this.cargandoFotografo = true;
@@ -266,12 +281,13 @@ export class EmpleadoVentaComponent implements OnInit {
       (fotografosEncontrados) => {
         this.fotografosDisponibles = fotografosEncontrados
         for (let i = 0; i < this.fotografosDisponibles.length; i++) {
-          var notificacion: Notificacion = new Notificacion('Nuevo pedido', 'Existe un nuevo pedido en cola, verifica la seccion de Pedidos en cola', this.fotografosDisponibles[i], pedidoCreado.fecha_creacion, pedidoCreado.num_pedido);
+          var notificacion: Notificacion = new Notificacion('Nuevo pedido', 'Existe un nuevo pedido en cola, verifica la seccion de Pedidos en cola', this.fotografosDisponibles[i], pedidoCreado.fecha_creacion, pedidoCreado.num_pedido,1);
           this.empleadoService.crearNotificacion(notificacion).subscribe(
             (ok) => {
               this.cargandoFotografo = false;
-
-            }, (err) => { }
+            }, (err) => {
+              this.cargandoFotografo = false;
+            }
           );
         }
       },
@@ -283,15 +299,19 @@ export class EmpleadoVentaComponent implements OnInit {
   asignarFotografo() {
     if (this.pedido.c_retoque) {
       this.pedido.fotografo._id = undefined;
+      this.abrirModalPedido();
     } else {
       this.cargandoFotografo = true;
       var hoy = new Date(Date.now());
       var hoyFormateada = momento(hoy).format('YYYY-MM-DD');
       this.empleadoService.asignarFotografoLibre(hoyFormateada).subscribe(
         (fotografos) => {
+          
+
           this.asignarFotografoAleatorio(fotografos.length, fotografos);
           this.cargandoFotografo = false;
           this.toastr.success('El pedido sera realizado por ' + <string>this.pedido.fotografo.nombre);
+          this.abrirModalPedido();
           return true;
         },
         (err) => {
@@ -306,6 +326,7 @@ export class EmpleadoVentaComponent implements OnInit {
                     aux2 = conteo[i];
                   }
                 }
+                console.log(aux2)
                 this.usuarioService.obtenerUsuario(aux2._id).subscribe(
                   (fotografo) => {
                     this.pedido.fotografo = fotografo;
@@ -318,11 +339,13 @@ export class EmpleadoVentaComponent implements OnInit {
 
               }
             );
+            this.abrirModalPedido();
             return false;
           }
         }
       );
     }
+
     return true;
   }
   quitarProducto(item) {
@@ -337,34 +360,43 @@ export class EmpleadoVentaComponent implements OnInit {
   }
   asignarValoresDefault() {
     if (this.pedido.c_retoque) {
-      this.pedido.status = 'En retoque';
+      this.pedido.status = 'En espera';
     } else {
       this.pedido.status = 'Finalizado';
     }
     this.pedido.anticipo = this.pagado;
     return true;
   }
-  crearVenta() {
+  crearVenta(pedidoCreado) {
     if (!this.pedido.c_retoque) {
-
+      this.empleadoService.crearVenta(pedidoCreado).subscribe((ok) => {
+        this.mandarNotificacion(pedidoCreado);
+      }, (err) => {
+        console.log(err);
+      });
+    } else {
+      this.mandarNotificaciones(pedidoCreado);
     }
   }
   crearPedido() {
+    this.cargandoPedido = true;
     this.empleadoService.crearPedido(this.pedido, this.pedido.fotografo._id).subscribe(
       (pedidoCreado) => {
-        swal.fire('Pedido creado', 'El pedido ha sido creado con exito', 'success')
-        if (!this.pedido.c_retoque) {
-          this.empleadoService.crearVenta(pedidoCreado).subscribe((ok) => {
-            this.mandarNotificacion(pedidoCreado);
-          }, (err) => {
-            console.log(err);
-          });
-        } else {
-          this.mandarNotificaciones(pedidoCreado);
+        if (this.imagen) {
+          this.subirImagen(pedidoCreado._id);
         }
+        console.log(this.clienteCtrl.value);
+        this.toastr.success('El pedido ha sido creado con exito', 'Pedido creado');
+        this.crearVenta(pedidoCreado);
+        this.abrirModalTicket(pedidoCreado);
+        this.cargandoPedido = false;
         this.pedido = new Pedido();
+        this.pagado = 0;
+        
       },
       (err) => {
+        console.log(this.clienteCtrl.value);
+        this.cargandoPedido = false;
         swal.fire(err.error.titulo, err.error.detalles, 'error')
       }
     );
@@ -373,13 +405,13 @@ export class EmpleadoVentaComponent implements OnInit {
     this.pedido.total = this.pedido.total + producto.precio;
     this.pedido.productos.push(producto);
     this.pedido.c_retoque = this.tieneRetoque();
+    this.pedido.c_adherible = this.llevaAdherible();
   }
   //MODAL PARA VER LOS PRODUCTOS
   verDetalles(producto) {
     const dialogRef = this.dialog.open(ModalDetallesProductoComponent, {
       data: { producto }
     });
-
   }
   abrirModal(num_fotos) {
     const dialogRef = this.dialog.open(Modal, {
@@ -393,22 +425,36 @@ export class EmpleadoVentaComponent implements OnInit {
       }
     })
   }
+  abrirModalTicket(pedidoCreado) {
+    const dialogRef = this.dialog.open(ModalGenerarTicketComponent, {
+      data: { pedido: pedidoCreado }
+    });
+    dialogRef.afterClosed().subscribe(producto => {
+     
+    })
+  }
+  abrirModalTamano(ancho, alto) {
+    const dialogRef = this.dialog.open(ModaDetallesTamComponent, {
+
+      data: { ancho: ancho, alto: alto }
+    });
+    dialogRef.afterClosed().subscribe(producto => {
+      if (producto != null) {
+        this.agregarProducto(producto);
+      }
+    })
+  }
   abrirModalPedido() {
-    const dialogRef = this.dialog.open(Modal2, {
+    const dialogRef = this.dialog.open(ModalConfirmarCompraComponent, {
       data: {
         crear: false,
-        fecha_creacion: this.fecha_creacion,
-        fecha_entrega: this.fecha_entrega,
-        cliente: this.pedido.cliente,
-        productos: this.pedido.productos,
-        total: this.pedido.total,
-        anticipo: this.pedido.anticipo,
+        pedido: this.pedido
       }
     });
     dialogRef.afterClosed().subscribe(crear => {
       if (crear) {
         this.crearPedido();
-
+        
       } else {
         if (this.pedido.c_retoque && this.pedido.importante) {
           this.pedido.total = <number>this.pedido.total - 30;
@@ -416,13 +462,39 @@ export class EmpleadoVentaComponent implements OnInit {
         this.pedido = new Pedido();
       }
     })
+    return true;
   }
   abrirCrearPedido() {
-    if (this.generarFechaEntrega() && this.obtenerCliente() && this.asignarValoresDefault() && this.pedidoValido() && this.asignarFotografo()) {
-      this.abrirModalPedido();
+    this.generarFechaEntrega();
+    this.obtenerCliente();
+    this.asignarValoresDefault();
+    if (this.pedidoValido()) {
+      this.asignarFotografo();
     }
   }
+  //SECCION PARA IMAGENES
+  obtenerImagen(e) {
+    if (e.target.files.length > 0) {
+      const file = e.target.files[0];
+      this.imagen = file;
+      console.log(this.imagen)
+    }
+  }
+  subirImagen(id) {
+    const image = new FormData();
+    image.append('image', this.imagen);
+    this.empleadoService.crearFoto(image, id).subscribe(
+      () => {
+
+      },
+      () => {
+
+      }
+    );
+  }
 }
+
+//MODALES
 @Component({
   selector: 'modal',
   templateUrl: 'modal.html',
@@ -449,6 +521,7 @@ export class Modal {
     this.productosEncontrados = null;
     this.error = null;
     this.buscador = true;
+    console.log(this.productoBuscar)
     this.productoService.buscarProducto(this.productoBuscar).subscribe(
       (productos) => {
         this.productosEncontrados = productos;
@@ -459,24 +532,5 @@ export class Modal {
         this.buscador = false;
       }
     )
-  }
-}
-@Component({
-  selector: 'modal2',
-  templateUrl: 'modal2.html',
-  styleUrls: ['modal2.scss']
-
-})
-export class Modal2 {
-  buscador: boolean = false;
-  productoBuscar: any;
-  error: Array<any>;
-  constructor(
-    public dialogRef: MatDialogRef<Modal2>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData2) {
-    this.data.crear = true;
-  }
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }

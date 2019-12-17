@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './comun/material.module';
+import { NgxPrintModule } from 'ngx-print';
+
 //modulos de componentes
 import { AdministradorModule } from './administrador/modulo-administrador/modulo-administrador.module';
 import { EmpleadoModule } from './empleado/modulo-empleado/modulo-empleado.module';
@@ -38,6 +40,7 @@ import { AutenticacionGuard } from './autenticacion/compartido/autenticacion.gua
     EmpleadoModule,
     SupervisorModule,
     ComunModule,
+    NgxPrintModule,
     ToastrModule.forRoot() // ToastrModule added
 
   ],
