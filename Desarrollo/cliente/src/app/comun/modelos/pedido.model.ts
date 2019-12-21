@@ -19,6 +19,7 @@ export class Pedido {
     anticipo: Number;
     foto: any;
     num_pedido: Number;
+    metodoPago: String;
     constructor() {
         this.total = 0;
         this.c_retoque = false;

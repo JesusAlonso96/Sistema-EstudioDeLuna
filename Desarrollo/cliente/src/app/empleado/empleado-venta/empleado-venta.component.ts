@@ -67,7 +67,7 @@ export class EmpleadoVentaComponent implements OnInit {
     this.pagado = 0;
     this.montoInvalido = false;
     this.clientes = [];
-    this.pedidoCreado =  new Pedido();
+    this.pedidoCreado = new Pedido();
     this.clientesService.obtenerClientes().subscribe(
       (clientes) => {
         this.clientes = clientes;
@@ -270,7 +270,7 @@ export class EmpleadoVentaComponent implements OnInit {
     this.cargandoFotografo = true;
     this.empleadoService.obtenerFotografo(pedidoCreado.fotografo).subscribe(
       (fotografo) => {
-        var notificacion: Notificacion = new Notificacion('Nuevo pedido rapido', 'Existe un nuevo pedido rapido, verifica la seccion de pedidos realizados', fotografo, pedidoCreado.fecha_creacion, pedidoCreado.num_pedido,0);
+        var notificacion: Notificacion = new Notificacion('Nuevo pedido rapido', 'Existe un nuevo pedido rapido, verifica la seccion de pedidos realizados', fotografo, pedidoCreado.fecha_creacion, pedidoCreado.num_pedido, 0);
         this.empleadoService.crearNotificacion(notificacion).subscribe((ok) => { }, (err) => { });
         this.cargandoFotografo = false;
       }, (err) => { });
@@ -281,7 +281,7 @@ export class EmpleadoVentaComponent implements OnInit {
       (fotografosEncontrados) => {
         this.fotografosDisponibles = fotografosEncontrados
         for (let i = 0; i < this.fotografosDisponibles.length; i++) {
-          var notificacion: Notificacion = new Notificacion('Nuevo pedido', 'Existe un nuevo pedido en cola, verifica la seccion de Pedidos en cola', this.fotografosDisponibles[i], pedidoCreado.fecha_creacion, pedidoCreado.num_pedido,1);
+          var notificacion: Notificacion = new Notificacion('Nuevo pedido', 'Existe un nuevo pedido en cola, verifica la seccion de Pedidos en cola', this.fotografosDisponibles[i], pedidoCreado.fecha_creacion, pedidoCreado.num_pedido, 1);
           this.empleadoService.crearNotificacion(notificacion).subscribe(
             (ok) => {
               this.cargandoFotografo = false;
@@ -306,7 +306,7 @@ export class EmpleadoVentaComponent implements OnInit {
       var hoyFormateada = momento(hoy).format('YYYY-MM-DD');
       this.empleadoService.asignarFotografoLibre(hoyFormateada).subscribe(
         (fotografos) => {
-          
+
 
           this.asignarFotografoAleatorio(fotografos.length, fotografos);
           this.cargandoFotografo = false;
@@ -369,13 +369,13 @@ export class EmpleadoVentaComponent implements OnInit {
   }
   crearVenta(pedidoCreado) {
     if (!this.pedido.c_retoque) {
-      this.empleadoService.crearVenta(pedidoCreado).subscribe((ok) => {
+      this.empleadoService.crearVenta(pedidoCreado, pedidoCreado.anticipo, pedidoCreado.metodoPago).subscribe((ok) => {
         this.mandarNotificacion(pedidoCreado);
-      }, (err) => {
-        console.log(err);
-      });
+      }, (err) => { });
     } else {
       this.mandarNotificaciones(pedidoCreado);
+      //actualizar caja
+      this.empleadoService.actualizarCaja(pedidoCreado.anticipo, pedidoCreado.metodoPago).subscribe();
     }
   }
   crearPedido() {
@@ -385,14 +385,12 @@ export class EmpleadoVentaComponent implements OnInit {
         if (this.imagen) {
           this.subirImagen(pedidoCreado._id);
         }
-        console.log(this.clienteCtrl.value);
         this.toastr.success('El pedido ha sido creado con exito', 'Pedido creado');
         this.crearVenta(pedidoCreado);
         this.abrirModalTicket(pedidoCreado);
         this.cargandoPedido = false;
         this.pedido = new Pedido();
         this.pagado = 0;
-        
       },
       (err) => {
         console.log(this.clienteCtrl.value);
@@ -430,7 +428,7 @@ export class EmpleadoVentaComponent implements OnInit {
       data: { pedido: pedidoCreado }
     });
     dialogRef.afterClosed().subscribe(producto => {
-     
+
     })
   }
   abrirModalTamano(ancho, alto) {
@@ -454,7 +452,7 @@ export class EmpleadoVentaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(crear => {
       if (crear) {
         this.crearPedido();
-        
+
       } else {
         if (this.pedido.c_retoque && this.pedido.importante) {
           this.pedido.total = <number>this.pedido.total - 30;

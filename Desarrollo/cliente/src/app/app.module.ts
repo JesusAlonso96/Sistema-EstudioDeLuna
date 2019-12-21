@@ -26,7 +26,7 @@ import { AutenticacionGuard } from './autenticacion/compartido/autenticacion.gua
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

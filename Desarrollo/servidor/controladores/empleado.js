@@ -2,6 +2,7 @@ const Usuario = require('../modelos/usuario'),
     mongoose = require('mongoose'),
     Pedido = require('../modelos/pedido'),
     Venta = require('../modelos/venta'),
+    Caja = require('../modelos/caja'),
     Notificacion = require('../modelos/notificacion'),
     momento = require('moment'),
     Cliente = require('../modelos/cliente');
@@ -171,13 +172,11 @@ exports.realizarVenta = function (req, res) {
     })
     venta.save(function (err, exito) {
         if (err) {
-            console.log(err)
-
             return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo crear la venta' });
         }
-        console.log(exito)
         return res.json(exito);
     })
+    actualizarCaja(req.params.cantidadACaja, req.params.metodoPago)
 }
 exports.obtenerPedidosPorEmpleado = function (req, res) {
     Usuario.aggregate()
@@ -593,12 +592,9 @@ exports.obtenerPedidos = function (req, res) {
         return res.json(pedidos);
     })
 }
-
-
-
-
-
-
+exports.actualizarCaja = function (req, res) {
+    actualizarCaja(req.params.cantidadACaja, req.params.metodoPago)
+}
 exports.fotografoMiddleware = function (req, res) {
     //no es fotografo
     if (res.locals.usuario.rol !== 0 && res.locals.rol_sec !== 1) {
@@ -613,5 +609,43 @@ exports.recepcionistaMiddleware = function (req, res, next) {
     } else {
         return res.status(422).send({ titulo: 'No autorizado', detalles: 'No tienes permisos para crear un pedido' })
 
+    }
+}
+
+//funciones
+function actualizarCaja(cantidad, metodoPago) {
+    let cantidadSuma = parseInt(cantidad)
+    switch (metodoPago) {
+        case 'efectivo':
+            Caja.findOne().exec(function (err, caja) {
+                if (err) {
+                    return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo crear la venta' });
+                }
+                let cajaCantidad = caja.cantidadTotal + cantidadSuma;
+                let cajaEfectivo = caja.cantidadEfectivo + cantidadSuma;
+                Caja.updateOne({ _id: caja._id }, { cantidadTotal: cajaCantidad, cantidadEfectivo: cajaEfectivo })
+                    .exec(function (err, cajaActualizada) {
+                        if (err) {
+                            return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo crear la venta' });
+                        }
+                    })
+            })
+            break;
+
+        case 'tarjeta':
+            Caja.findOne().exec(function (err, caja) {
+                if (err) {
+                    return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo crear la venta' });
+                }
+                let cajaCantidad = caja.cantidadTotal + cantidadSuma;
+                let cajaTarjetas = caja.cantidadTarjetas + cantidadSuma;
+                Caja.updateOne({ _id: caja._id }, { cantidadTotal: cajaCantidad, cantidadTarjetas: cajaTarjetas })
+                    .exec(function (err, cajaActualizada) {
+                        if (err) {
+                            return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo crear la venta' });
+                        }
+                    })
+            })
+            break;
     }
 }

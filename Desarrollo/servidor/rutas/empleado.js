@@ -32,7 +32,7 @@ ruta.get('/obtenerNumPedidosEnCola', UsuarioCtrl.autenticacionMiddleware, Emplea
 ruta.get('/obtenerProductosPorPedido/:id', Empleado.obtenerProductosPorPedido);
 //post
 ruta.post('/crearPedido/:id', UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.crearPedido);
-ruta.post('/crearVenta', UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.realizarVenta);
+ruta.post('/crearVenta/:cantidadACaja/:metodoPago', UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.realizarVenta);
 ruta.post('/crearNotificacion',UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.crearNotificacion)
 //patch
 ruta.patch('/crearImagen/:id', upload.single('image'), Empleado.crearFoto);
@@ -40,6 +40,7 @@ ruta.patch('/tomarPedido/:idPedido/:id', Empleado.tomarPedido);
 ruta.patch('/actualizarEstado', Empleado.actualizarEstadoPedido);
 ruta.patch('/actualizarAnticipo/:id/:anticipo', Empleado.actualizarAnticipoPedido);
 ruta.patch('/actualizarOcupado/:id', Empleado.actualizarOcupado);
+ruta.patch('/actualizarCaja/:cantidadACaja/:metodoPago', Empleado.actualizarCaja);
 //delete
 ruta.delete('/eliminarNotificacion/:id', Empleado.eliminarNotificacion);
 ruta.delete('/eliminarNotificacionPorPedido/:num', Empleado.eliminarNotificacionPorPedido);

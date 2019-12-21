@@ -22,7 +22,8 @@ const pedidoSchema = new Schema({
     c_adherible: { type: Boolean },//
     importante: { type: Boolean },//
     anticipo: { type: Number },//
-    foto: { type:String}
+    foto: { type: String },
+    metodoPago: { type: String }
 });
-pedidoSchema.plugin(autoIncrementable.plugin, {model:'Pedido',field:'num_pedido'});
+pedidoSchema.plugin(autoIncrementable.plugin, { model: 'Pedido', field: 'num_pedido' });
 module.exports = mongoose.model('Pedido', pedidoSchema);

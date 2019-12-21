@@ -1,6 +1,9 @@
 const Usuario = require('../modelos/usuario'),
     Venta = require('../modelos/venta'),
     Producto = require('../modelos/producto'),
+    Corte = require('../modelos/corte_caja'),
+    Pedido = require('../modelos/pedido'),
+    Caja = require('../modelos/caja'),
     momento = require('moment');
 
 exports.altaUsuario = function (req, res) {
@@ -278,7 +281,6 @@ exports.obtener10ProductosMasVendidos = function (req, res) {
         .limit(15)
         .exec(function (err, ventas) {
             if (err) {
-                console.log(err);
                 return res.json(err);
             }
             if (ventas.length == 0) {
@@ -327,13 +329,85 @@ exports.obtenerVentasPorFamilias = function (req, res) {
         })
         .exec(function (err, ventas) {
             if (err) {
-                console.log(err);
                 return res.json(err);
             }
             if (ventas.length == 0) {
                 return res.status(422).send({ titulo: 'Sin ventas', detalles: 'No existen ventas', tipo: 0 })
             }
             return res.json(ventas);
+        })
+}
+//corte de caja
+exports.existeCorte = function (req, res) {
+    const fecha = new Date(momento(Date.now()).format('YYYY-MM-DD'));
+    Corte.findOne({ fecha })
+        .exec(function (err, corte) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo verificar la existencia del corte de caja', tipo: 2 })
+            }
+            if (corte) {
+                return res.json({ encontrado: true });
+            } else {
+                return res.json({ encontrado: false });
+            }
+        })
+}
+exports.crearCorteCaja = function (req, res) {
+    var fecha = new Date(Date.now());
+    var hora = new Date(Date.now());
+    fecha = momento().format('YYYY-MM-DD');
+    hora = momento().format('h:mm:ss a');
+
+    corte = new Corte({
+        fecha,
+        hora,
+        usuario: res.locals.usuario,
+        efectivoEsperado: req.body.efectivoEsperado,
+        tarjetaEsperado: req.body.tarjetaEsperado,
+        efectivoContado: req.body.efectivoContado,
+        tarjetaContado: req.body.tarjetaContado,
+        fondoEfectivo: req.body.fondoEfectivo,
+        fondoTarjetas: req.body.fondoTarjetas
+    });
+    corte.save(function (err, guardado) {
+        if (err) {
+            return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al guardar el corte de caja', tipo: 2 })
+        }
+        return res.json(guardado);
+    });
+}
+exports.obtenerCaja = function (req, res) {
+    Caja.findOne()
+        .exec(function (err, caja) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al obtener las cantidades', tipo: 2 })
+            }
+            return res.json(caja)
+        })
+}
+exports.actualizarCaja = function (req, res) {
+    Caja.findOneAndUpdate({}, {
+        cantidadTotal: req.body.cantidadTotal,
+        cantidadEfectivo: req.body.cantidadEfectivo,
+        cantidadTarjetas: req.body.cantidadTarjetas
+    })
+        .exec(function (err, cajaActualizada) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al actualizar la caja', tipo: 2 })
+            }
+            return res.json(cajaActualizada);
+        })
+}
+exports.obtenerCortesCaja = function (req, res) {
+    Corte.find()
+        .sort({
+            num_corte: 'desc'
+        })
+        .exec(function (err, cortes) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al obtener el historial', tipo: 2 })
+            }
+            return res.json(cortes);
         })
 }
 exports.adminMiddleware = function (req, res, next) {

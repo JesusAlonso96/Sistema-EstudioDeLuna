@@ -15,10 +15,9 @@ export class ReporteVentasMesComponent implements OnInit {
   mes: number;
   fechaInicio: string = '';
   fechaFin: string = '';
-  constructor(public dialog: MatDialog,private adminService: AdministradorService, private toastr: ToastrService) { }
+  constructor(public dialog: MatDialog, private adminService: AdministradorService, private toastr: ToastrService) { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
   obtenerFechaInicio(): number {
     const fecha = new Date(`${this.anio}/${this.mes}/01`);
     this.fechaInicio = momento(fecha).locale('es').format();
@@ -31,7 +30,7 @@ export class ReporteVentasMesComponent implements OnInit {
   abrirModal(datos): void {
     this.dialog.open(ListadoVentasMesComponent, {
       width: '70%',
-      data: {ventas: datos, tipoReporte: 1}
+      data: { ventas: datos, tipoReporte: 1 }
     });
   }
   generarReporte() {

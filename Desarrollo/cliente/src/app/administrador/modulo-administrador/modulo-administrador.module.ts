@@ -23,6 +23,8 @@ import { AdministradorVentasSeccionComponent } from '../administrador-ventas-sec
     //seccion de ventas
     import { CorteCajaComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/corte-caja/corte-caja.component';
     import { AdministradorReporteVentasComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/administrador-reporte-ventas.component';
+    import { EditarCantidadComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/corte-caja/editar-cantidad/editar-cantidad.component';
+    import { HistorialCortesCajaComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/historial-cortes-caja/historial-cortes-caja.component';
       //seccion de reportes de ventas
       import { ReporteVentasDiaComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/reporte-ventas-dia/reporte-ventas-dia.component'
       import { ReporteVentasFechaComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/reporte-ventas-fecha/reporte-ventas-fecha.component';
@@ -60,7 +62,9 @@ import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticaci
     ReporteVentasFamiliaComponent,
     ReporteVentasMesComponent,
     ListadoVentasMesComponent,
-    CorteCajaComponent
+    CorteCajaComponent,
+    EditarCantidadComponent,
+    HistorialCortesCajaComponent
 
   ],
   imports: [
@@ -75,7 +79,8 @@ import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticaci
     FormsModule
   ],
   entryComponents: [
-    ListadoVentasMesComponent
+    ListadoVentasMesComponent,
+    EditarCantidadComponent
   ],
   providers: [
     AdministradorService,

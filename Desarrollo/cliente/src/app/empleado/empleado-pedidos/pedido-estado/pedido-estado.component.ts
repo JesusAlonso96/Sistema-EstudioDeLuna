@@ -19,6 +19,7 @@ export class PedidoEstadoComponent implements OnInit {
   debe: number;
   input: boolean = false;
   inputDebe: number;
+  metodoPago: string = '';
   constructor(public matDialog: MatDialog,
     public dialogRef: MatDialogRef<PedidoEstadoComponent>, @Inject(MAT_DIALOG_DATA) public data: Pedido, private toastr: ToastrService, private empleadoService: EmpleadoService) { }
   ngOnInit() {
@@ -55,29 +56,45 @@ export class PedidoEstadoComponent implements OnInit {
     this.estadoActual = this.estadosNuevo.pop();
   }
   marcarEntregado() {
-    let pago = this.inputDebe + <number>this.data.anticipo;
-    if (pago == this.data.total) {
+    if (this.montoCumplido2()) {
+      this.data.status = 'Vendido';
+      this.empleadoService.actualizarEstado(this.data).subscribe()
+      this.toastr.success('Pedido actualizado y vendido');
+      this.matDialog.open(ModalGenerarTicketComponent,
+        {
+          data: { pedido: this.data }
+        })
+      this.onNoClick();
+    } else if (this.montoCumplido()) {
+      let pago = this.inputDebe + <number>this.data.anticipo;
       this.data.anticipo = pago;
       this.empleadoService.actualizarAnticipo(this.data._id, this.data.anticipo).subscribe()
       this.data.status = 'Vendido';
       this.empleadoService.actualizarEstado(this.data).subscribe()
       this.toastr.success('Pedido actualizado y vendido');
-      this.empleadoService.crearVenta(this.data).subscribe(
-        ()=>{
+      this.empleadoService.crearVenta(this.data, this.inputDebe, this.metodoPago).subscribe(
+        () => {
           this.matDialog.open(ModalGenerarTicketComponent,
             {
               data: { pedido: this.data }
             })
           this.onNoClick();
         },
-        ()=>{
+        () => {
 
         }
       );
-      
-    } else if (pago < this.data.total) {
+    } else {
       this.toastr.info('Por favor cubre el monto del pedido');
+
     }
+
+  }
+  montoCumplido2() {
+    if (this.data.anticipo < this.data.total) {
+      return false;
+    }
+    return true;
   }
   montoCumplido() {
     if ((this.inputDebe + <number>this.data.anticipo) == this.data.total) {
