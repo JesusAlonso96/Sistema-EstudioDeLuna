@@ -1,18 +1,8 @@
+<app-cargando *ngIf="cargando" texto="Cargando elementos..."></app-cargando>
+<app-cargando *ngIf="cargandoFotografo" texto="Asignando fotografo..."></app-cargando>
+<app-cargando *ngIf="cargandoPedido" texto="Creando pedido..."></app-cargando>
 <div class="container-fluid contenedor sin-borde">
-
     <div class="row" style="height: 100%;">
-        <div *ngIf="cargando" class="cargando ">
-            <mat-spinner class="spinner"></mat-spinner>
-            <h3>Cargando elementos...</h3>
-        </div>
-        <div *ngIf="cargandoFotografo" class="cargando ">
-            <mat-spinner class="spinner"></mat-spinner>
-            <h3>Asignando fotografo...</h3>
-        </div>
-        <div *ngIf="cargandoPedido" class="cargando ">
-            <mat-spinner class="spinner"></mat-spinner>
-            <h3>Creando pedido...</h3>
-        </div>
         <div class="col-lg-1 col-md-4 col-sm-12 familias" style="padding: 0;">
             <div class="row headers">
                 <div class="col-12" class="titulo-productos3">

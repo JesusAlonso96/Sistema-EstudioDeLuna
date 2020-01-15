@@ -63,7 +63,11 @@ export class UsuariosBajaComponent implements OnInit {
     dialogRef.afterClosed().subscribe(respuesta => {
       if (respuesta) {
         //eliminar
-        this.eliminarUsuario(usuario);
+        if (usuario.ocupado) {
+          this.toastr.info('No se puede eliminar el usuario', 'Usuario ocupado', { closeButton: true });
+        } else {
+          this.eliminarUsuario(usuario);
+        }
       }
     })
   }

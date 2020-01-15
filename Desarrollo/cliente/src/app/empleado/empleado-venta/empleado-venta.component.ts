@@ -299,6 +299,7 @@ export class EmpleadoVentaComponent implements OnInit {
   asignarFotografo() {
     if (this.pedido.c_retoque) {
       this.pedido.fotografo._id = undefined;
+      console.log("entre aquiiiiiiiiiiiii")
       this.abrirModalPedido();
     } else {
       this.cargandoFotografo = true;
@@ -380,6 +381,7 @@ export class EmpleadoVentaComponent implements OnInit {
   }
   crearPedido() {
     this.cargandoPedido = true;
+    console.log(this.pedido);
     this.empleadoService.crearPedido(this.pedido, this.pedido.fotografo._id).subscribe(
       (pedidoCreado) => {
         if (this.imagen) {
@@ -393,7 +395,6 @@ export class EmpleadoVentaComponent implements OnInit {
         this.pagado = 0;
       },
       (err) => {
-        console.log(this.clienteCtrl.value);
         this.cargandoPedido = false;
         swal.fire(err.error.titulo, err.error.detalles, 'error')
       }

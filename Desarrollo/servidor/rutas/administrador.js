@@ -10,14 +10,16 @@ ruta.get('/obtenerMasVendidos/:fechaInicio/:fechaFin', AdminCtrl.obtener10Produc
 ruta.get('/obtenerVentasPorFamilia/:fechaInicio/:fechaFin', AdminCtrl.obtenerVentasPorFamilias);
 ruta.get('/obtenerVentasMes/:fechaInicio/:fechaFin', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.obtenerVentasMes);
 ruta.get('/existeCorte', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.existeCorte);
-ruta.get('/obtenerTotalCaja', UsuarioCtrl.autenticacionMiddleware,AdminCtrl.adminMiddleware, AdminCtrl.obtenerCaja);
+ruta.get('/obtenerTotalCaja', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.obtenerCaja);
 ruta.get('/obtenerCortesCaja', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.obtenerCortesCaja);
+ruta.get('/obtenerUsuariosEliminados', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.obtenerUsuariosEliminados);
 //post
 ruta.post('/empleado', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.altaUsuario);
 ruta.post('/crearCorteCaja', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.crearCorteCaja);
 //patch
 ruta.patch('/actualizarCaja', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.actualizarCaja);
-
+ruta.patch('/cambiarPermisos', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.cambiarPermisos);
+ruta.patch('/restaurarUsuario', UsuarioCtrl.autenticacionMiddleware, AdminCtrl.adminMiddleware, AdminCtrl.restaurarUsuarioEliminado);
 //delete
 
 

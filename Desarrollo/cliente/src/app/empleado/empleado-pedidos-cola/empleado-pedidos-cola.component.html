@@ -1,10 +1,8 @@
-<div *ngIf="cargando" class="cargando ">
-    <mat-spinner class="spinner"></mat-spinner>
-    <h3>Asignando pedido...</h3>
-</div>
+<app-encabezado-titulo titulo="Pedidos en cola"></app-encabezado-titulo>
+<app-cargando *ngIf="cargando" texto="Asignando pedido..."></app-cargando>
 <div class="container">
     <div class="buscar">
-        <mat-form-field class="buscar-form-field">
+        <mat-form-field class="buscar-form-field full-width margin-top" appearance="outline">
             <input matInput [(ngModel)]="parametroBusqueda" placeholder="Buscar por numero de pedido"
                 (keyup)="aplicarFiltro()" autocomplete="off">
             <button *ngIf="parametroBusqueda" (click)="borrarBusqueda()" mat-button matSuffix mat-icon-button

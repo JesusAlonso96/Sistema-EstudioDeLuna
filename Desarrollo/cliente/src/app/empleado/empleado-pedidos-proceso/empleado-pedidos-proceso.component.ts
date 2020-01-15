@@ -16,6 +16,7 @@ export class EmpleadoPedidosProcesoComponent implements OnInit {
   pedidos: Pedido[];
   cargandoPedidos: boolean;
   url_fotos: string;
+  parametroBusqueda: string = '';
   constructor(public dialog: MatDialog, private empleadoService: EmpleadoService, private authService: ServicioAutenticacionService, private toastr: ToastrService) {
     this.pedidos = [];
     this.cargandoPedidos = false;
@@ -107,4 +108,8 @@ export class EmpleadoPedidosProcesoComponent implements OnInit {
       }
     );
   }
+  borrarBusqueda(){
+    this.parametroBusqueda = '';
+  }
+
 }

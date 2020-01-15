@@ -24,6 +24,10 @@ import { PedidosClienteComponent } from './componentes/consulta-cliente/datos-cl
 import { CargandoComponent } from './componentes/cargando/cargando.component';
 import { ConfirmarRestauracionComponent } from './componentes/restaurar-cliente/confirmar-restauracion/confirmar-restauracion.component';
 import { ModalConfirmacionComponent } from './componentes/modal-confirmacion/modal-confirmacion.component';
+import { ConsultaUsuarioComponent } from './componentes/consulta-usuario/consulta-usuario.component';
+import { AltaUsuarioComponent } from './componentes/alta-usuario/alta-usuario.component';
+import { EditarUsuarioComponent } from './componentes/consulta-usuario/editar-usuario/editar-usuario.component';
+import { PerfilComponent } from './componentes/perfil/perfil.component';
 
 //modulos
 import { MaterialModule } from './material.module';
@@ -61,10 +65,14 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         ConsultaClienteComponent,
         DatosClienteComponent,
         EditarClienteComponent,
-        PedidosClienteComponent, 
+        PedidosClienteComponent,
         CargandoComponent,
         ConfirmarRestauracionComponent,
-        ModalConfirmacionComponent
+        ModalConfirmacionComponent,
+        ConsultaUsuarioComponent,
+        AltaUsuarioComponent,
+        EditarUsuarioComponent,
+        PerfilComponent
     ],
     imports: [
         CommonModule,
@@ -86,7 +94,11 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         BajaClienteComponent,
         RestaurarClienteComponent,
         ConsultaClienteComponent,
-        CargandoComponent 
+        CargandoComponent,
+        ConsultaUsuarioComponent,
+        AltaUsuarioComponent,
+        PerfilComponent
+        
 
     ],
     entryComponents: [
@@ -99,7 +111,8 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         EditarClienteComponent,
         PedidosClienteComponent,
         ConfirmarRestauracionComponent,
-        ModalConfirmacionComponent
+        ModalConfirmacionComponent,
+        EditarUsuarioComponent
     ],
     providers: [
         EstadosService,

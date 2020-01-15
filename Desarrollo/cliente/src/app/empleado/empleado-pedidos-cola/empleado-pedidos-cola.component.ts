@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { EmpleadoService } from '../servicio-empleado/empleado.service';
 import { Pedido } from 'src/app/comun/modelos/pedido.model';
-import { UsuarioService } from 'src/app/comun/servicios/usuario.service';
 import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-autenticacion/servicio-autenticacion.service';
 import { MatTableDataSource, MatSort, MatPaginator, MatDialog } from '@angular/material';
 import { ConfirmarModalComponent } from './confirmar-modal/confirmar-modal.component';

@@ -3,9 +3,10 @@ import { EmpleadoService } from '../servicio-empleado/empleado.service';
 import { Pedido } from 'src/app/comun/modelos/pedido.model';
 import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-autenticacion/servicio-autenticacion.service';
 import Swal from 'sweetalert2';
-import {environment} from '../../../environments/environment'
+import { environment } from '../../../environments/environment'
 import { MatDialog } from '@angular/material';
 import { DetallesModalComponent } from '../empleado-pedidos-proceso/detalles-modal/detalles-modal.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-empleado-pedidos-realizados',
@@ -13,12 +14,12 @@ import { DetallesModalComponent } from '../empleado-pedidos-proceso/detalles-mod
   styleUrls: ['./empleado-pedidos-realizados.component.scss']
 })
 export class EmpleadoPedidosRealizadosComponent implements OnInit {
-  status = ['En retoque','Imprimiendo', 'Adherible', 'Finalizado','Vendido']
+  status = ['En retoque', 'Imprimiendo', 'Adherible', 'Finalizado', 'Vendido']
   pedidos: any[];
   cargandoPedidos: boolean;
   url_fotos: string;
   parametroBusqueda: string;
-  constructor(public dialog: MatDialog,private empleadoService: EmpleadoService, private autenticacionService: ServicioAutenticacionService) {
+  constructor(public dialog: MatDialog, private empleadoService: EmpleadoService, private autenticacionService: ServicioAutenticacionService, private toastr: ToastrService) {
     this.pedidos = [];
     this.parametroBusqueda = '';
     this.cargandoPedidos = false;
@@ -31,35 +32,29 @@ export class EmpleadoPedidosRealizadosComponent implements OnInit {
       (pedidos) => {
         this.pedidos = pedidos[0].pedido;
         this.cargandoPedidos = false;
-        console.log(this.pedidos);
       },
       (err) => {
-        Swal.fire({
-          title: err.error.titulo,
-          text: err.error.detalles,
-          type: 'info'
-        })
+        this.toastr.info(err.error.detalles, err.error.titulo, { closeButton: true });
         this.cargandoPedidos = false;
-
       }
     );
 
   }
-  borrarBusqueda(){
+  borrarBusqueda() {
     this.parametroBusqueda = '';
   }
-  verDetalles(pedido){
+  verDetalles(pedido) {
     console.log(pedido._id)
     this.empleadoService.obtenerProductosPorPedido(pedido._id).subscribe(
-      (productos)=>{
+      (productos) => {
         pedido.productos = productos;
         console.log(pedido.productos)
         const dialogRef = this.dialog.open(DetallesModalComponent, {
-          width:'60%',
+          width: '60%',
           data: pedido
         });
       },
-      ()=>{
+      () => {
 
       }
     );

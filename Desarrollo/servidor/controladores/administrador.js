@@ -410,6 +410,32 @@ exports.obtenerCortesCaja = function (req, res) {
             return res.json(cortes);
         })
 }
+exports.cambiarPermisos = function (req, res) {
+    Usuario.findByIdAndUpdate(req.body._id, {
+        rol: req.body.rol,
+        rol_sec: req.body.rol_sec
+    })
+        .exec(function (err, actualizado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron cambiar los permisos del usuario' });
+            return res.json({ titulo: 'Permisos cambiados', detalles: 'Permisos cambiados exitosamente' });
+        })
+}
+exports.obtenerUsuariosEliminados = function (req, res) {
+    Usuario.find({ activo: 0 })
+        .exec(function (err, usuariosEncontrados) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los usuarios eliminados' });
+            return res.json(usuariosEncontrados);
+        });
+}
+exports.restaurarUsuarioEliminado = function (req, res) {
+    Usuario.findByIdAndUpdate(req.body._id, {
+        activo: 1
+    })
+        .exec(function (err, usuarioRestaurado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo restaurar el usuario' });
+            return res.json({ titulo: 'Usuario restaurado', detalles: 'Usuario restaurado exitosmente' });
+        })
+}
 exports.adminMiddleware = function (req, res, next) {
     if (res.locals.usuario.rol == 2 && res.locals.usuario.rol_sec == 0) {
         next();

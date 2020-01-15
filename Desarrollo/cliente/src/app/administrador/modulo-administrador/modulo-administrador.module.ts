@@ -23,7 +23,8 @@ import { UsuariosAltaComponent } from '../administrador-usuarios-seccion/usuario
 import { UsuariosBajaComponent } from '../administrador-usuarios-seccion/usuarios-baja/usuarios-baja.component';
 import { UsuariosConsultaComponent } from '../administrador-usuarios-seccion/usuarios-consulta/usuarios-consulta.component';
 import { UsuariosRestaurarComponent } from '../administrador-usuarios-seccion/usuarios-restaurar/usuarios-restaurar.component';
-import { EditarUsuarioComponent } from '../administrador-usuarios-seccion/usuarios-consulta/editar-usuario/editar-usuario.component';
+import { CambiarPermisosComponent } from '../administrador-usuarios-seccion/usuarios-consulta/cambiar-permisos/cambiar-permisos.component';
+
 //seccion de clientes
 import { AdministradorClientesSeccionComponent } from '../administrador-clientes-seccion/administrador-clientes-seccion.component';
 //seccion de ABD DE CLIENTES
@@ -59,7 +60,6 @@ import { ComunModule } from 'src/app/comun/comun.module';
 import { AdministradorRoutingModule } from './administrador-routing.module';
 //guardia
 import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticacion.guard';
-import { from } from 'rxjs';
 
 
 @NgModule({
@@ -93,7 +93,7 @@ import { from } from 'rxjs';
     UsuariosBajaComponent,
     UsuariosConsultaComponent,
     UsuariosRestaurarComponent,
-    EditarUsuarioComponent
+    CambiarPermisosComponent
 
   ],
   imports: [
@@ -110,7 +110,7 @@ import { from } from 'rxjs';
   entryComponents: [
     ListadoVentasMesComponent,
     EditarCantidadComponent,
-    EditarUsuarioComponent
+    CambiarPermisosComponent
   ],
   providers: [
     AdministradorService,

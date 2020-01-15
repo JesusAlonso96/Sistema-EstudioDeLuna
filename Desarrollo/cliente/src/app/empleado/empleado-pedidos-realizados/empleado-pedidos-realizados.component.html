@@ -1,18 +1,11 @@
+<app-encabezado-titulo titulo="Pedidos realizados o rapidos"></app-encabezado-titulo>
+<app-cargando *ngIf="cargandoPedidos" texto="Cargando pedidos..."></app-cargando>
 <div class="container-fluid margin-top">
-    <div class="row">
-        <div *ngIf="cargandoPedidos" class="cargando ">
-            <mat-spinner class="spinner"></mat-spinner>
-            <h3>Cargando pedidos...</h3>
-        </div>
-    </div>
     <div class="row">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h4 class="titulo">Pedidos realizados o rapidos <span class="espaciador"></span> <span
-                            style="float: right;"> <small>{{pedidos.length}} pedidos</small> </span> </h4>
-                    <hr>
-                    <mat-form-field class="full-width">
+                    <mat-form-field class="full-width" appearance="outline">
                         <mat-label>Buscar por numero de pedido</mat-label>
                         <input matInput [(ngModel)]="parametroBusqueda" type="text" placeholder="Numero de pedido">
                         <button *ngIf="parametroBusqueda" (click)="borrarBusqueda()" mat-button matSuffix

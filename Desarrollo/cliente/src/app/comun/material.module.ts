@@ -27,14 +27,13 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule, MomentDateAdapter } from "@angular/material-moment-adapter";
-import {MatCheckboxModule} from '@angular/material/checkbox';
-
-
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { PaginadorTraductor } from './pipes/paginador-translate';
 @NgModule({
   declarations: [
 
@@ -80,7 +79,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatMomentDateModule,
     MatCheckboxModule
   ],
-  providers: [],
+  providers: [
+    { provide: MatPaginatorIntl, useClass: PaginadorTraductor }
+  ],
   bootstrap: []
 })
 export class MaterialModule { }

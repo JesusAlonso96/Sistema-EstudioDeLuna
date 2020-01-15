@@ -113,7 +113,7 @@ exports.tieneAsistenciaTrabajador = function (req, res) {
 }
 exports.crearPedido = function (req, res) {
     pedido = req.body;
-    if (pedido.fotografo.nombre == '') {
+    if (pedido.fotografo._id == undefined) {
         pedido.fotografo = null;
     }
     pedidoAlta = new Pedido(pedido);
@@ -505,12 +505,10 @@ exports.obtenerNumPedidosEnCola = function (req, res) {
         })
 }
 exports.tomarPedido = function (req, res) {
-    const pedido = new Pedido(req.body);
     Pedido.findOneAndUpdate({ _id: req.params.idPedido }, {
-        $set: {
-            fotografo: req.params.id,
-            status: 'En retoque'
-        }
+        fotografo: req.params.id,
+        status: 'En retoque'
+
     }).exec(function (err, pedidoActualizado) {
         if (err) {
             return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al actualizar el pedido' })
