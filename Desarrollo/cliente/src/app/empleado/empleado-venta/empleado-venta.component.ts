@@ -38,36 +38,30 @@ export interface DialogData2 {
 })
 export class EmpleadoVentaComponent implements OnInit {
   familias: Familia[];
-  pedido: Pedido;
-  clientes: Cliente[];
+  pedido: Pedido = new Pedido();
+  clientes: Cliente[] = [];
   clientesFiltrados: Observable<Cliente[]>;
   clienteCtrl = new FormControl();
-  familiaSeleccionada: String;
+  familiaSeleccionada: String = '';
   productos: Producto[];
-  fecha_creacion: string;
-  fecha_entrega: string;
+  fecha_creacion: string = '';
+  fecha_entrega: string = '';
   fotografosDisponibles: Usuario[];
-  cargando: boolean;
-  cargandoFotografo: boolean;
-  cargandoPedido: boolean;
+  cargando: boolean = false;
+  cargandoFotografo: boolean = false;
+  cargandoPedido: boolean = false;
   grupo: any[];
   num_fotos: number;
-  pagado: Number;
-  montoInvalido: boolean;
+  pagado: number;
   imagen: any;
-  pedidoCreado: Pedido;
-  constructor(private usuarioService: UsuarioService, private toastr: ToastrService, private productosService: ProductosService, private clientesService: ClienteService, private empleadoService: EmpleadoService, public dialog: MatDialog) {
-    this.familiaSeleccionada = '';
-    this.cargando = false;
-    this.cargandoFotografo = false;
-    this.cargandoPedido = false;
-    this.pedido = new Pedido();
-    this.fecha_creacion = '';
-    this.fecha_entrega = '';
-    this.pagado = 0;
-    this.montoInvalido = false;
-    this.clientes = [];
-    this.pedidoCreado = new Pedido();
+  pedidoCreado: Pedido = new Pedido();
+  constructor(private usuarioService: UsuarioService, private toastr: ToastrService, private productosService: ProductosService, private clientesService: ClienteService, private empleadoService: EmpleadoService, public dialog: MatDialog) { }
+
+  ngOnInit() {
+    this.obtenerFamiliasProductos();
+    this.obtenerClientes();
+  }
+  obtenerClientes() {
     this.clientesService.obtenerClientes().subscribe(
       (clientes) => {
         this.clientes = clientes;
@@ -79,8 +73,7 @@ export class EmpleadoVentaComponent implements OnInit {
         map(cliente => cliente ? this._clientesFiltrados(cliente) : this.clientes.slice())
       );
   }
-
-  ngOnInit() {
+  obtenerFamiliasProductos() {
     this.cargando = true;
     this.productosService.obtenerFamiliasProductos().subscribe(
       (familias) => {
@@ -96,7 +89,6 @@ export class EmpleadoVentaComponent implements OnInit {
         this.cargando = false;
       }
     )
-
   }
   private _clientesFiltrados(value: string): Cliente[] {
     const filterValue = value.toLowerCase();
@@ -163,20 +155,28 @@ export class EmpleadoVentaComponent implements OnInit {
       this.pedido.status = 'En espera';
       if (this.pedido.importante) {
         this.pedido.total = <number>this.pedido.total + 30;
-        this.toastr.warning("Se agregaron $30 pesos por ser pedido urgente")
-      }
-      //verificar que el total y el anticipo
-      if (this.pagado > this.pedido.total) {
-        this.pedido.total = <number>this.pedido.total - 30;
-        this.toastr.error("El anticipo es mayor al total del pedido");
-        return false;
+        if (this.pagado > this.pedido.total) {
+          this.pedido.total = <number>this.pedido.total - 30;
+          this.toastr.error("El anticipo es mayor al total del pedido");
+          return false;
+        }
+        this.toastr.warning("Se agregaron $30 pesos por ser pedido urgente");
+      } else {
+        if (this.pagado > this.pedido.total) {
+          this.toastr.error("El anticipo es mayor al total del pedido");
+          return false;
+        }
       }
     } else {
       this.pedido.status = 'Finalizado';
-      if (this.pagado < this.pedido.total || this.pagado > this.pedido.total) {
-        this.toastr.error("Debes cubrir el monto exacto");
-        return false;
-      }
+      if (!this.montoValido()) return false;
+    }
+    return true;
+  }
+  montoValido(): boolean {
+    if (this.pagado < this.pedido.total || this.pagado > this.pedido.total) {
+      this.toastr.error("Debes cubrir el monto exacto");
+      return false;
     }
     return true;
   }
@@ -458,6 +458,7 @@ export class EmpleadoVentaComponent implements OnInit {
         if (this.pedido.c_retoque && this.pedido.importante) {
           this.pedido.total = <number>this.pedido.total - 30;
         }
+        this.clienteCtrl
         this.pedido = new Pedido();
       }
     })

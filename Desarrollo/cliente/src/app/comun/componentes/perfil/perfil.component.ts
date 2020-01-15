@@ -3,7 +3,10 @@ import { Usuario } from '../../modelos/usuario.model';
 import { UsuarioService } from '../../servicios/usuario.service';
 import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-autenticacion/servicio-autenticacion.service';
 import { ToastrService } from 'ngx-toastr';
-
+export interface contrasenas {
+  contrasena: string;
+  confirmacion: string;
+}
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.component.html',
@@ -12,6 +15,7 @@ import { ToastrService } from 'ngx-toastr';
 export class PerfilComponent implements OnInit {
   usuario: Usuario;
   cargando: boolean = false;
+  contrasenas: contrasenas;
   constructor(private usuarioService: UsuarioService, private autService: ServicioAutenticacionService, private toastr: ToastrService) { }
 
   ngOnInit() {
