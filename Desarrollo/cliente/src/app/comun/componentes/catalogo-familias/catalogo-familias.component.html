@@ -1,22 +1,26 @@
+<div *ngIf="cargando" class="cargando ">
+    <mat-spinner class="spinner"></mat-spinner>
+    <h3>Cargando elementos...</h3>
+</div>
+<div *ngIf="cargandoAgregar" class="cargando ">
+    <mat-spinner class="spinner"></mat-spinner>
+    <h3>Agregando familia...</h3>
+</div>
+<mat-toolbar>
+    <button mat-button matTooltip="Agregar nueva familia" class="agregarFamilia" (click)="abrirAgregarFamilia()">
+        <mat-icon>add</mat-icon> Nueva familia
+    </button>
+</mat-toolbar>
 <div class="container-fluid margin-top">
-    <div *ngIf="cargando" class="cargando ">
-        <mat-spinner class="spinner"></mat-spinner>
-        <h3>Cargando elementos...</h3>
-    </div>
-    <div class="row tituloFam">
-        <div class="col-lg-12">
-            <div class="">
-                <h4>Catalogo de familias disponibles</h4>
-                <hr>
-            </div>
-
-        </div>
-    </div>
     <div class="row">
-        <div class="col-lg-3 col-md-6" *ngFor="let familia of familias">
+        <div class="col-lg-3 col-md-6" *ngFor="let familia of familias; let i = index">
             <mat-card class="card-familias">
+                <button class="eliminarFamilia" (click)="abrirEliminarFamilia(i)" mat-icon-button color="warn">
+                    <mat-icon>close</mat-icon>
+                </button>
                 <h3>{{familia.nombre}}</h3>
-                <span> <strong>Id:</strong></span> <span> {{familia._id}}</span>
+                <span> <strong>Id:</strong></span> <span> {{familia._id}}</span> <br>
+                <span>{{familia.productos.length}} productos</span>
             </mat-card>
         </div>
     </div>

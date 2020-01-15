@@ -1,6 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { Producto } from 'src/app/comun/modelos/producto.model';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 export interface ModalDatos{
   producto:any;

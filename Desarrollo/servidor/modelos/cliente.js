@@ -20,7 +20,8 @@ const clienteSchema = new Schema({
     num_ext: { type: Number, required: true },
     num_int: { type: Number, required: false },
     pedidos: [{ type: Schema.Types.ObjectId, ref: 'Pedido' }],
-    fecha_registro: { type: Date, required: true }
+    fecha_registro: { type: Date, required: true },
+    activo: { type: Number, default: 1 }
 
 });
 

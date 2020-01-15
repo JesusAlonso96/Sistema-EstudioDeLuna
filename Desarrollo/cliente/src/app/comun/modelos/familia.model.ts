@@ -1,8 +1,10 @@
+import { Producto } from './producto.model';
+
 export class Familia{
     _id: String;
     nombre: String;
-    //productos Producto[];
+    productos: Producto[];
     constructor(){
-        this._id = this.nombre = '';
+        this.nombre = '';
     }
 }

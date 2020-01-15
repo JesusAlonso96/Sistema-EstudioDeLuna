@@ -28,7 +28,7 @@
             </mat-list-item>
         </mat-nav-list>
     </div>
-    <div class="col-lg-12" *ngIf="data.producto.caracteristicas">
+    <div class="col-lg-12" *ngIf="data.producto.caracteristicas && data.producto.caracteristicas.length > 0">
         <mat-nav-list style="margin-top: 0;">
             <h3 mat-subheader style="padding-bottom: 0%;">Caracteristicas del paquete</h3>
             <mat-list-item *ngFor="let caracteristica of data.producto.caracteristicas">

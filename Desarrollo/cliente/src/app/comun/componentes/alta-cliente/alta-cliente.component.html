@@ -1,7 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <mat-card class="margin-top">
+            <mat-card class="margin-top" style="margin-bottom: 40px;">
                 <form #clienteForm="ngForm" class="formCliente">
                     <h3 class="text-center">Registrar cliente</h3>
                     <div class="row text-center">
@@ -60,7 +60,6 @@
                                     placeholder="Ingresa tu correo electronico"
                                     pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
                                     required>
-                                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                                 <mat-error
                                     *ngIf="(email.invalid && (email.dirty || email.touched)) &&  email.errors.required">
                                     Por favor ingresa tu correo electronico</mat-error>
@@ -208,7 +207,8 @@
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Ingresa tu colonia</mat-label>
                                 <input [(ngModel)]="cliente.colonia" #colonia="ngModel" name="colonia" matInput
-                                    type="text" placeholder="Colonia" required>
+                                    type="text" placeholder="Colonia" pattern="^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d10-9 ]+$"
+                                    required>
                                 <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
                                 <mat-error
                                     *ngIf="(colonia.invalid && (colonia.dirty || colonia.touched)) && colonia.errors.required">
@@ -226,7 +226,6 @@
                     </div>
                 </form>
             </mat-card>
-
         </div>
     </div>
 </div>

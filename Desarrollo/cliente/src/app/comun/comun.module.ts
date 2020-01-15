@@ -9,6 +9,21 @@ import { NotaCompraComponent } from './componentes/nota-compra/nota-compra.compo
 import { CatalogoFamiliasComponent } from './componentes/catalogo-familias/catalogo-familias.component';
 import { CatalogoProductosComponent } from './componentes/catalogo-productos/catalogo-productos.component';
 import { InfoSucursalesComponent } from './componentes/info-sucursales/info-sucursales.component';
+import { EncabezadoTituloComponent } from './componentes/encabezado-titulo/encabezado-titulo.component';
+import { AgregarProductoComponent } from './componentes/catalogo-productos/agregar-producto/agregar-producto.component';
+import { EliminarProductoComponent } from './componentes/catalogo-productos/eliminar-producto/eliminar-producto.component';
+import { EditarProductoComponent } from './componentes/catalogo-productos/editar-producto/editar-producto.component';
+import { AgregarFamiliaComponent } from './componentes/catalogo-familias/agregar-familia/agregar-familia.component';
+import { EliminarFamiliaComponent } from './componentes/catalogo-familias/eliminar-familia/eliminar-familia.component';
+import { BajaClienteComponent } from './componentes/baja-cliente/baja-cliente.component';
+import { RestaurarClienteComponent } from './componentes/restaurar-cliente/restaurar-cliente.component';
+import { ConsultaClienteComponent } from './componentes/consulta-cliente/consulta-cliente.component';
+import { DatosClienteComponent } from './componentes/consulta-cliente/datos-cliente/datos-cliente.component';
+import { EditarClienteComponent } from './componentes/consulta-cliente/editar-cliente/editar-cliente.component';
+import { PedidosClienteComponent } from './componentes/consulta-cliente/datos-cliente/pedidos-cliente/pedidos-cliente.component';
+import { CargandoComponent } from './componentes/cargando/cargando.component';
+import { ConfirmarRestauracionComponent } from './componentes/restaurar-cliente/confirmar-restauracion/confirmar-restauracion.component';
+import { ModalConfirmacionComponent } from './componentes/modal-confirmacion/modal-confirmacion.component';
 
 //modulos
 import { MaterialModule } from './material.module';
@@ -24,6 +39,7 @@ import { FormatoFechaPipe } from './pipes/formato-fecha.pipe';
 import { PaginacionPipe } from './pipes/paginacion.pipe';
 
 
+
 @NgModule({
     declarations: [
         AltaClienteComponent,
@@ -33,7 +49,22 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         CatalogoProductosComponent,
         FiltroPedidosPipe,
         FormatoFechaPipe,
-        PaginacionPipe
+        PaginacionPipe,
+        EncabezadoTituloComponent,
+        AgregarProductoComponent,
+        EliminarProductoComponent,
+        EditarProductoComponent,
+        AgregarFamiliaComponent,
+        EliminarFamiliaComponent,
+        BajaClienteComponent,
+        RestaurarClienteComponent,
+        ConsultaClienteComponent,
+        DatosClienteComponent,
+        EditarClienteComponent,
+        PedidosClienteComponent, 
+        CargandoComponent,
+        ConfirmarRestauracionComponent,
+        ModalConfirmacionComponent
     ],
     imports: [
         CommonModule,
@@ -51,6 +82,24 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         InfoSucursalesComponent,
         CatalogoFamiliasComponent,
         CatalogoProductosComponent,
+        EncabezadoTituloComponent,
+        BajaClienteComponent,
+        RestaurarClienteComponent,
+        ConsultaClienteComponent,
+        CargandoComponent 
+
+    ],
+    entryComponents: [
+        AgregarProductoComponent,
+        EliminarProductoComponent,
+        EditarProductoComponent,
+        AgregarFamiliaComponent,
+        EliminarFamiliaComponent,
+        DatosClienteComponent,
+        EditarClienteComponent,
+        PedidosClienteComponent,
+        ConfirmarRestauracionComponent,
+        ModalConfirmacionComponent
     ],
     providers: [
         EstadosService,

@@ -2,7 +2,7 @@ const Familia = require('../modelos/familia'),
     Producto = require('../modelos/producto');
 
 exports.obtenerFamilias = function (req, res) {
-    Familia.find()
+    Familia.find({activa:1})
         .exec(function (err, familias) {
             if (err) {
                 return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron cargar las familias' });
@@ -12,7 +12,7 @@ exports.obtenerFamilias = function (req, res) {
         })
 }
 exports.obtenerProductos = function (req, res) {
-    Producto.find({ familia: req.params.id })
+    Producto.find({ familia: req.params.id, activo: 1 })
         .exec(function (err, productosEncontrados) {
             if (err) {
                 return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron cargar los productos de la familia' });
@@ -21,33 +21,17 @@ exports.obtenerProductos = function (req, res) {
         })
 }
 exports.obtenerFamiliasYProductos = function (req, res) {
-    Producto.aggregate()
-        .lookup({
-            from: "familias",
-            localField: "familia",
-            foreignField: "_id",
-            as: "familia"
+    Familia.find({ activa: 1 })
+        .populate({
+            path: 'productos',
+            match: { activo: 1 }
         })
-        .group({
-            _id: "$familia",
-            
-            productos: {
-                $push:{
-                    nombre:'$nombre',
-                    num_fotos: '$num_fotos',
-                    precio: '$precio',
-                    descripcion: '$descripcion',
-                    b_n:'$b_n',
-                    c_r:'$c_r',
-                    c_ad:'$c_ad'
-                }
-            }            
-        })
-        .exec(function (err, response) {
+        .sort({ nombre: 1 })
+        .exec(function (err, familias) {
             if (err) {
-                console.log(err);
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un problema intentando obtener los productos' });
             }
-            res.json(response);
+            res.json(familias);
         })
 }
 exports.obtenerProductosPorTam = function (req, res) {
@@ -60,7 +44,8 @@ exports.obtenerProductosPorTam = function (req, res) {
             as: "familia"
         })
         .match({
-            "familia.nombre": req.params.nombre
+            "familia.nombre": req.params.nombre,
+            activo: 1
         })
         .group({
             _id: { ancho: '$ancho', alto: '$alto' }
@@ -89,7 +74,8 @@ exports.obtenerProductosPorCantidad = function (req, res) {
             as: "familia"
         })
         .match({
-            "familia.nombre": req.params.nombre
+            "familia.nombre": req.params.nombre,
+            activo: 1
         })
         .group({
             _id: "$num_fotos"

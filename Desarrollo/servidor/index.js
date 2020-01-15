@@ -6,7 +6,7 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     servidor = require('http').createServer(app),
     io = require('socket.io')(servidor),
-    Caja = require('./modelos/caja'),
+    Cliente = require('./modelos/cliente'),
     rutasUsuario = require('./rutas/usuario'),
     rutasEstados = require('./rutas/estados'),
     rutasProducto = require('./rutas/productos'),
@@ -16,14 +16,18 @@ const express = require('express'),
 
     
 //Conexion a la base de datos
+mongoose.set('useCreateIndex', true);
+mongoose.set('useFindAndModify', false);
 mongoose.set('useUnifiedTopology', true);
 mongoose.connect(config.DB_URL, { useNewUrlParser: true });
+
 /*caja = new Caja({
     cantidadTotal: 0,
     cantidadEfectivo:0,
     cantidadTarjetas:0
 })
 caja.save();*/
+//Cliente.updateMany({},{activo:1}).exec(function(err,updated){})
 
 //Inicializando el servidor
 app.use(express.static('subidas'));

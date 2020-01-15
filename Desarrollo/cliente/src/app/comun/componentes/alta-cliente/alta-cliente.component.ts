@@ -3,7 +3,6 @@ import { Estado } from '../../modelos/estado.model';
 import { Municipio } from '../../modelos/municipio.model';
 import { Cliente } from '../../modelos/cliente.model';
 import { EstadosService } from '../../servicios/estados.service';
-import * as momento from 'moment';
 import { ClienteService } from '../../servicios/cliente.service';
 import swal from 'sweetalert2';
 
@@ -39,7 +38,7 @@ export class AltaClienteComponent implements OnInit {
   generarContrasena(): string {
     let contrasena = '';
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 8; i++) {
+    for (let i = 0; i < 14; i++) {
       contrasena += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
     }
     return contrasena;

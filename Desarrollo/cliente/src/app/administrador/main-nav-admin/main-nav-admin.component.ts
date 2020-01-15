@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
@@ -11,12 +11,14 @@ import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-aut
   templateUrl: './main-nav-admin.component.html',
   styleUrls: ['./main-nav-admin.component.scss']
 })
-export class MainNavAdminComponent {
-  
-
-  constructor(private breakpointObserver: BreakpointObserver,  private autenticacionService: ServicioAutenticacionService, private rutas: Router) {
+export class MainNavAdminComponent implements OnInit {
+  pestanasTam: number = 9;
+  pestanasActivas: boolean[] = [];
+  constructor(private breakpointObserver: BreakpointObserver, private autenticacionService: ServicioAutenticacionService, private rutas: Router) {
   }
-  
+  ngOnInit() {
+    this.iniciarPestanas();
+  }
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -24,9 +26,20 @@ export class MainNavAdminComponent {
       shareReplay()
     );
 
-    cerrarSesion(){
-      this.autenticacionService.cerrarSesion();
-      this.rutas.navigate(['/login']);
+  cerrarSesion() {
+    this.autenticacionService.cerrarSesion();
+    this.rutas.navigate(['/login']);
+  }
+  activarPestana(indice: number) {
+    this.iniciarPestanas();
+    this.pestanasActivas[indice] = true;
+    console.log("pestanas actualizadas", this.pestanasActivas);
+  }
+  iniciarPestanas() {
+    for (let i = 0; i < this.pestanasTam; i++) {
+      this.pestanasActivas[i] = false;
     }
+    console.log("iniciando pestanas", this.pestanasActivas)
+  }
 
 }
