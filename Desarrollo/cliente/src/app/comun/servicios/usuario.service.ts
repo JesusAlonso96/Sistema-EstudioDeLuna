@@ -31,6 +31,24 @@ export class UsuarioService {
     public obtenerUsuarios(): Observable<any> {
         return this.http.get('/api/v1/usuarios/obtenerUsuarios');
     }
+    public obtenerPedidosRealizados(): Observable<any> {
+        return this.http.get('/api/v1/usuarios/obtenerPedidosRealizados')
+    }
+    public obtenerFotografos(): Observable<any> {
+        return this.http.get('/api/v1/usuarios/obtenerFotografos');
+    }
+    public obtenerPedidosRealizadosPorFotografo(id: string): Observable<any> {
+        return this.http.get(`/api/v1/usuarios/obtenerPedidosRealizadosPorFotografo/${id}`);
+    }
+    public obtenerPedidosVendidos(filtro: number): Observable<any> {
+        return this.http.get(`/api/v1/usuarios/obtenerPedidosVendidos/${filtro}`);
+    }
+    public obtenerPedidosVendidosPorFotografo(id: string, filtro: number): Observable<any> {
+        return this.http.get(`/api/v1/usuarios/obtenerPedidosVendidosPorFotografo/${id}/${filtro}`);
+    }
+    public obtenerVentasConRetoquePorFotografo(): Observable<any>{
+        return this.http.get('/api/v1/usuarios/obtenerVentasConRetoquePorFotografo');
+    }
     //patch
     public actualizarProducto(producto: Producto): Observable<any> {
         return this.http.patch('/api/v1/usuarios/actualizarProducto', producto);
@@ -38,7 +56,7 @@ export class UsuarioService {
     public eliminarUsuario(id: string): Observable<any> {
         return this.http.patch(`/api/v1/usuarios/eliminarUsuario/${id}`, null);
     }
-    public editarUsuario(usuario: Usuario): Observable<any>{
+    public editarUsuario(usuario: Usuario): Observable<any> {
         return this.http.patch('/api/v1/usuarios/editarUsuario', usuario);
     }
     //delete

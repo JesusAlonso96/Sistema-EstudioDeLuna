@@ -11,6 +11,11 @@ import { AdministradorComponent } from '../administrador.component';
 import { AdministradorPerfilComponent } from '../administrador-perfil/administrador-perfil.component';
 import { MainNavAdminComponent } from '../main-nav-admin/main-nav-admin.component';
 import { AdministradorVentasSeccionComponent } from '../administrador-ventas-seccion/administrador-ventas-seccion.component';
+//seccion de tablero principal
+import { AdministradorTableroSeccionComponent } from '../administrador-tablero-seccion/administrador-tablero-seccion.component';
+import { PedidosColaComponent } from '../administrador-tablero-seccion/pedidos-cola/pedidos-cola.component';
+import { PedidosVendidosComponent } from '../administrador-tablero-seccion/pedidos-vendidos/pedidos-vendidos.component';
+import { PedidosCompletadosComponent } from '../administrador-tablero-seccion/pedidos-completados/pedidos-completados.component';
 //seccion de inventario
 import { AdministradorInventarioSeccionComponent } from '../administrador-inventario-seccion/administrador-inventario-seccion.component';
 //seccion de productos
@@ -24,7 +29,6 @@ import { UsuariosBajaComponent } from '../administrador-usuarios-seccion/usuario
 import { UsuariosConsultaComponent } from '../administrador-usuarios-seccion/usuarios-consulta/usuarios-consulta.component';
 import { UsuariosRestaurarComponent } from '../administrador-usuarios-seccion/usuarios-restaurar/usuarios-restaurar.component';
 import { CambiarPermisosComponent } from '../administrador-usuarios-seccion/usuarios-consulta/cambiar-permisos/cambiar-permisos.component';
-
 //seccion de clientes
 import { AdministradorClientesSeccionComponent } from '../administrador-clientes-seccion/administrador-clientes-seccion.component';
 //seccion de ABD DE CLIENTES
@@ -32,7 +36,6 @@ import { ClientesAltaComponent } from '../administrador-clientes-seccion/cliente
 import { ClientesBajaComponent } from '../administrador-clientes-seccion/clientes-baja/clientes-baja.component';
 import { ClientesConsultaComponent } from '../administrador-clientes-seccion/clientes-consulta/clientes-consulta.component';
 import { ClientesRestaurarComponent } from '../administrador-clientes-seccion/clientes-restaurar/clientes-restaurar.component';
-
 //seccion de compras
 import { AdministradorComprasSeccionComponent } from '../administrador-compras-seccion/administrador-compras-seccion.component';
 //seccion de proveedores
@@ -50,9 +53,6 @@ import { ReporteVentasFechaComponent } from '../administrador-ventas-seccion/adm
 import { ReporteVentasFamiliaComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/reporte-ventas-fecha/reporte-ventas-familia/reporte-ventas-familia.component';
 import { ReporteVentasMesComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/reporte-ventas-mes/reporte-ventas-mes.component';
 import { ListadoVentasMesComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/reporte-ventas-mes/listado-ventas-mes/listado-ventas-mes.component';
-
-
-
 //servicios
 import { AdministradorService } from '../servicio-administrador/servicio-administrador.service';
 //modulos
@@ -93,7 +93,11 @@ import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticaci
     UsuariosBajaComponent,
     UsuariosConsultaComponent,
     UsuariosRestaurarComponent,
-    CambiarPermisosComponent
+    CambiarPermisosComponent,
+    AdministradorTableroSeccionComponent,
+    PedidosColaComponent,
+    PedidosVendidosComponent,
+    PedidosCompletadosComponent
 
   ],
   imports: [

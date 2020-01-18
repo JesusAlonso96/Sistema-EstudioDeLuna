@@ -56,9 +56,15 @@ export class PedidoEstadoComponent implements OnInit {
     this.estadoActual = this.estadosNuevo.pop();
   }
   marcarEntregado() {
+    if (this.data.c_retoque) {
+
+    }
     if (this.montoCumplido2()) {
       this.data.status = 'Vendido';
-      this.empleadoService.actualizarEstado(this.data).subscribe()
+      this.empleadoService.actualizarEstado(this.data).subscribe();
+      if (this.data.c_retoque) {
+        this.crearVenta(this.data, this.inputDebe, <string>this.data.metodoPago);
+      }
       this.toastr.success('Pedido actualizado y vendido');
       this.matDialog.open(ModalGenerarTicketComponent,
         {
@@ -72,21 +78,9 @@ export class PedidoEstadoComponent implements OnInit {
       this.data.status = 'Vendido';
       this.empleadoService.actualizarEstado(this.data).subscribe()
       this.toastr.success('Pedido actualizado y vendido');
-      this.empleadoService.crearVenta(this.data, this.inputDebe, this.metodoPago).subscribe(
-        () => {
-          this.matDialog.open(ModalGenerarTicketComponent,
-            {
-              data: { pedido: this.data }
-            })
-          this.onNoClick();
-        },
-        () => {
-
-        }
-      );
+      this.crearVenta(this.data, this.inputDebe, this.metodoPago);
     } else {
       this.toastr.info('Por favor cubre el monto del pedido');
-
     }
 
   }
@@ -108,6 +102,20 @@ export class PedidoEstadoComponent implements OnInit {
     this.empleadoService.obtenerProductosPorPedido(this.data._id).subscribe(
       (productos) => {
         this.data.productos = productos;
+      }
+    );
+  }
+  crearVenta(pedido: Pedido, debe: Number, metodoPago: string) {
+    this.empleadoService.crearVenta(pedido, debe, metodoPago).subscribe(
+      () => {
+        this.matDialog.open(ModalGenerarTicketComponent,
+          {
+            data: { pedido: this.data }
+          })
+        this.onNoClick();
+      },
+      () => {
+
       }
     );
   }

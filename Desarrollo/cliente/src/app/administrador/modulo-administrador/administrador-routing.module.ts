@@ -15,6 +15,7 @@ import { AdministradorUsuariosSeccionComponent } from '../administrador-usuarios
 import { AdministradorInventarioSeccionComponent } from '../administrador-inventario-seccion/administrador-inventario-seccion.component';
 import { AdministradorProveedoresSeccionComponent } from '../administrador-proveedores-seccion/administrador-proveedores-seccion.component';
 import { AdministradorSucursalesSeccionComponent } from '../administrador-sucursales-seccion/administrador-sucursales-seccion.component';
+import { AdministradorTableroSeccionComponent } from '../administrador-tablero-seccion/administrador-tablero-seccion.component';
 
 
 
@@ -30,6 +31,7 @@ const routes: Routes = [
         component: AdministradorComponent,
         canActivate: [AutenticacionGuard],
         children: [
+            { path: 'dashboard', component: AdministradorTableroSeccionComponent },
             { path: 'perfil', component: AdministradorPerfilComponent },
             {
                 path: 'ventas',

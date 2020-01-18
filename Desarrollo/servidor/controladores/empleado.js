@@ -6,9 +6,6 @@ const Usuario = require('../modelos/usuario'),
     Notificacion = require('../modelos/notificacion'),
     momento = require('moment'),
     Cliente = require('../modelos/cliente');
-//let app = require("express")();
-//let http = require("http").Server(app);
-//let io = require("socket.io")(http);
 
 exports.asignarFotografo = function (req, res) {
     var fecha = new Date(req.params.fecha);

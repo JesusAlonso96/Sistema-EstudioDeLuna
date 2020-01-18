@@ -26,7 +26,6 @@ import { PedidosProximosComponent } from '../empleado-dashboard-fotografo/pedido
   import { ModalDetallesProductoComponent } from '../empleado-venta/modal-detalles-producto/modal-detalles-producto.component';
   import { ModalConfirmarCompraComponent } from '../empleado-venta/modal-confirmar-compra/modal-confirmar-compra.component';
   import { ModalGenerarTicketComponent } from '../empleado-venta/modal-generar-ticket/modal-generar-ticket.component';
-  import { DetallesModalComponent } from '../empleado-pedidos-proceso/detalles-modal/detalles-modal.component';
 
 //servicios
 import { EmpleadoService } from '../servicio-empleado/empleado.service';
@@ -66,7 +65,6 @@ import { ProductosFiltroPipe } from '../compartido/productos-filtro.pipe';
     EmpleadoPedidosComponent,
     PedidoEstadoComponent,
     EmpleadoDashboardFotografoComponent,
-    DetallesModalComponent,
     PedidosProximosComponent
   ],
   imports: [
@@ -98,8 +96,7 @@ import { ProductosFiltroPipe } from '../compartido/productos-filtro.pipe';
     ModalConfirmarCompraComponent,
     ModalGenerarTicketComponent,
     ConfirmarModalComponent,
-    PedidoEstadoComponent,
-    DetallesModalComponent
+    PedidoEstadoComponent
   ]
 })
 export class EmpleadoModule { }

@@ -12,7 +12,7 @@ import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-aut
   styleUrls: ['./main-nav-admin.component.scss']
 })
 export class MainNavAdminComponent implements OnInit {
-  pestanasTam: number = 9;
+  pestanasTam: number = 10;
   pestanasActivas: boolean[] = [];
   constructor(private breakpointObserver: BreakpointObserver, private autenticacionService: ServicioAutenticacionService, private rutas: Router) {
   }
@@ -33,13 +33,11 @@ export class MainNavAdminComponent implements OnInit {
   activarPestana(indice: number) {
     this.iniciarPestanas();
     this.pestanasActivas[indice] = true;
-    console.log("pestanas actualizadas", this.pestanasActivas);
   }
   iniciarPestanas() {
     for (let i = 0; i < this.pestanasTam; i++) {
       this.pestanasActivas[i] = false;
     }
-    console.log("iniciando pestanas", this.pestanasActivas)
   }
 
 }

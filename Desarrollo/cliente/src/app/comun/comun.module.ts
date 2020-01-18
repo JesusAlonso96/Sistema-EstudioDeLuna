@@ -28,6 +28,10 @@ import { ConsultaUsuarioComponent } from './componentes/consulta-usuario/consult
 import { AltaUsuarioComponent } from './componentes/alta-usuario/alta-usuario.component';
 import { EditarUsuarioComponent } from './componentes/consulta-usuario/editar-usuario/editar-usuario.component';
 import { PerfilComponent } from './componentes/perfil/perfil.component';
+import { SeleccionarEmpleadoComponent } from './componentes/modales/seleccionar-empleado/seleccionar-empleado.component';
+import { DetallesProductoComponent } from './componentes/modales/detalles-producto/detalles-producto.component';
+import { ListaPedidosComponent } from './componentes/lista-pedidos/lista-pedidos.component';
+import { MostrarVentasFotografosComponent } from './componentes/modales/mostrar-ventas-fotografos/mostrar-ventas-fotografos.component';
 
 //modulos
 import { MaterialModule } from './material.module';
@@ -72,7 +76,11 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         ConsultaUsuarioComponent,
         AltaUsuarioComponent,
         EditarUsuarioComponent,
-        PerfilComponent
+        PerfilComponent,
+        SeleccionarEmpleadoComponent,
+        DetallesProductoComponent,
+        ListaPedidosComponent,
+        MostrarVentasFotografosComponent
     ],
     imports: [
         CommonModule,
@@ -97,8 +105,8 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         CargandoComponent,
         ConsultaUsuarioComponent,
         AltaUsuarioComponent,
-        PerfilComponent
-        
+        PerfilComponent,
+        ListaPedidosComponent
 
     ],
     entryComponents: [
@@ -112,7 +120,10 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         PedidosClienteComponent,
         ConfirmarRestauracionComponent,
         ModalConfirmacionComponent,
-        EditarUsuarioComponent
+        EditarUsuarioComponent,
+        SeleccionarEmpleadoComponent,
+        DetallesProductoComponent,
+        MostrarVentasFotografosComponent
     ],
     providers: [
         EstadosService,

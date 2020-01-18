@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material';
-import { DetallesModalComponent } from './detalles-modal/detalles-modal.component';
+import { DetallesProductoComponent } from 'src/app/comun/componentes/modales/detalles-producto/detalles-producto.component';
 @Component({
   selector: 'app-empleado-pedidos-proceso',
   templateUrl: './empleado-pedidos-proceso.component.html',
@@ -96,19 +96,19 @@ export class EmpleadoPedidosProcesoComponent implements OnInit {
   }
   verDetalles(pedido) {
     this.empleadoService.obtenerProductosPorPedido(pedido._id).subscribe(
-      (productos)=>{
+      (productos) => {
         pedido.productos = productos;
-        const dialogRef = this.dialog.open(DetallesModalComponent, {
-          width:'60%',
-          data: pedido
+        const dialogRef = this.dialog.open(DetallesProductoComponent, {
+          width: '60%',
+          data: { pedido, tipo: 0 }
         });
       },
-      ()=>{
+      () => {
 
       }
     );
   }
-  borrarBusqueda(){
+  borrarBusqueda() {
     this.parametroBusqueda = '';
   }
 
