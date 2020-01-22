@@ -31,7 +31,6 @@ export class UsuariosRestaurarComponent implements OnInit {
         this.cargando = false;
         this.usuariosEliminados = usuariosEliminados;
         this.inicializarTabla();
-        console.log(this.usuariosEliminados);
       },
       (err: any) => {
         this.cargando = false;
@@ -44,9 +43,7 @@ export class UsuariosRestaurarComponent implements OnInit {
       data: { titulo: 'Restaurar usuario', mensaje: '¿Desea restaurar al usuario?', msgBoton: 'Restaurar', color: 'accent' }
     })
     dialogRef.afterClosed().subscribe(respuesta => {
-      if (respuesta) {
-        this.restaurarUsuarioEliminado(usuario);
-      }
+      if (respuesta) this.restaurarUsuarioEliminado(usuario);
     })
   }
   restaurarUsuarioEliminado(usuario: Usuario) {

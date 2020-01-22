@@ -5,14 +5,17 @@ const express = require('express'),
     Empleado = require('../controladores/empleado'),
     cron = require('node-cron'),
     app = require('../index');
-    storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            cb(null, './subidas');
-        },
-        filename: function (req, file, cb) {
-            cb(null,file.originalname)
-        }
-    }),
+storage = multer.diskStorage({
+    filename: (req, file, cb) => {
+        cb(null, file.originalname + '.jpeg')
+    },
+    destination: function (req, file, cb) {
+        cb(null, './subidas');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname)
+    }
+}),
     upload = multer({ storage: storage });
 
 //get
@@ -21,22 +24,22 @@ ruta.get('/fotografos', UsuarioCtrl.autenticacionMiddleware, Empleado.obtenerFot
 ruta.get('/asignarFotografo/:fecha', UsuarioCtrl.autenticacionMiddleware, Empleado.asignarFotografo);
 ruta.get('/asistioTrabajador/:id/:fecha', Empleado.tieneAsistenciaTrabajador);
 ruta.get('/obtenerNotificaciones/:id/:fecha', Empleado.obtenerNotificaciones);
-ruta.get('/numPedidos', UsuarioCtrl.autenticacionMiddleware, Empleado.numPedidosFotografo);
+ruta.get('/numPedidos', /*UsuarioCtrl.autenticacionMiddleware,*/ Empleado.numPedidosFotografo);
 ruta.get('/obtenerPedidos', UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.obtenerPedidos);
 ruta.get('/obtenerPedidosPorEmpleado/:id', Empleado.obtenerPedidosPorEmpleado);
 ruta.get('/obtenerNumPedidosPorEmpleado', UsuarioCtrl.autenticacionMiddleware, Empleado.obtenerNumPedidosPorEmpleado)
-ruta.get('/obtenerPedidosEnProceso/:id',UsuarioCtrl.autenticacionMiddleware, Empleado.obtenerPedidosEnProceso);
+ruta.get('/obtenerPedidosEnProceso/:id', UsuarioCtrl.autenticacionMiddleware, Empleado.obtenerPedidosEnProceso);
 ruta.get('/obtenerNumPedidosEnProceso', UsuarioCtrl.autenticacionMiddleware, Empleado.obtenerNumPedidosEnProceso)
-ruta.get('/obtenerPedidosEnCola',Empleado.obtenerPedidosEnCola);
+ruta.get('/obtenerPedidosEnCola', UsuarioCtrl.autenticacionMiddleware, Empleado.obtenerPedidosEnCola);
 ruta.get('/obtenerNumPedidosEnCola', UsuarioCtrl.autenticacionMiddleware, Empleado.obtenerNumPedidosEnCola)
 ruta.get('/obtenerProductosPorPedido/:id', Empleado.obtenerProductosPorPedido);
 //post
 ruta.post('/crearPedido/:id', UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.crearPedido);
 ruta.post('/crearVenta/:cantidadACaja/:metodoPago', UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.realizarVenta);
-ruta.post('/crearNotificacion',UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.crearNotificacion)
+ruta.post('/crearNotificacion', UsuarioCtrl.autenticacionMiddleware, Empleado.recepcionistaMiddleware, Empleado.crearNotificacion)
 //patch
 ruta.patch('/crearImagen/:id', upload.single('image'), Empleado.crearFoto);
-ruta.patch('/tomarPedido/:idPedido/:id', Empleado.tomarPedido);
+ruta.patch('/tomarPedido/:idPedido/:id', UsuarioCtrl.autenticacionMiddleware, Empleado.tomarPedido);
 ruta.patch('/actualizarEstado', Empleado.actualizarEstadoPedido);
 ruta.patch('/actualizarAnticipo/:id/:anticipo', Empleado.actualizarAnticipoPedido);
 ruta.patch('/actualizarOcupado/:id', Empleado.actualizarOcupado);

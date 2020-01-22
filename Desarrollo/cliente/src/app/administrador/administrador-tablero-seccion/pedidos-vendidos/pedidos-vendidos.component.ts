@@ -86,6 +86,7 @@ export class PedidosVendidosComponent implements OnInit {
   }
   mostrarVentasFotografosCRetoque(ventas: any){
     this.dialog.open(MostrarVentasFotografosComponent, {
+      width: '60%',
       data: ventas
     })
   }

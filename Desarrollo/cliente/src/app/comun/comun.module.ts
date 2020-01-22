@@ -32,6 +32,9 @@ import { SeleccionarEmpleadoComponent } from './componentes/modales/seleccionar-
 import { DetallesProductoComponent } from './componentes/modales/detalles-producto/detalles-producto.component';
 import { ListaPedidosComponent } from './componentes/lista-pedidos/lista-pedidos.component';
 import { MostrarVentasFotografosComponent } from './componentes/modales/mostrar-ventas-fotografos/mostrar-ventas-fotografos.component';
+import { DesgloseVentasFotografosComponent } from './componentes/modales/desglose-ventas-fotografos/desglose-ventas-fotografos.component';
+import { EditarProveedorComponent } from './componentes/modales/editar-proveedor/editar-proveedor.component';
+import { SeleccionarProveedorComponent } from './componentes/modales/seleccionar-proveedor/seleccionar-proveedor.component';
 
 //modulos
 import { MaterialModule } from './material.module';
@@ -80,7 +83,10 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         SeleccionarEmpleadoComponent,
         DetallesProductoComponent,
         ListaPedidosComponent,
-        MostrarVentasFotografosComponent
+        MostrarVentasFotografosComponent,
+        DesgloseVentasFotografosComponent,
+        EditarProveedorComponent,
+        SeleccionarProveedorComponent
     ],
     imports: [
         CommonModule,
@@ -123,7 +129,10 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         EditarUsuarioComponent,
         SeleccionarEmpleadoComponent,
         DetallesProductoComponent,
-        MostrarVentasFotografosComponent
+        MostrarVentasFotografosComponent,
+        DesgloseVentasFotografosComponent,
+        EditarProveedorComponent,
+        SeleccionarProveedorComponent
     ],
     providers: [
         EstadosService,

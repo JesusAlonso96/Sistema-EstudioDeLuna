@@ -172,11 +172,13 @@
                                 </mat-radio-group>
                             </div>
                             <div class="col-lg-12">
-                                <input style="display: none;" type="file" accept="image/*"
-                                    (change)="obtenerImagen($event)" #imagenInput>
+                                <!--<input style="display: none;" type="file" accept="image/*"
+                                    (change)="obtenerImagen($event)" #imagenInput>-->
+                                    <img *ngIf="imagen2" [src]="imagen2" alt="">
                                 <mat-form-field *ngIf="imagen" style="width:100%">
                                     <input type="text" matInput [placeholder]="imagen.name" disabled>
                                 </mat-form-field>
+                                <button (click)="obtenerImagen($event)">Ejemplo</button>
                                 <button mat-raised-button (click)="imagenInput.click()" class="btn-img">Subir
                                     imagen</button>
                             </div>

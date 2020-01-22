@@ -18,7 +18,6 @@ export class BajaClienteComponent implements OnInit {
   clientes: Cliente[];
   busquedaCliente: string = '';
   cargando: boolean = false;
-  cargandoEliminacion: boolean = false;
   constructor(public dialog: MatDialog, private clienteService: ClienteService, private toastr: ToastrService) { }
 
   ngOnInit() {
@@ -28,12 +27,12 @@ export class BajaClienteComponent implements OnInit {
   obtenerClientes() {
     this.cargando = true;
     this.clienteService.obtenerDatosClientes().subscribe(
-      (clientes) => {
+      (clientes: Cliente[]) => {
         this.cargando = false;
         this.clientes = clientes;
         this.inicializarTabla()
       },
-      (err) => {
+      (err: any) => {
         this.cargando = false;
         this.toastr.error(err.error.detalles, err.error.titulo, { closeButton: true });
       }
@@ -48,7 +47,7 @@ export class BajaClienteComponent implements OnInit {
     this.listData.filter = this.busquedaCliente.trim().toLowerCase();
   }
   confirmarEliminacion(cliente: Cliente) {
-    const dialogRef = this.dialog.open(ModalConfirmacionComponent,{
+    const dialogRef = this.dialog.open(ModalConfirmacionComponent, {
       data: { titulo: 'Eliminar cliente', mensaje: '¿Desea eliminar este cliente?', msgBoton: 'Eliminar', color: 'warn' }
     });
     dialogRef.afterClosed().subscribe(respuesta => {
@@ -58,18 +57,18 @@ export class BajaClienteComponent implements OnInit {
     });
   }
   eliminarCliente(cliente: Cliente) {
-    this.cargandoEliminacion = true;
+    this.cargando = true;
     const indice = this.clientes.indexOf(cliente);
     this.clienteService.eliminarCliente(cliente._id).subscribe(
       (eliminado) => {
-        this.cargandoEliminacion = false;
+        this.cargando = false;
         this.toastr.success('Cliente eliminado exitosamente', '', { closeButton: true });
         this.clientes.splice(indice, 1);
         this.listData.data = this.clientes;
 
       },
       (err) => {
-        this.cargandoEliminacion = false;
+        this.cargando = false;
         this.toastr.error(err.error.detalles, err.error.titulo, { closeButton: true });
       });
 

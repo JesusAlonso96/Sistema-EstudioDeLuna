@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from 'src/app/comun/modelos/usuario.model';
 import { CorteCaja } from 'src/app/comun/modelos/corte_caja.model';
+import { Proveedor } from 'src/app/comun/modelos/proveedor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,16 @@ import { CorteCaja } from 'src/app/comun/modelos/corte_caja.model';
 export class AdministradorService {
 
   constructor(private http: HttpClient) { }
+  //post
+  public crearUsuario(usuario: Usuario): Observable<any> {
+    return this.http.post('/api/v1/admins/empleado', usuario);
+  }
+  public crearCorteCaja(corteCaja: CorteCaja): Observable<any> {
+    return this.http.post('/api/v1/admins/crearCorteCaja', corteCaja);
+  }
+  public registrarUsuario(usuario: Usuario): Observable<any> {
+    return this.http.post('/api/v1/admins/registrar', usuario);
+  }
   //get
   public obtenerVentasDia(): Observable<any> {
     return this.http.get('/api/v1/admins/obtenerVentasDia');
@@ -39,12 +50,8 @@ export class AdministradorService {
   public obtenerUsuariosEliminados(): Observable<any> {
     return this.http.get('/api/v1/admins/obtenerUsuariosEliminados');
   }
-  //post
-  public crearUsuario(usuario: Usuario): Observable<any> {
-    return this.http.post('/api/v1/admins/empleado', usuario);
-  }
-  public crearCorteCaja(corteCaja: CorteCaja): Observable<any> {
-    return this.http.post('/api/v1/admins/crearCorteCaja', corteCaja);
+  public obtenerProveedoresEliminados(): Observable<any> {
+    return this.http.get('/api/v1/admins/obtenerProveedoresEliminados');
   }
   //patch
   public actualizarCaja(caja): Observable<any> {
@@ -56,4 +63,21 @@ export class AdministradorService {
   public restaurarUsuario(usuario: Usuario): Observable<any> {
     return this.http.patch('/api/v1/admins/restaurarUsuario', usuario);
   }
+  public eliminarUsuario(id: string): Observable<any> {
+    return this.http.patch(`/api/v1/admins/eliminarUsuario/${id}`, null);
+  }
+  public editarUsuario(usuario: Usuario): Observable<any> {
+    return this.http.patch('/api/v1/admins/editarUsuario', usuario);
+  }
+  public editarProveedor(proveedor: Proveedor): Observable<any> {
+    return this.http.patch('/api/v1/admins/editarProveedor', proveedor);
+  }
+  public eliminarProveedor(proveedor: Proveedor): Observable<any> {
+    return this.http.patch('/api/v1/admins/eliminarProveedor', proveedor);
+  }
+  public restaurarProveedor(proveedor: Proveedor): Observable<any> {
+    return this.http.patch('/api/v1/admins/restaurarProveedorEliminado', proveedor);
+  }
+
+
 }

@@ -69,7 +69,7 @@ export class EmpleadoService {
   public crearFoto(image, id): Observable<any> {
     return this.http.patch(`/api/v1/empleados/crearImagen/${id}`, image)
   }
-  public tomarPedido(idPedido, id): Observable<any> {
+  public tomarPedido(idPedido: string, id: string): Observable<any> {
     return this.http.patch(`/api/v1/empleados/tomarPedido/${idPedido}/${id}`, null);
   }
   public actualizarEstado(pedido): Observable<any> {

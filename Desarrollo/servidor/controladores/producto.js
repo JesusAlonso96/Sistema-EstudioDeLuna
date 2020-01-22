@@ -2,7 +2,7 @@ const Familia = require('../modelos/familia'),
     Producto = require('../modelos/producto');
 
 exports.obtenerFamilias = function (req, res) {
-    Familia.find({activa:1})
+    Familia.find({ activa: 1 })
         .exec(function (err, familias) {
             if (err) {
                 return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron cargar las familias' });
@@ -57,11 +57,9 @@ exports.obtenerProductosPorTam = function (req, res) {
             _id: 1,
 
         })
-        .exec(function (err, response) {
-            if (err) {
-                console.log(err);
-            }
-            res.json(response);
+        .exec(function (err, productos) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los productos' })
+            res.json(productos);
         })
 }
 exports.obtenerProductosPorCantidad = function (req, res) {
@@ -83,11 +81,9 @@ exports.obtenerProductosPorCantidad = function (req, res) {
         .sort({
             _id: 1
         })
-        .exec(function (err, response) {
-            if (err) {
-                console.log(err);
-            }
-            res.json(response);
+        .exec(function (err, productos) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los productos' })
+            res.json(productos);
         })
 }
 exports.buscarProductoPorTam = function (req, res) {

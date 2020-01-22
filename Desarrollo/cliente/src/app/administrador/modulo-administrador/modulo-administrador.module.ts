@@ -40,6 +40,12 @@ import { ClientesRestaurarComponent } from '../administrador-clientes-seccion/cl
 import { AdministradorComprasSeccionComponent } from '../administrador-compras-seccion/administrador-compras-seccion.component';
 //seccion de proveedores
 import { AdministradorProveedoresSeccionComponent } from '../administrador-proveedores-seccion/administrador-proveedores-seccion.component';
+import { ProveedoresAltaComponent } from '../administrador-proveedores-seccion/proveedores-alta/proveedores-alta.component';
+import { ProveedoresBajaComponent } from '../administrador-proveedores-seccion/proveedores-baja/proveedores-baja.component';
+import { ProveedoresEditarComponent } from '../administrador-proveedores-seccion/proveedores-editar/proveedores-editar.component';
+import { ProveedoresAgregarProductoComponent } from '../administrador-proveedores-seccion/proveedores-agregar-producto/proveedores-agregar-producto.component';
+import { ProveedoresEditarProductoComponent } from '../administrador-proveedores-seccion/proveedores-editar-producto/proveedores-editar-producto.component';
+import { ProveedoresRestaurarComponent } from '../administrador-proveedores-seccion/proveedores-restaurar/proveedores-restaurar.component';
 //seccion de sucursales
 import { AdministradorSucursalesSeccionComponent } from '../administrador-sucursales-seccion/administrador-sucursales-seccion.component';
 //seccion de ventas
@@ -97,7 +103,13 @@ import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticaci
     AdministradorTableroSeccionComponent,
     PedidosColaComponent,
     PedidosVendidosComponent,
-    PedidosCompletadosComponent
+    PedidosCompletadosComponent,
+    ProveedoresAltaComponent,
+    ProveedoresBajaComponent,
+    ProveedoresEditarComponent,
+    ProveedoresAgregarProductoComponent,
+    ProveedoresEditarProductoComponent,
+    ProveedoresRestaurarComponent
 
   ],
   imports: [

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Usuario } from 'src/app/comun/modelos/usuario.model';
-import { UsuarioService } from 'src/app/comun/servicios/usuario.service';
+import { AdministradorService } from 'src/app/administrador/servicio-administrador/servicio-administrador.service';
 
 @Component({
   selector: 'app-alta-usuario',
@@ -16,7 +16,7 @@ export class AltaUsuarioComponent implements OnInit {
   confirmarContra: string;
   cargando: boolean = false;
 
-  constructor(private toastr: ToastrService, private usuarioService: UsuarioService) { }
+  constructor(private toastr: ToastrService, private adminService: AdministradorService) { }
   
   ngOnInit() {
     this.valoresPorDefecto();
@@ -31,7 +31,7 @@ export class AltaUsuarioComponent implements OnInit {
       this.toastr.error('Las contraseñas no coinciden', '', { closeButton: true });
       return false;
     }
-    this.usuarioService.registrarUsuario(this.usuario).subscribe(
+    this.adminService.registrarUsuario(this.usuario).subscribe(
       (usuarioRegistrado) => {
         this.toastr.success(usuarioRegistrado.detalles, usuarioRegistrado.titulo, { closeButton: true });
         this.cargando = false;

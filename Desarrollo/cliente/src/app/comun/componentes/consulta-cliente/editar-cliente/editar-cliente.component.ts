@@ -17,7 +17,6 @@ export class EditarClienteComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<EditarClienteComponent>, @Inject(MAT_DIALOG_DATA) public data: Cliente, private estadoService: EstadosService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    console.log(this.data.estado);
     this.obtenerEstados();
   }
   onNoClick(): void {
@@ -48,7 +47,6 @@ export class EditarClienteComponent implements OnInit {
     this.estadoService.obtenerMunicipios(idEstado).subscribe(
       (municipios) => {
         this.municipios = municipios;
-        console.log("tengo municipios", this.municipios);
       },
       (err) => {
         this.toastr.error(err.error.detalles, err.error.titulo, { closeButton: true });

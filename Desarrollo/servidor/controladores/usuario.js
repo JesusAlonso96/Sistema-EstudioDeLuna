@@ -6,6 +6,8 @@ const Usuario = require('../modelos/usuario'),
     Producto = require('../modelos/producto'),
     Familia = require('../modelos/familia'),
     Venta = require('../modelos/venta'),
+    Proveedor = require('../modelos/proveedor'),
+    ProductoProveedor = require('../modelos/producto_proveedor'),
     momento = require('moment'),
     config = require('../configuracion/dev');
 
@@ -57,7 +59,6 @@ exports.crearAsistencia = function (req, res) {
 exports.obtenerUsuario = function (req, res) {
     Usuario.findById(req.params.id).exec(function (err, usuarioEncontrado) {
         if (err) {
-            console.log(err);
             return res.status(422).send({ titulo: 'Error', detalles: 'No se encontro el usuario solicitado' });
         }
         return res.json(usuarioEncontrado);
@@ -156,45 +157,6 @@ exports.obtenerUsuarios = function (req, res) {
             return res.json(usuariosEncontrados);
         })
 }
-exports.registrarUsuario = function (req, res) {
-    const usuario = new Usuario(req.body);
-    Usuario.findOne({ username: req.body.username })
-        .exec(function (err, usuarioEncontrado) {
-            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo registrar el usuario' });
-            if (usuarioEncontrado) {
-                return res.status(422).send({ titulo: 'Nombre de usuario repetido', detalles: 'Ya existe un usuario registrado' });
-            } else {
-                usuario.save(function (err, usuarioRegistrado) {
-                    if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo registrar el usuario' });
-                    return res.json({ titulo: 'Usuario registrado', detalles: 'Registro completado exitosamente' });
-                })
-            }
-        })
-
-}
-exports.editarUsuario = function (req, res) {
-    Usuario.findByIdAndUpdate(req.body._id, {
-        nombre: req.body.nombre,
-        ape_pat: req.body.ape_pat,
-        ape_mat: req.body.ape_mat,
-        username: req.body.username,
-        email: req.body.email,
-        telefono: req.body.telefono
-    })
-        .exec(function (err, actualizado) {
-            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo actualizar el usuario' });
-            return res.json({ titulo: 'Usuario actualizado', detalles: 'Los datos fueron actualizados correctamente' });
-        })
-}
-exports.eliminarUsuario = function (req, res) {
-    Usuario.findByIdAndUpdate(req.params.id, {
-        activo: 0
-    })
-        .exec(function (err, usuarioEliminado) {
-            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo eliminar el usuario' });
-            return res.json({ titulo: 'Usuario elimnado', detalles: 'Usuario eliminado exitosamente' });
-        })
-}
 exports.obtenerPedidosRealizados = function (req, res) {
     Pedido.find({ status: 'Finalizado' })
         .populate('productos')
@@ -214,8 +176,6 @@ exports.obtenerPedidosVendidos = function (req, res) {
     } else if (req.params.filtro == 2) {
         pedidosVendidos(res);
     }
-
-
 }
 exports.obtenerFotografos = function (req, res) {
     Usuario.find({ rol: 0, rol_sec: 1, activo: 1 })
@@ -265,7 +225,7 @@ exports.obtenerPedidosVendidosPorFotografo = function (req, res) {
 }
 exports.obtenerVentasConRetoquePorFotografo = function (req, res) {
     var fecha = new Date(Date.now());
-    fecha = momento().format('YYYY-MM-DD')
+    fecha = momento().format('YYYY-MM-DD');
     fecha2 = new Date(fecha);
     Venta.aggregate()
         .lookup({
@@ -297,6 +257,93 @@ exports.obtenerVentasConRetoquePorFotografo = function (req, res) {
             return res.json(ventas);
         })
 }
+exports.desglosarVentasConRetoquePorFotografo = function (req, res) {
+    var fecha = new Date(Date.now());
+    fecha = momento().format('YYYY-MM-DD');
+    fecha2 = new Date(fecha);
+    Venta.aggregate()
+        .lookup({
+            from: "pedidos",
+            localField: "pedido",
+            foreignField: "_id",
+            as: "pedido",
+        })
+        .unwind('pedido')
+        .unwind('pedido.fotografo')
+        .unwind('pedido.productos')
+        .lookup({
+            from: "usuarios",
+            localField: "pedido.fotografo",
+            foreignField: "_id",
+            as: "pedido.fotografo",
+        })
+        .unwind('pedido.fotografo')
+        .lookup({
+            from: "productos",
+            localField: "pedido.productos",
+            foreignField: "_id",
+            as: "pedido.productos",
+        })
+        .unwind('pedido.productos')
+        .lookup({
+            from: "familias",
+            localField: "pedido.productos.familia",
+            foreignField: "_id",
+            as: "pedido.productos.familia",
+        })
+        .unwind('pedido.productos.familia')
+        .match({
+            fecha: fecha2,
+            'pedido.c_retoque': true,
+            'pedido.fotografo._id': mongoose.Types.ObjectId(req.params.id)
+
+        })
+        .group({
+            _id: '$pedido.productos.familia.nombre',
+            montoVendido: { $sum: '$pedido.total' },
+            pedidos: { $sum: 1 }
+        })
+        .exec(function (err, ventas) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los pedidos' });
+            return res.json(ventas);
+        })
+}
+//modulo proveedores
+exports.nuevoProveedor = function (req, res) {
+    const proveedor = new Proveedor(req.body);
+    proveedor.save(function (err, registrado) {
+        if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo registrar al proveedor' });
+        return res.json({ titulo: 'Proveedor registrado', detalles: 'El proveedor fue registrado exitosamente' });
+    })
+}
+exports.obtenerProveedores = function (req, res) {
+    Proveedor.find({ activo: 1 })
+        .exec(function (err, proveedores) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo obtener la lista de proveedores' });
+            return res.json(proveedores);
+        })
+}
+exports.agregarProductoProveedor = function (req, res) {
+    if (!req.body.proveedor) {
+        return res.status(422).send({ titulo: 'Error', detalles: 'Debes elegir un proveedor' });
+    }
+    const producto = new ProductoProveedor(req.body);
+    producto.save(function (err, productoGuardado) {
+        if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo guardar el producto' });
+        if (productoGuardado) {
+            Proveedor.findByIdAndUpdate(productoGuardado.proveedor._id, {
+                $push: {
+                    productos: productoGuardado
+                }
+            })
+                .exec(function (err, proveedorActualizado) {
+                    if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo guardar el producto' });
+                    return res.json({ titulo: 'Producto guardado', detalles: 'Producto guardado exitosamente' });
+                })
+        }
+    })
+}
+//middlewares
 exports.autenticacionMiddleware = function (req, res, next) {
     const token = req.headers.authorization;
     if (token) {

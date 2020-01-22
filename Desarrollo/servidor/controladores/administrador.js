@@ -3,6 +3,7 @@ const Usuario = require('../modelos/usuario'),
     Producto = require('../modelos/producto'),
     Corte = require('../modelos/corte_caja'),
     Pedido = require('../modelos/pedido'),
+    Proveedor = require('../modelos/proveedor'),
     Caja = require('../modelos/caja'),
     momento = require('moment');
 
@@ -436,6 +437,92 @@ exports.restaurarUsuarioEliminado = function (req, res) {
             return res.json({ titulo: 'Usuario restaurado', detalles: 'Usuario restaurado exitosmente' });
         })
 }
+//Usuarios
+exports.registrarUsuario = function (req, res) {
+    const usuario = new Usuario(req.body);
+    Usuario.findOne({ username: req.body.username })
+        .exec(function (err, usuarioEncontrado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo registrar el usuario' });
+            if (usuarioEncontrado) {
+                return res.status(422).send({ titulo: 'Nombre de usuario repetido', detalles: 'Ya existe un usuario registrado' });
+            } else {
+                usuario.save(function (err, usuarioRegistrado) {
+                    if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo registrar el usuario' });
+                    return res.json({ titulo: 'Usuario registrado', detalles: 'Registro completado exitosamente' });
+                })
+            }
+        })
+
+}
+exports.eliminarUsuario = function (req, res) {
+    Usuario.findByIdAndUpdate(req.params.id, {
+        activo: 0
+    })
+        .exec(function (err, usuarioEliminado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo eliminar el usuario' });
+            return res.json({ titulo: 'Usuario elimnado', detalles: 'Usuario eliminado exitosamente' });
+        })
+}
+exports.editarUsuario = function (req, res) {
+    Usuario.findByIdAndUpdate(req.body._id, {
+        nombre: req.body.nombre,
+        ape_pat: req.body.ape_pat,
+        ape_mat: req.body.ape_mat,
+        username: req.body.username,
+        email: req.body.email,
+        telefono: req.body.telefono
+    })
+        .exec(function (err, actualizado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo actualizar el usuario' });
+            return res.json({ titulo: 'Usuario actualizado', detalles: 'Los datos fueron actualizados correctamente' });
+        })
+}
+//Proveedores
+exports.editarProveedor = function (req, res) {
+    Proveedor.findByIdAndUpdate(req.body._id, {
+        nombre: req.body.nombre,
+        rfc: req.body.rfc,
+        email: req.body.email,
+        ciudad: req.body.ciudad,
+        estado: req.body.estado,
+        telefono: req.body.telefono,
+        direccion: req.body.direccion,
+        colonia: req.body.colonia,
+        cp: req.body.cp,
+        num_ext: req.body.num_ext,
+        num_int: req.body.num_int
+    })
+        .exec(function (err, proveedorActualizado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo actualizar al proveedor' });
+            return res.json({ titulo: 'Datos actualizados', detalles: 'Datos del proveedor actualizados correctamente' });
+        })
+}
+exports.eliminarProveedor = function (req, res) {
+    Proveedor.findByIdAndUpdate(req.body._id, {
+        activo: 0
+    })
+        .exec(function (err, eliminado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo eliminar al proveedor' });
+            return res.json({ titulo: 'Proveedor eliminado', detalles: 'Proveedor eliminado exitosamente' });
+        })
+}
+exports.restaurarProveedor = function (req, res) {
+    Proveedor.findByIdAndUpdate(req.body._id, {
+        activo: 1
+    })
+        .exec(function (err, proveedorActualizado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo restaurar al proveedor' });
+            return res.json({ titulo: 'Proveedor restaurado', detalles: 'Proveedor eliminado restaurado correctamente' });
+        })
+}
+exports.obtenerProveedoresEliminados = function (req, res) {
+    Proveedor.find({ activo: 0 })
+        .exec(function (err, usuariosEncontrados) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los proveedores eliminados' });
+            return res.json(usuariosEncontrados);
+        });
+}
+//Middleware
 exports.adminMiddleware = function (req, res, next) {
     if (res.locals.usuario.rol == 2 && res.locals.usuario.rol_sec == 0) {
         next();

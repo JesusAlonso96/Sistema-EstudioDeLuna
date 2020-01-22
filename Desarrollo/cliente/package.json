@@ -34,8 +34,9 @@
     "jspdf": "^1.5.3",
     "moment": "^2.24.0",
     "ng2-charts": "^2.3.0",
+    "ngx-image-compress": "^8.0.4",
     "ngx-print": "^1.2.0-beta.3",
-    "ngx-toastr": "^11.2.1",
+    "ngx-toastr": "^11.3.0",
     "popper.js": "^1.16.0",
     "rxjs": "~6.4.0",
     "rxjs-compat": "^6.5.4",
@@ -44,9 +45,9 @@
     "zone.js": "~0.9.1"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^0.803.21",
-    "@angular-devkit/build-ng-packagr": "^0.803.21",
-    "@angular/cli": "^8.3.21",
+    "@angular-devkit/build-angular": "^0.803.23",
+    "@angular-devkit/build-ng-packagr": "^0.803.23",
+    "@angular/cli": "^8.3.23",
     "@angular/compiler-cli": "^8.2.14",
     "@angular/language-service": "^8.2.14",
     "@types/jasmine": "~3.3.8",

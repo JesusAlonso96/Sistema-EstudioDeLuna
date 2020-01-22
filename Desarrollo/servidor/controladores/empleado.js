@@ -66,11 +66,19 @@ exports.numPedidosFotografo = function (req, res) {
             _id: 1,
             count: 1
         })
+        .sort({
+            count: 'asc'
+        })
         .exec(function (err, respuesta) {
             if (err) {
-                return res.json(err);
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al asignar al fotografo' });
             }
-            return res.json(respuesta);
+            if (respuesta.length > 0) {
+                return res.json(respuesta[0]._id[0]);
+            } else {
+                return res.status(422).send({ titulo: 'Sin fotografo', detalles: 'No hay ningun fotografo disponible' })
+            }
+
         })
 
 }
@@ -144,6 +152,7 @@ exports.crearPedido = function (req, res) {
     });
 }
 exports.crearFoto = function (req, res) {
+    console.log(req.file)
     var path = req.file.path.split('\\', 2)[1];
     Pedido.updateOne({ _id: req.params.id }, {
         $set: {
@@ -484,12 +493,15 @@ exports.obtenerNotificaciones = function (req, res) {
         })
 }
 exports.obtenerPedidosEnCola = function (req, res) {
-    Pedido.find({ fotografo: null }).exec(function (err, pedidosEncontrados) {
-        if (err) {
-            return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar a los pedidos' })
-        }
-        return res.json(pedidosEncontrados)
-    })
+    Pedido.find({ fotografo: null })
+        .populate('productos')
+        .populate('cliente')
+        .exec(function (err, pedidosEncontrados) {
+            if (err) {
+                return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al cargar a los pedidos' })
+            }
+            return res.json(pedidosEncontrados)
+        })
 }
 exports.obtenerNumPedidosEnCola = function (req, res) {
     Pedido.find({ fotografo: null })
@@ -560,13 +572,31 @@ exports.actualizarAnticipoPedido = function (req, res) {
     })
 }
 exports.eliminarNotificacion = function (req, res) {
-    Notificacion.remove({ _id: req.params.id }).exec(function (err, eliminada) { if (err) { } })
+    Notificacion.findById(req.params.id)
+        .exec(function (err, notificacion) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al eliminar la notificacion' });
+            if (notificacion) {
+                Notificacion.deleteOne({ _id: req.params.id }).exec(function (err, eliminada) {
+                    if (err) return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al eliminar la notificacion' });
+                    return res.json({ titulo: 'Notificacion eliminada', detalles: 'Notificacion eliminada exitosamente' });
+                });
+            }
+        })
 }
 exports.eliminarNotificacionPorPedido = function (req, res) {
-    Notificacion.remove({ num_pedido: req.params.num }).exec(function (err, eliminada) { if (err) { } })
+    Notificacion.findOne({ num_pedido: req.params.num })
+        .exec(function (err, notificacion) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al eliminar la notificacion' });
+            if (notificacion) {
+                Notificacion.deleteOne({ _id: req.params.id }).exec(function (err, eliminada) {
+                    if (err) return res.status(422).send({ titulo: 'Error', detalles: 'Ocurrio un error al eliminar la notificacion' });
+                    return res.json({ titulo: 'Notificacion eliminada', detalles: 'Notificacion eliminada exitosamente' });
+                });
+            }
+        })
 }
 exports.eliminarNotificaciones = function () {
-    Notificacion.remove({}).exec(function (err, eliminadas) { if (err) { } })
+    Notificacion.deleteMany({}).exec(function (err, eliminadas) { if (err) { } })
 }
 exports.actualizarOcupado = function (req, res) {
     Usuario.findOneAndUpdate({ _id: req.params.id }, {

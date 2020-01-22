@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './comun/material.module';
 import { NgxPrintModule } from 'ngx-print';
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 //modulos de componentes
 import { AdministradorModule } from './administrador/modulo-administrador/modulo-administrador.module';
@@ -46,6 +47,7 @@ import { AutenticacionGuard } from './autenticacion/compartido/autenticacion.gua
   ],
   providers: [
     AutenticacionGuard,
+    NgxImageCompressService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

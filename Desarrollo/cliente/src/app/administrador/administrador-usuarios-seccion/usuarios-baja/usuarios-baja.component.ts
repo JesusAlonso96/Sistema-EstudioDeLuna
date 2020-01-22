@@ -5,6 +5,7 @@ import { UsuarioService } from 'src/app/comun/servicios/usuario.service';
 import { ToastrService } from 'ngx-toastr';
 import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-autenticacion/servicio-autenticacion.service';
 import { ModalConfirmacionComponent } from 'src/app/comun/componentes/modal-confirmacion/modal-confirmacion.component';
+import { AdministradorService } from '../../servicio-administrador/servicio-administrador.service';
 
 @Component({
   selector: 'app-usuarios-baja',
@@ -21,7 +22,7 @@ export class UsuariosBajaComponent implements OnInit {
   cargando: boolean = false;
   cargandoEliminacion: boolean = false;
 
-  constructor(private dialog: MatDialog, private usuarioService: UsuarioService, private toastr: ToastrService, private autService: ServicioAutenticacionService) { }
+  constructor(private dialog: MatDialog, private usuarioService: UsuarioService, private adminService: AdministradorService, private toastr: ToastrService, private autService: ServicioAutenticacionService) { }
 
   ngOnInit() {
     this.obtenerUsuarios();
@@ -74,7 +75,7 @@ export class UsuariosBajaComponent implements OnInit {
   eliminarUsuario(usuario: Usuario) {
     this.cargandoEliminacion = true;
     const indice = this.usuarios.indexOf(usuario);
-    this.usuarioService.eliminarUsuario(<string>usuario._id).subscribe(
+    this.adminService.eliminarUsuario(<string>usuario._id).subscribe(
       (eliminado) => {
         this.cargandoEliminacion = false;
         this.toastr.success(eliminado.detalles, eliminado.titulo, { closeButton: true });

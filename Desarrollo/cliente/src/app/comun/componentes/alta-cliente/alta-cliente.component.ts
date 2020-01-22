@@ -5,6 +5,7 @@ import { Cliente } from '../../modelos/cliente.model';
 import { EstadosService } from '../../servicios/estados.service';
 import { ClienteService } from '../../servicios/cliente.service';
 import swal from 'sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-alta-cliente',
@@ -12,26 +13,26 @@ import swal from 'sweetalert2';
   styleUrls: ['./alta-cliente.component.scss']
 })
 export class AltaClienteComponent implements OnInit {
-  conFactura: string;
+  conFactura: string = 'No';
   estados: Estado[];
   estado: Estado;
   municipios: Municipio[];
   municipio: Municipio;
-  cliente: Cliente;
-  cargando: boolean;
-  constructor(private estadosService: EstadosService, private clienteService: ClienteService) { }
+  cliente: Cliente = new Cliente();
+  cargando: boolean = false;
+  constructor(private estadosService: EstadosService, private clienteService: ClienteService, private toastr: ToastrService) { }
 
   ngOnInit() {
-    this.cliente = new Cliente();
     this.cliente.estado = '';
-    this.conFactura = 'No';
-    this.cargando = false;
+    this.obtenerEstados();
+  }
+  obtenerEstados() {
     this.estadosService.obtenerEstados().subscribe(
-      (estados) => {
+      (estados: Estado[]) => {
         this.estados = estados;
       },
       (err) => {
-        console.log(err);
+        this.toastr.error(err.error.detalles, err.error.titulo, { closeButton: true });
       }
     )
   }
@@ -94,7 +95,8 @@ export class AltaClienteComponent implements OnInit {
         this.municipios = municipios;
       },
       (err) => {
-        console.log(err);
+        this.cargando = false;
+        this.toastr.error(err.error.detalles, err.error.titulo, { closeButton: true });
       }
     )
 

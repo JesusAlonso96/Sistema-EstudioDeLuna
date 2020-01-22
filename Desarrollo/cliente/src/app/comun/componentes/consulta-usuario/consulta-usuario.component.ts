@@ -6,6 +6,7 @@ import { UsuarioService } from 'src/app/comun/servicios/usuario.service';
 import { EditarUsuarioComponent } from './editar-usuario/editar-usuario.component';
 import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-autenticacion/servicio-autenticacion.service';
 import { CambiarPermisosComponent } from 'src/app/administrador/administrador-usuarios-seccion/usuarios-consulta/cambiar-permisos/cambiar-permisos.component';
+import { AdministradorService } from 'src/app/administrador/servicio-administrador/servicio-administrador.service';
 
 @Component({
   selector: 'app-consulta-usuario',
@@ -20,7 +21,7 @@ export class ConsultaUsuarioComponent implements OnInit {
   usuarios: Usuario[];
   busquedaUsuario: string = '';
   cargando: boolean = false;
-  constructor(public dialog: MatDialog, private usuarioService: UsuarioService, private toastr: ToastrService, private autService: ServicioAutenticacionService) { }
+  constructor(public dialog: MatDialog, private usuarioService: UsuarioService, private adminService: AdministradorService, private toastr: ToastrService, private autService: ServicioAutenticacionService) { }
 
   ngOnInit() {
     this.obtenerUsuarios();
@@ -47,9 +48,7 @@ export class ConsultaUsuarioComponent implements OnInit {
     this.aplicarFiltroBusqueda();
   }
   abrirEditarUsuario(usuario: Usuario) {
-    console.log("usuario original", usuario)
     const usuarioAux: Usuario = new Usuario(usuario._id, usuario.nombre, usuario.username, usuario.ape_pat, usuario.ape_mat, usuario.email, usuario.telefono, usuario.rol, usuario.rol_sec, usuario.ocupado, usuario.asistencia, usuario.pedidosTomados, usuario.activo);
-    console.log("usuario auxiliar", usuarioAux)
     const dialogRef = this.dialog.open(EditarUsuarioComponent, {
       data: usuario
     })
@@ -63,7 +62,7 @@ export class ConsultaUsuarioComponent implements OnInit {
   }
   editarUsuario(usuario: Usuario, usuarioAuxiliar: Usuario) {
     this.cargando = true;
-    this.usuarioService.editarUsuario(usuario).subscribe(
+    this.adminService.editarUsuario(usuario).subscribe(
       (usuarioActualizado) => {
         this.cargando = false;
         this.toastr.success(usuarioActualizado.detalles, usuarioActualizado.titulo, { closeButton: true });
@@ -89,11 +88,11 @@ export class ConsultaUsuarioComponent implements OnInit {
       return usuario.nombre.trim().toLowerCase().indexOf(filtro) !== -1;
     }
   }
-  cambiarPermisos(usuario: Usuario){
+  cambiarPermisos(usuario: Usuario) {
     const dialogRef = this.dialog.open(CambiarPermisosComponent, {
       data: usuario
     })
-    dialogRef.afterClosed().subscribe(respuesta=>{
+    dialogRef.afterClosed().subscribe(respuesta => {
 
     })
   }

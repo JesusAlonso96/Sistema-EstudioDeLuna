@@ -63,10 +63,11 @@ exports.obtenerDatosClientes = function (req, res) {
         })
 }
 exports.obtenerClienteNombreEmail = function (req, res) {
-    Cliente.findOne({ nombre: req.params.nombre, email: req.params.email }).exec(function (err, cliente) {
-        if (err) return res.status(422).send({ titulo: 'Ocurrio un error al buscar al cliente' });
-        return res.json(cliente);
-    })
+    Cliente.findOne({ nombre: req.params.nombre, email: req.params.email })
+        .exec(function (err, cliente) {
+            if (err) return res.status(422).send({ titulo: 'Ocurrio un error al buscar al cliente' });
+            return res.json(cliente);
+        })
 }
 exports.eliminarCliente = function (req, res) {
     Cliente.findOneAndUpdate({ _id: req.params.id }, {
