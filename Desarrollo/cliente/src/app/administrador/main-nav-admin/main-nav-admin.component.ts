@@ -12,7 +12,7 @@ import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-aut
   styleUrls: ['./main-nav-admin.component.scss']
 })
 export class MainNavAdminComponent implements OnInit {
-  pestanasTam: number = 10;
+  pestanasTam: number = 11;
   pestanasActivas: boolean[] = [];
   constructor(private breakpointObserver: BreakpointObserver, private autenticacionService: ServicioAutenticacionService, private rutas: Router) {
   }

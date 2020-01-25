@@ -343,6 +343,30 @@ exports.agregarProductoProveedor = function (req, res) {
         }
     })
 }
+exports.obtenerListaProveedores = function (req, res) {
+    Proveedor.find({ activo: 1 }, { rfc: 0, email: 0, ciudad: 0, estado: 0, telefono: 0, direccion: 0, colonia: 0, cp: 0, num_ext: 0, num_int: 0, activo: 0, __v: 0 })
+        .exec(function (err, listaProveedores) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo obtener la lista de proveedores' });
+            let lista = [];
+            for (let proveedor of listaProveedores) {
+                if (proveedor.productos.length > 0) {
+                    lista.push(proveedor);
+                }
+            }
+            return res.json(lista);
+        })
+}
+exports.obtenerProductosProveedor = function (req, res) {
+    ProductoProveedor.find({ proveedor: req.params.id, activo: 1 })
+        .exec(function (err, productos) {
+            if (err) {
+                console.log(err);
+                return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los productos' });
+            }
+            return res.json(productos);
+        })
+}
+
 //middlewares
 exports.autenticacionMiddleware = function (req, res, next) {
     const token = req.headers.authorization;

@@ -1,21 +1,12 @@
-<div *ngIf="cargando" class="cargando ">
-    <mat-spinner class="spinner"></mat-spinner>
-    <h3>Cargando elementos...</h3>
-</div>
-<div *ngIf="cargandoProducto" class="cargando ">
-    <mat-spinner class="spinner"></mat-spinner>
-    <h3>Creando producto...</h3>
-</div>
-<div *ngIf="cargandoEliminado" class="cargando ">
-    <mat-spinner class="spinner"></mat-spinner>
-    <h3>Eliminando producto...</h3>
-</div>
+<app-cargando *ngIf="cargando" texto="Cargando productos..."></app-cargando>
+<app-cargando *ngIf="cargandoProducto" texto="Creando producto..."></app-cargando>
+<app-cargando *ngIf="cargandoEliminado" texto="Eliminando producto..."></app-cargando>
 <mat-tab-group class="tab" style="width:100%; height: 80%;">
     <mat-tab *ngFor="let familia of familias; let i = index" [label]="familia.nombre">
         <ng-template matTabContent>
             <mat-toolbar>
-                <button mat-button (click)="abrirAgregarProducto(familia, i)"
-                    matTooltip="Agregar un nuevo producto" class="agregarProducto">
+                <button mat-button (click)="abrirAgregarProducto(familia, i)" matTooltip="Agregar un nuevo producto"
+                    class="agregarProducto">
                     <mat-icon>add</mat-icon> Nuevo producto
                 </button>
             </mat-toolbar>
@@ -40,7 +31,8 @@
                                 <mat-card-actions align="start">
                                     <button mat-raised-button color="primary" (click)="verDetalles(producto)">Ver
                                         detalles</button>
-                                    <button mat-stroked-button (click)="abrirEditarProducto(producto,i,j)">Editar</button>
+                                    <button mat-stroked-button
+                                        (click)="abrirEditarProducto(producto,i,j)">Editar</button>
                                 </mat-card-actions>
                             </mat-card>
                         </div>

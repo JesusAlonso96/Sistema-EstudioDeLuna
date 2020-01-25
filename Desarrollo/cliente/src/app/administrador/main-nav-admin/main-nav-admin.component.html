@@ -58,6 +58,11 @@
           <mat-icon mat-list-icon>home_work</mat-icon>
           <h5 mat-line>Sucursales</h5>
         </mat-list-item>
+        <mat-list-item (click)="activarPestana(10)" [ngClass]="{'activa':pestanasActivas[10] == true }"
+          routerLink="/admin/perfil">
+          <mat-icon mat-list-icon>account_circle</mat-icon>
+          <h5 mat-line>Perfil</h5>
+        </mat-list-item>
       </mat-list>
     </mat-nav-list>
   </mat-sidenav>
@@ -68,9 +73,12 @@
       </button>
       <span>Administrador</span>
       <span class="espaciador"></span>
-      <button mat-button class="botonesPerfil" routerLink="/admin/perfil">Editar perfil</button>
-      <button mat-button class="botonesPerfil" (click)="cerrarSesion()">Cerrar
-        sesion</button>
+      <button mat-icon-button routerLink="/admin/ayuda" color="primary" style="color:#ffff" matTooltip="Ayuda">
+        <mat-icon>help_outline</mat-icon>
+      </button>
+      <button mat-icon-button color="primary" (click)="cerrarSesion()" style="color:#ffff" matTooltip="Cerrar sesion">
+        <mat-icon>exit_to_app</mat-icon>
+      </button>
     </mat-toolbar>
     <ng-content></ng-content>
   </mat-sidenav-content>

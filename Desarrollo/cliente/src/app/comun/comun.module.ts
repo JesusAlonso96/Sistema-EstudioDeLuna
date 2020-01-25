@@ -35,21 +35,19 @@ import { MostrarVentasFotografosComponent } from './componentes/modales/mostrar-
 import { DesgloseVentasFotografosComponent } from './componentes/modales/desglose-ventas-fotografos/desglose-ventas-fotografos.component';
 import { EditarProveedorComponent } from './componentes/modales/editar-proveedor/editar-proveedor.component';
 import { SeleccionarProveedorComponent } from './componentes/modales/seleccionar-proveedor/seleccionar-proveedor.component';
-
+import { BarraCargandoComponent } from './componentes/barra-cargando/barra-cargando.component';
+import { EditarProductoProveedorComponent } from './componentes/modales/editar-producto-proveedor/editar-producto-proveedor.component';
 //modulos
 import { MaterialModule } from './material.module';
-
 //servicios
 import { EstadosService } from './servicios/estados.service';
 import { ClienteService } from './servicios/cliente.service';
 import { UsuarioService } from './servicios/usuario.service';
-
 //pipes
 import { FiltroPedidosPipe } from './pipes/filtro-pedidos.pipe';
 import { FormatoFechaPipe } from './pipes/formato-fecha.pipe';
 import { PaginacionPipe } from './pipes/paginacion.pipe';
-
-
+import { FiltroProductosPipe } from './pipes/filtro-productos.pipe';
 
 @NgModule({
     declarations: [
@@ -61,6 +59,7 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         FiltroPedidosPipe,
         FormatoFechaPipe,
         PaginacionPipe,
+        FiltroProductosPipe,
         EncabezadoTituloComponent,
         AgregarProductoComponent,
         EliminarProductoComponent,
@@ -86,7 +85,9 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         MostrarVentasFotografosComponent,
         DesgloseVentasFotografosComponent,
         EditarProveedorComponent,
-        SeleccionarProveedorComponent
+        SeleccionarProveedorComponent,
+        BarraCargandoComponent,
+        EditarProductoProveedorComponent
     ],
     imports: [
         CommonModule,
@@ -101,6 +102,7 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         FiltroPedidosPipe,
         FormatoFechaPipe,
         PaginacionPipe,
+        FiltroProductosPipe,
         InfoSucursalesComponent,
         CatalogoFamiliasComponent,
         CatalogoProductosComponent,
@@ -112,7 +114,8 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         ConsultaUsuarioComponent,
         AltaUsuarioComponent,
         PerfilComponent,
-        ListaPedidosComponent
+        ListaPedidosComponent,
+        BarraCargandoComponent
 
     ],
     entryComponents: [
@@ -132,7 +135,8 @@ import { PaginacionPipe } from './pipes/paginacion.pipe';
         MostrarVentasFotografosComponent,
         DesgloseVentasFotografosComponent,
         EditarProveedorComponent,
-        SeleccionarProveedorComponent
+        SeleccionarProveedorComponent,
+        EditarProductoProveedorComponent
     ],
     providers: [
         EstadosService,

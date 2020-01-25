@@ -13,7 +13,7 @@ const proveedorSchema = new Schema({
     cp: { type: Number, required: true },
     num_ext: { type: Number, required: true },
     num_int: { type: Number, required: false },
-    productos: [{ type: Schema.Types.ObjectId, ref: 'ProductosCompra', default: [] }],
+    productos: [{ type: Schema.Types.ObjectId, ref: 'ProductoProveedor', default: [] }],
     activo: { type: Number, default: 1 }
 
 });

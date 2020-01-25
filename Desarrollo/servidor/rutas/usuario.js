@@ -15,6 +15,8 @@ ruta.get('/obtenerPedidosVendidosPorFotografo/:id/:filtro', Usuario.autenticacio
 ruta.get('/obtenerVentasConRetoquePorFotografo', Usuario.autenticacionMiddleware, Usuario.obtenerVentasConRetoquePorFotografo);
 ruta.get('/desglosarVentasConRetoquePorFotografo/:id', Usuario.desglosarVentasConRetoquePorFotografo);
 ruta.get('/obtenerProveedores', Usuario.autenticacionMiddleware, Usuario.adminOSupervisorMiddleware, Usuario.obtenerProveedores);
+ruta.get('/obtenerListaProveedores', Usuario.autenticacionMiddleware, Usuario.adminOSupervisorMiddleware, Usuario.obtenerListaProveedores);
+ruta.get('/obtenerProductosProveedor/:id', Usuario.autenticacionMiddleware, Usuario.adminOSupervisorMiddleware, Usuario.obtenerProductosProveedor);
 //post
 ruta.post('/login', Usuario.login);
 ruta.post('/crearAsistencia/:id', Usuario.crearAsistencia);

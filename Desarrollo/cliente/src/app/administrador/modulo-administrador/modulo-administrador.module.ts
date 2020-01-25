@@ -59,6 +59,9 @@ import { ReporteVentasFechaComponent } from '../administrador-ventas-seccion/adm
 import { ReporteVentasFamiliaComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/reporte-ventas-fecha/reporte-ventas-familia/reporte-ventas-familia.component';
 import { ReporteVentasMesComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/reporte-ventas-mes/reporte-ventas-mes.component';
 import { ListadoVentasMesComponent } from '../administrador-ventas-seccion/administrador-reporte-ventas/reporte-ventas-mes/listado-ventas-mes/listado-ventas-mes.component';
+//seccion de ayuda
+import { AdministradorAyudaSeccionComponent } from '../administrador-ayuda-seccion/administrador-ayuda-seccion.component';
+
 //servicios
 import { AdministradorService } from '../servicio-administrador/servicio-administrador.service';
 //modulos
@@ -66,6 +69,7 @@ import { ComunModule } from 'src/app/comun/comun.module';
 import { AdministradorRoutingModule } from './administrador-routing.module';
 //guardia
 import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticacion.guard';
+import { ProveedoresRestaurarProductoComponent } from '../administrador-proveedores-seccion/proveedores-restaurar-producto/proveedores-restaurar-producto.component';
 
 
 @NgModule({
@@ -109,8 +113,9 @@ import { AutenticacionGuard } from 'src/app/autenticacion/compartido/autenticaci
     ProveedoresEditarComponent,
     ProveedoresAgregarProductoComponent,
     ProveedoresEditarProductoComponent,
-    ProveedoresRestaurarComponent
-
+    ProveedoresRestaurarComponent,
+    ProveedoresRestaurarProductoComponent,
+    AdministradorAyudaSeccionComponent,
   ],
   imports: [
     CommonModule,

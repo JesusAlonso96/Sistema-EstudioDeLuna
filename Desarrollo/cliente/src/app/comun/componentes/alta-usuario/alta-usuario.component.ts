@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Usuario } from 'src/app/comun/modelos/usuario.model';
 import { AdministradorService } from 'src/app/administrador/servicio-administrador/servicio-administrador.service';
+import { Mensaje } from '../../modelos/mensaje.model';
 
 @Component({
   selector: 'app-alta-usuario',
@@ -17,7 +18,7 @@ export class AltaUsuarioComponent implements OnInit {
   cargando: boolean = false;
 
   constructor(private toastr: ToastrService, private adminService: AdministradorService) { }
-  
+
   ngOnInit() {
     this.valoresPorDefecto();
   }
@@ -32,8 +33,8 @@ export class AltaUsuarioComponent implements OnInit {
       return false;
     }
     this.adminService.registrarUsuario(this.usuario).subscribe(
-      (usuarioRegistrado) => {
-        this.toastr.success(usuarioRegistrado.detalles, usuarioRegistrado.titulo, { closeButton: true });
+      (registrado: Mensaje) => {
+        this.toastr.success(registrado.detalles, registrado.titulo, { closeButton: true });
         this.cargando = false;
         this.usuario = new Usuario();
         this.valoresPorDefecto();

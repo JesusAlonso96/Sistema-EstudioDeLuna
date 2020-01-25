@@ -1,4 +1,4 @@
-<mat-progress-bar *ngIf="cargando" mode="indeterminate" color="accent"></mat-progress-bar>
+<app-barra-cargando [cargando]="cargando"></app-barra-cargando>
 <mat-toolbar>
     <mat-toolbar-row>
         <button mat-button (click)="seleccionarEmpleado()">

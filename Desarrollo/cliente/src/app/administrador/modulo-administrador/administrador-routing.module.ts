@@ -16,6 +16,7 @@ import { AdministradorInventarioSeccionComponent } from '../administrador-invent
 import { AdministradorProveedoresSeccionComponent } from '../administrador-proveedores-seccion/administrador-proveedores-seccion.component';
 import { AdministradorSucursalesSeccionComponent } from '../administrador-sucursales-seccion/administrador-sucursales-seccion.component';
 import { AdministradorTableroSeccionComponent } from '../administrador-tablero-seccion/administrador-tablero-seccion.component';
+import { AdministradorAyudaSeccionComponent } from '../administrador-ayuda-seccion/administrador-ayuda-seccion.component';
 
 
 
@@ -71,6 +72,10 @@ const routes: Routes = [
             {
                 path: 'sucursales',
                 component: AdministradorSucursalesSeccionComponent
+            },
+            {
+                path: 'ayuda',
+                component: AdministradorAyudaSeccionComponent
             }
         ]
 

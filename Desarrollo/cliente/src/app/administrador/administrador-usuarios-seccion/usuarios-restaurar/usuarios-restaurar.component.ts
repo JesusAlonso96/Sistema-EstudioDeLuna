@@ -13,7 +13,7 @@ import { ModalConfirmacionComponent } from 'src/app/comun/componentes/modal-conf
 export class UsuariosRestaurarComponent implements OnInit {
   @ViewChild(MatSort, { static: false }) sort: MatSort;
   @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
-  listData: MatTableDataSource<any>;
+  listData: MatTableDataSource<Usuario>;
   displayedColumns: string[] = ['nombre', 'ape_pat', 'ape_mat', 'rol', 'restaurar'];
   busquedaUsuario: string = '';
   cargando: boolean = false;

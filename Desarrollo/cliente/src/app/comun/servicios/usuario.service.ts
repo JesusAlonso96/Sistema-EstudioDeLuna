@@ -27,7 +27,7 @@ export class UsuarioService {
     public nuevoProveedor(proveedor: Proveedor): Observable<any> {
         return this.http.post('/api/v1/usuarios/nuevoProveedor', proveedor);
     }
-    public agregarProductoProveedor(producto: ProductoProveedor): Observable<any>{
+    public agregarProductoProveedor(producto: ProductoProveedor): Observable<any> {
         return this.http.post('/api/v1/usuarios/agregarProductoProveedor', producto);
     }
     //get
@@ -60,6 +60,12 @@ export class UsuarioService {
     }
     public obtenerProveedores(): Observable<any> {
         return this.http.get('/api/v1/usuarios/obtenerProveedores');
+    }
+    public obtenerListaProveedores(): Observable<any> {
+        return this.http.get('/api/v1/usuarios/obtenerListaProveedores');
+    }
+    public obtenerProductosProveedor(idProveedor: string): Observable<any> {
+        return this.http.get(`/api/v1/usuarios/obtenerProductosProveedor/${idProveedor}`);
     }
     //patch
     public actualizarProducto(producto: Producto): Observable<any> {

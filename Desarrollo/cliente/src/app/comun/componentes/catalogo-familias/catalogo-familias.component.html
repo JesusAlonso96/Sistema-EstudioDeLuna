@@ -1,11 +1,5 @@
-<div *ngIf="cargando" class="cargando ">
-    <mat-spinner class="spinner"></mat-spinner>
-    <h3>Cargando elementos...</h3>
-</div>
-<div *ngIf="cargandoAgregar" class="cargando ">
-    <mat-spinner class="spinner"></mat-spinner>
-    <h3>Agregando familia...</h3>
-</div>
+<app-cargando *ngIf="cargando" texto="Cargando familias.."></app-cargando>
+<app-cargando *ngIf="cargandoAgregar" texto="Agregando familia.."></app-cargando>
 <mat-toolbar>
     <button mat-button matTooltip="Agregar nueva familia" class="agregarFamilia" (click)="abrirAgregarFamilia()">
         <mat-icon>add</mat-icon> Nueva familia

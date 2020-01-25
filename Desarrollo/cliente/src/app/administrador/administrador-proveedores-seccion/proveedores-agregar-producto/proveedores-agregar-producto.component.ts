@@ -72,6 +72,7 @@ export class ProveedoresAgregarProductoComponent implements OnInit {
         this.toastr.success(guardado.detalles, guardado.titulo, { closeButton: true });
         formulario.resetForm();
         this.controlador = new FormControl();
+        this.iniciarFiltro();
       },
       (err: any) => {
         this.cargando = false;

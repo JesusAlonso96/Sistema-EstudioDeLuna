@@ -5,6 +5,7 @@ const Usuario = require('../modelos/usuario'),
     Pedido = require('../modelos/pedido'),
     Proveedor = require('../modelos/proveedor'),
     Caja = require('../modelos/caja'),
+    ProductoProveedor = require('../modelos/producto_proveedor'),
     momento = require('moment');
 
 exports.altaUsuario = function (req, res) {
@@ -521,6 +522,55 @@ exports.obtenerProveedoresEliminados = function (req, res) {
             if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los proveedores eliminados' });
             return res.json(usuariosEncontrados);
         });
+}
+exports.eliminarProductoProveedor = function (req, res) {
+    ProductoProveedor.findByIdAndUpdate(req.body._id, {
+        activo: 0
+    })
+        .exec(function (err, eliminado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo eliminar el producto' });
+            if (eliminado) {
+                ProductoProveedor.find({ activo: 1, proveedor: req.body.proveedor })
+                    .exec(function (err, productos) {
+                        if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los productos actualizados' });
+                        return res.json(productos);
+                    })
+            }
+        })
+}
+exports.editarProductoProveedor = function (req, res) {
+    ProductoProveedor.findByIdAndUpdate(req.body._id, {
+        nombre: req.body.nombre,
+        costo: req.body.costo,
+        detalles: req.body.detalles
+    })
+        .exec(function (err, actualizado) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo actualizar el producto' });
+            if (actualizado) {
+                ProductoProveedor.find({ proveedor: req.body.proveedor })
+                    .exec(function (err, productos) {
+                        if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los productos actualizados' });
+                        return res.json(productos);
+                    })
+            }
+        })
+}
+exports.obtenerProductosProveedorEliminados = function (req, res) {
+    ProductoProveedor.find({ activo: 0 })
+        .populate('proveedor')
+        .exec(function (err, productos) {
+            if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudieron obtener los productos eliminados' });
+            return res.json(productos);
+        })
+}
+exports.restaurarProductoProveedorEliminado = function(req,res){
+    ProductoProveedor.findByIdAndUpdate(req.body._id, {
+        activo:1
+    })
+    .exec(function(err,actualizado){
+        if (err) return res.status(422).send({ titulo: 'Error', detalles: 'No se pudo restaurar el producto' });
+        if (actualizado) return res.json({titulo:'Producto restaurado', detalles:'Producto restaurado exitosamente'})
+    })
 }
 //Middleware
 exports.adminMiddleware = function (req, res, next) {

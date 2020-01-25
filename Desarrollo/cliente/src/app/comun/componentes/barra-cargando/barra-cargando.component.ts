@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-barra-cargando',
@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./barra-cargando.component.scss']
 })
 export class BarraCargandoComponent implements OnInit {
-
+  @Input() cargando: boolean;
   constructor() { }
 
   ngOnInit() {

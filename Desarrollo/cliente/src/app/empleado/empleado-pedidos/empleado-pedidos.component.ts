@@ -11,18 +11,13 @@ import { PedidoEstadoComponent } from './pedido-estado/pedido-estado.component';
   styleUrls: ['./empleado-pedidos.component.scss']
 })
 export class EmpleadoPedidosComponent implements OnInit {
-  pedidos: Pedido[];
-  cargando: boolean;
-  parametroBusqueda: string;
-  url_fotos: string;
+  pedidos: Pedido[] = [];
+  cargando: boolean = false;
+  parametroBusqueda: string = '';
+  url_fotos: string = environment.url_fotos;;
   page_size: number = 10;
   page_number: number = 1;
-  constructor(public dialog: MatDialog, private empleadoService: EmpleadoService, private toastr: ToastrService) {
-    this.cargando = false;
-    this.parametroBusqueda = '';
-    this.url_fotos = environment.url_fotos;
-    this.pedidos = [];
-  }
+  constructor(public dialog: MatDialog, private empleadoService: EmpleadoService, private toastr: ToastrService) { }
 
   ngOnInit() {
     this.obtenerPedidos();

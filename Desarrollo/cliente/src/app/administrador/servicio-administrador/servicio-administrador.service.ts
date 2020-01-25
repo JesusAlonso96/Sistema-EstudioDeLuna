@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Usuario } from 'src/app/comun/modelos/usuario.model';
 import { CorteCaja } from 'src/app/comun/modelos/corte_caja.model';
 import { Proveedor } from 'src/app/comun/modelos/proveedor.model';
+import { ProductoProveedor } from 'src/app/comun/modelos/producto_proveedor.model';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,9 @@ export class AdministradorService {
   public obtenerProveedoresEliminados(): Observable<any> {
     return this.http.get('/api/v1/admins/obtenerProveedoresEliminados');
   }
+  public obtenerProductosProveedorEliminados(): Observable<any>{
+    return this.http.get('/api/v1/admins/obtenerProductosProveedorEliminados');
+  }
   //patch
   public actualizarCaja(caja): Observable<any> {
     return this.http.patch('/api/v1/admins/actualizarCaja', caja);
@@ -77,6 +81,15 @@ export class AdministradorService {
   }
   public restaurarProveedor(proveedor: Proveedor): Observable<any> {
     return this.http.patch('/api/v1/admins/restaurarProveedorEliminado', proveedor);
+  }
+  public eliminarProductoProveedor(producto: ProductoProveedor): Observable<any> {
+    return this.http.patch('/api/v1/admins/eliminarProductoProveedor', producto);
+  }
+  public editarProductoProveedor(producto: ProductoProveedor): Observable<any>{
+    return this.http.patch('/api/v1/admins/editarProductoProveedor', producto);
+  }
+  public restaurarProductoProveedorEliminado(producto: ProductoProveedor): Observable<any>{
+    return this.http.patch('/api/v1/admins/restaurarProductoProveedorEliminado', producto);
   }
 
 
