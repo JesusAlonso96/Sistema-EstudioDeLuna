@@ -18,7 +18,7 @@ export class MainNavEmpleadoComponent  {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private autenticacionService: ServicioAutenticacionService, private rutas: Router) { }
+  constructor(private breakpointObserver: BreakpointObserver, public autenticacionService: ServicioAutenticacionService, private rutas: Router) { }
   cerrarSesion() {
     this.autenticacionService.cerrarSesion();
     this.rutas.navigate(['/login']);

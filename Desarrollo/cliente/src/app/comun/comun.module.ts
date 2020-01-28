@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 //componentes
 import { AltaClienteComponent } from './componentes/alta-cliente/alta-cliente.component';
-import { NotaCompraComponent } from './componentes/nota-compra/nota-compra.component';
 import { CatalogoFamiliasComponent } from './componentes/catalogo-familias/catalogo-familias.component';
 import { CatalogoProductosComponent } from './componentes/catalogo-productos/catalogo-productos.component';
 import { InfoSucursalesComponent } from './componentes/info-sucursales/info-sucursales.component';
@@ -52,7 +51,6 @@ import { FiltroProductosPipe } from './pipes/filtro-productos.pipe';
 @NgModule({
     declarations: [
         AltaClienteComponent,
-        NotaCompraComponent,
         InfoSucursalesComponent,
         CatalogoFamiliasComponent,
         CatalogoProductosComponent,
@@ -98,7 +96,6 @@ import { FiltroProductosPipe } from './pipes/filtro-productos.pipe';
     ],
     exports: [
         AltaClienteComponent,
-        NotaCompraComponent,
         FiltroPedidosPipe,
         FormatoFechaPipe,
         PaginacionPipe,
@@ -142,8 +139,6 @@ import { FiltroProductosPipe } from './pipes/filtro-productos.pipe';
         EstadosService,
         ClienteService,
         UsuarioService,
-
     ],
-    bootstrap: []
 })
 export class ComunModule { }

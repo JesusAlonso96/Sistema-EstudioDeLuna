@@ -2,6 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ProductosService } from 'src/app/comun/servicios/productos.service';
 import { Producto } from 'src/app/comun/modelos/producto.model';
+import { Error } from '../empleado-venta.component';
 
 export interface DialogData{
   ancho: number,
@@ -16,7 +17,7 @@ export class ModaDetallesTamComponent implements OnInit {
   buscador: boolean = false;
   productoBuscar: any;
   productosEncontrados: Producto;
-  error: Array<any>;
+  error: Error;
   constructor(
     public dialogRef: MatDialogRef<ModaDetallesTamComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,

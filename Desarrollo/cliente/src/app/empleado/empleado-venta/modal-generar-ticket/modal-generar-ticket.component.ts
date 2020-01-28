@@ -25,6 +25,7 @@ export class ModalGenerarTicketComponent implements OnInit {
   tabla_productos: Producto[];
   dataSource: any;
   columnas_tabla: string[] = ['descripcion', 'precio'];
+  debe: number = 0;
   constructor(public dialogRef: MatDialogRef<ModalGenerarTicketComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {
   }
@@ -35,8 +36,13 @@ export class ModalGenerarTicketComponent implements OnInit {
     var botonImprimir = document.getElementById('botonImprimir');
     botonImprimir.click();
     this.dialogRef.close();
+    this.debe = <number>this.data.pedido.total - <number>this.data.pedido.anticipo;
   }
   private delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+  public pagado(): boolean{
+    if((<number>this.data.pedido.total - <number>this.data.pedido.anticipo) == 0 ) return true;
+    return false;
   }
 }

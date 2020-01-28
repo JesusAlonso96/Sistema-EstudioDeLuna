@@ -4,8 +4,9 @@ import { Municipio } from '../../modelos/municipio.model';
 import { Cliente } from '../../modelos/cliente.model';
 import { EstadosService } from '../../servicios/estados.service';
 import { ClienteService } from '../../servicios/cliente.service';
-import swal from 'sweetalert2';
 import { ToastrService } from 'ngx-toastr';
+import { MatDialog } from '@angular/material';
+import { ModalConfirmacionComponent } from '../modal-confirmacion/modal-confirmacion.component';
 
 @Component({
   selector: 'app-alta-cliente',
@@ -20,7 +21,7 @@ export class AltaClienteComponent implements OnInit {
   municipio: Municipio;
   cliente: Cliente = new Cliente();
   cargando: boolean = false;
-  constructor(private estadosService: EstadosService, private clienteService: ClienteService, private toastr: ToastrService) { }
+  constructor(private estadosService: EstadosService, private clienteService: ClienteService, private toastr: ToastrService, private dialog: MatDialog) { }
 
   ngOnInit() {
     this.cliente.estado = '';
@@ -52,39 +53,30 @@ export class AltaClienteComponent implements OnInit {
     if (this.estado) return true;
     return false;
   }
-  registrarCliente() {
-    swal.fire({
-      title: 'Registrar cliente',
-      text: "No se podra deshacer esta accion",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Registrar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.value) {
-        this.cliente.fecha_registro = new Date(Date.now());
-        this.cliente.contrasena = this.generarContrasena();
-        this.clienteService.registrarCliente(this.cliente).subscribe(
-          (ok) => {
-            swal.fire(
-              'Registrado',
-              'El cliente ha sido registrado exitosamente',
-              'success'
-            )
-          },
-          (err) => {
-            swal.fire(
-              err.error.titulo,
-              err.error.detalles,
-              'error'
-            )
-          }
-        );
+  abrirRegistrarCliente() {
+    const dialogRef = this.dialog.open(ModalConfirmacionComponent, {
+      data: { titulo: 'Registrar cliente', mensaje: '¿Desea registrar este cliente?', msgBoton: 'Registrar', color: 'primary' }
+    })
+    dialogRef.afterClosed().subscribe(respuesta => {
+      if (respuesta) {
+        this.registrarCliente();
       }
     })
-
+  }
+  registrarCliente() {
+    this.cliente.fecha_registro = new Date(Date.now());
+    this.cliente.contrasena = this.generarContrasena();
+    this.cargando = true;
+    this.clienteService.registrarCliente(this.cliente).subscribe(
+      (registrado: any) => {
+        this.cargando = false;
+        this.toastr.success('Cliente registrado', 'El cliente ha sido registrado exitosamente', { closeButton: true });
+      },
+      (err: any) => {
+        this.cargando = false;
+        this.toastr.error(err.error.detalles, err.error.titulo, { closeButton: true });
+      }
+    );
   }
   buscarMunicipios() {
     this.cliente.estado = this.estado.nombre;

@@ -7,18 +7,19 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './comun/material.module';
 import { NgxPrintModule } from 'ngx-print';
-import {NgxImageCompressService} from 'ngx-image-compress';
+import { NgxImageCompressService } from 'ngx-image-compress';
 
 //modulos de componentes
 import { AdministradorModule } from './administrador/modulo-administrador/modulo-administrador.module';
 import { EmpleadoModule } from './empleado/modulo-empleado/modulo-empleado.module';
 import { SupervisorModule } from './supervisor/modulo-supervisor/modulo-supervisor.module';
 import { ComunModule } from './comun/comun.module';
+import { ToastrModule } from 'ngx-toastr';
 
 //componentes
 import { LoginComponent } from './autenticacion/login/login.component';
 import { TokenInterceptor } from './autenticacion/compartido/token.interceptor';
-import { ToastrModule } from 'ngx-toastr';
+import { AutenticacionComponent } from './autenticacion/autenticacion.component';
 
 //guardias
 import { AutenticacionGuard } from './autenticacion/compartido/autenticacion.guard';
@@ -27,7 +28,8 @@ import { AutenticacionGuard } from './autenticacion/compartido/autenticacion.gua
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    AutenticacionComponent
   ],
   imports: [
     BrowserModule,

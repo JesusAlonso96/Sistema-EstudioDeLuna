@@ -89,12 +89,9 @@ export class ConsultaUsuarioComponent implements OnInit {
     }
   }
   cambiarPermisos(usuario: Usuario) {
-    const dialogRef = this.dialog.open(CambiarPermisosComponent, {
+    this.dialog.open(CambiarPermisosComponent, {
       data: usuario
-    })
-    dialogRef.afterClosed().subscribe(respuesta => {
-
-    })
+    });
   }
   esAdministrador(): boolean {
     if (this.autService.getTipoUsuario() == 2) return true

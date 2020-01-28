@@ -23,7 +23,6 @@ export class CambiarPermisosComponent implements OnInit {
     this.rol_sec_anterior = this.data.rol_sec;
   }
   cambiarPermisos() {
-    console.log(this.data.rol);
     if (this.rol_anterior == 0 && this.rol_anterior != this.data.rol) {
       this.data.rol_sec = 0;
     }

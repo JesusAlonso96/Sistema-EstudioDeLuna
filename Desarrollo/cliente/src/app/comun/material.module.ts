@@ -1,6 +1,5 @@
 import { LayoutModule } from '@angular/cdk/layout';
 import { NgModule } from '@angular/core';
-import { MatMomentDateModule } from "@angular/material-moment-adapter";
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,6 +25,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatMomentDateModule }from '@angular/material-moment-adapter';
 //modulos de componentes
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -78,9 +78,9 @@ import { PaginadorTraductor } from './pipes/paginador-translate';
     MatSortModule,
     MatTabsModule,
     MatDatepickerModule,
-    MatMomentDateModule,
     MatCheckboxModule,
-    MatChipsModule
+    MatChipsModule,
+    MatMomentDateModule
   ],
   providers: [
     { provide: MatPaginatorIntl, useClass: PaginadorTraductor }

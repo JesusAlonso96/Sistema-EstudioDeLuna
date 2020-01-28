@@ -7,7 +7,6 @@ import { Producto } from 'src/app/comun/modelos/producto.model';
 import { Familia } from 'src/app/comun/modelos/familia.model';
 import * as momento from 'moment';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import swal from 'sweetalert2';
 import { Pedido } from 'src/app/comun/modelos/pedido.model';
 import { EmpleadoService } from '../servicio-empleado/empleado.service';
 import { ToastrService } from 'ngx-toastr';
@@ -15,7 +14,6 @@ import { Usuario } from 'src/app/comun/modelos/usuario.model';
 import { Cliente } from 'src/app/comun/modelos/cliente.model';
 import { ClienteService } from 'src/app/comun/servicios/cliente.service';
 import { UsuarioService } from 'src/app/comun/servicios/usuario.service';
-import Swal from 'sweetalert2';
 import { Notificacion } from 'src/app/comun/modelos/notificacion.model';
 import { ModalDetallesProductoComponent } from './modal-detalles-producto/modal-detalles-producto.component';
 import { ModaDetallesTamComponent } from './modal-detalles-tam/modal-detalles-tam.component';
@@ -292,7 +290,7 @@ export class EmpleadoVentaComponent implements OnInit {
         }
       },
       (err) => {
-        Swal.fire({ title: err.error.titulo, text: err.error.detalles, type: 'error' });
+        this.toastr.error(err.error.detalles, err.error.titulo, { closeButton: true });
       }
     );
   }
@@ -381,7 +379,7 @@ export class EmpleadoVentaComponent implements OnInit {
       },
       (err) => {
         this.cargandoPedido = false;
-        swal.fire(err.error.titulo, err.error.detalles, 'error')
+        this.toastr.error(err.error.detalles, err.error.titulo, { closeButton: true });
       }
     );
   }
@@ -393,7 +391,7 @@ export class EmpleadoVentaComponent implements OnInit {
   }
   //MODAL PARA VER LOS PRODUCTOS
   verDetalles(producto) {
-    const dialogRef = this.dialog.open(ModalDetallesProductoComponent, {
+    this.dialog.open(ModalDetallesProductoComponent, {
       data: { producto }
     });
   }
@@ -459,7 +457,7 @@ export class EmpleadoVentaComponent implements OnInit {
   }
   //SECCION PARA IMAGENES
   obtenerImagen(e) {
-    this.cargando = true;
+    /*this.cargando = true;
     this.imageCompress.uploadFile().then(({ image, orientation }) => {
       this.cargando = true;
       //console.warn('Size in bytes was:', this.imageCompress.byteCount(image));
@@ -472,7 +470,7 @@ export class EmpleadoVentaComponent implements OnInit {
         }
       );
     });
-    /*var localurl;
+    var localurl;
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       this.imagen = file;
@@ -500,6 +498,10 @@ export class EmpleadoVentaComponent implements OnInit {
 }
 
 //MODALES
+export interface Error {
+  titulo: string;
+  detalles: string;
+}
 @Component({
   selector: 'modal',
   templateUrl: 'modal.html',
@@ -509,7 +511,7 @@ export class Modal {
   buscador: boolean = false;
   productoBuscar: any;
   productosEncontrados: Producto;
-  error: Array<any>;
+  error: Error;
   constructor(
     public dialogRef: MatDialogRef<Modal>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, private productoService: ProductosService) {
@@ -531,7 +533,7 @@ export class Modal {
         this.productosEncontrados = productos;
         this.buscador = false;
       },
-      (err) => {
+      (err: any) => {
         this.error = err.error;
         this.buscador = false;
       }

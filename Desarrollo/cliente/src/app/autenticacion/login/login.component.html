@@ -1,5 +1,5 @@
-<mat-toolbar *ngIf="!estaLogueado()" color="primary" class="toolbar"></mat-toolbar>
-<div *ngIf="!estaLogueado()" class="container-fluid contenedor-principal" style="height: 100%;">
+<mat-toolbar *ngIf="!autServicio.estaAutenticado()" color="primary" class="toolbar"></mat-toolbar>
+<div *ngIf="!autServicio.estaAutenticado()" class="container-fluid contenedor-principal" style="height: 100%;">
 
     <div class="row justify-content-center">
         <div class="col-lg-5 col-md-9 col-sm-10 align-self-center " style="margin-top: 10%;">

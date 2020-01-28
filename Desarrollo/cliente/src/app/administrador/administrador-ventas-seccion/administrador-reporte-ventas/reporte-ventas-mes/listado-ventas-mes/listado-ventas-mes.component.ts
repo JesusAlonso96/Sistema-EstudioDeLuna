@@ -1,7 +1,5 @@
 import { Component, OnInit, Inject, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-//import * as jsPDF from 'jspdf';
-//import html2canvas from 'html2canvas';
 import * as html2pdf from 'html2pdf.js';
 
 @Component({

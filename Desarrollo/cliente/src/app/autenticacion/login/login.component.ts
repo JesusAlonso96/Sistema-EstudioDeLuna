@@ -11,18 +11,12 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  cargando: boolean;
-  datosUsuario: UsuarioLogin;
+  cargando: boolean = false;
+  datosUsuario: UsuarioLogin = new UsuarioLogin();
 
-  constructor(private autServicio: ServicioAutenticacionService, private usuarioService: UsuarioService, private toastr: ToastrService) { }
+  constructor(public autServicio: ServicioAutenticacionService, private usuarioService: UsuarioService, private toastr: ToastrService) { }
 
-  ngOnInit() {
-    this.cargando = false;
-    this.datosUsuario = new UsuarioLogin();
-  }
-  estaLogueado(): boolean {
-    return this.autServicio.estaAutenticado()
-  }
+  ngOnInit() {}
   login() {
     this.cargando = true;
     this.autServicio.login(this.datosUsuario).subscribe(

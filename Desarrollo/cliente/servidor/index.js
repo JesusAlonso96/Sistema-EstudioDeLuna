@@ -1,7 +1,7 @@
 const express = require('express'),
     mongoose = require('mongoose'),
     cors = require('cors'),
-    config = require('./configuracion/dev'),
+    config = require('./configuracion'),
     app = module.exports = express(),
     bodyParser = require('body-parser'),
     servidor = require('http').createServer(app),
@@ -12,9 +12,10 @@ const express = require('express'),
     rutasProducto = require('./rutas/productos'),
     rutasEmpleado = require('./rutas/empleado'),
     rutasCliente = require('./rutas/cliente'),
-    rutasAdmin = require('./rutas/administrador');
+    rutasAdmin = require('./rutas/administrador'),
+    path = require('path');
 
-    
+
 //Conexion a la base de datos
 mongoose.set('useCreateIndex', true);
 mongoose.set('useFindAndModify', false);
@@ -41,6 +42,15 @@ app.use('/api/v1/estados', rutasEstados);
 app.use('/api/v1/productos', rutasProducto);
 app.use('/api/v1/clientes', rutasCliente);
 app.use('/api/v1/admins', rutasAdmin);
+
+if (process.env.NODE_ENV == 'production') {
+    const appPath = path.join(__dirname, '..', 'dist/cliente');
+    app.use(express.static(appPath));
+    
+    app.get('*', function (req, res) {
+        res.sendFile(path.resolve(appPath, 'index.html'));
+    });
+}
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, function () {

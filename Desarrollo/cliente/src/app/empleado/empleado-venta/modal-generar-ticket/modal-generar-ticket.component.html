@@ -2,6 +2,7 @@
     [printStyle]="{img: {'height': '80px','width':'170px','position':'absolute', 'left':'0','margin-top':'30px', 'margin-left':'4px'},th:{'margin-right':'5px'},td:{'margin-left':'5px'}, p:{'margin-bottom': '2px'}, body:{'font-family':'Arial','font-size':'110%'}}"
     id="botonImprimir" printTitle="nota" printSectionId="nota" ngxPrint>Imprimir</button>
 <div id="nota" style="display: none;">
+
     <body>
         <div align="center">
             <img class="imagen" src="../../../../assets/imagenes/LOGO ESTUDIO FOTOGRAFICO copia.png" alt="">
@@ -48,9 +49,9 @@
 
         </div>
         <hr>
-        <table  mat-table [dataSource]="tabla_productos" class="mat-elevation-z8 tabla">
-                <th>Cantidad</th>
-                <td>1</td>
+        <table mat-table [dataSource]="tabla_productos" class="mat-elevation-z8 tabla">
+            <th>Cantidad</th>
+            <td>1</td>
             <ng-container matColumnDef="descripcion">
                 <th mat-header-cell *matHeaderCellDef>Descripcion</th>
                 <td mat-cell *matCellDef="let element" align="start">{{element.descripcion}}</td>
@@ -66,11 +67,11 @@
         <div align="end" class="montos">
             <span>Total: ${{data.pedido.total}}</span> <br>
             <span>Importe: ${{data.pedido.anticipo}}</span> <br>
-            <ng-container *ngIf="data.pedido.total - data.pedido.anticipo == 0">
+            <ng-container *ngIf="pagado()">
                 <span> <strong>Pedido pagado</strong> </span>
             </ng-container>
-            <ng-container *ngIf="data.pedido.total - data.pedido.anticipo != 0">
-                <span>Debe: ${{data.pedido.total - data.pedido.anticipo}}</span> <br>
+            <ng-container *ngIf="!pagado()">
+                <span>Debe: ${{debe}}</span> <br>
             </ng-container>
         </div>
         <hr>

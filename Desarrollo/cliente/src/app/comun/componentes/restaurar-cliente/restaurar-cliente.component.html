@@ -40,7 +40,7 @@
                     <ng-container matColumnDef="acciones">
                         <mat-header-cell *matHeaderCellDef>Restaurar cliente</mat-header-cell>
                         <mat-cell *matCellDef="let element; let i = index">
-                            <a (click)="confirmarRestauracion(element, i)" mat-icon-button color="primary">
+                            <a (click)="confirmarRestauracion(element)" mat-icon-button color="primary">
                                 <mat-icon>restore_from_trash</mat-icon>
                             </a>
                         </mat-cell>

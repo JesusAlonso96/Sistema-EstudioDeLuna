@@ -29,7 +29,7 @@ export class ConsultaClienteComponent implements OnInit {
   obtenerClientes() {
     this.cargando = true;
     this.clienteService.obtenerDatosClientes().subscribe(
-      (clientes) => {
+      (clientes: Cliente[]) => {
         this.cargando = false;
         this.clientes = clientes;
         this.listData = new MatTableDataSource(this.clientes);
@@ -53,13 +53,12 @@ export class ConsultaClienteComponent implements OnInit {
     this.listData.filter = this.busquedaCliente.trim().toLowerCase();
   }
   verPerfil(cliente: Cliente) {
-    const dialogRef = this.dialog.open(DatosClienteComponent, { data: cliente });
+   this.dialog.open(DatosClienteComponent, { data: cliente });
   }
   abrirEditarCliente(cliente: Cliente) {
     const clienteAux = new Cliente(cliente._id, cliente.nombre, cliente.username, cliente.ape_pat, cliente.ape_mat, cliente.email, cliente.telefono, cliente.contrasena, cliente.razonSocial, cliente.rfc, cliente.direccion, cliente.colonia, cliente.municipio, cliente.estado, cliente.cp, cliente.num_ext, cliente.num_int, cliente.pedidos, cliente.fecha_registro, cliente.activo);
     const dialogRef = this.dialog.open(EditarClienteComponent, { data: cliente });
     dialogRef.afterClosed().subscribe(editar => {
-      console.log(editar);
       if (editar) {
         this.editarCliente(cliente, clienteAux);
       } else {
@@ -70,8 +69,7 @@ export class ConsultaClienteComponent implements OnInit {
   editarCliente(cliente: Cliente, clienteRespaldo: Cliente) {
     this.cargando = true;
     this.clienteService.editarCliente(cliente).subscribe(
-      (clienteActualizado: JSON) => {
-        console.log(clienteActualizado);
+      (clienteActualizado: any) => {
         this.toastr.success('Datos actualizados correctamente', '', { closeButton: true });
         this.cargando = false;
       },

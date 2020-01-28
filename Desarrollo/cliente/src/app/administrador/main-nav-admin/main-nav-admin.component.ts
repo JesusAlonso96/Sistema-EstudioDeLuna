@@ -14,7 +14,7 @@ import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-aut
 export class MainNavAdminComponent implements OnInit {
   pestanasTam: number = 11;
   pestanasActivas: boolean[] = [];
-  constructor(private breakpointObserver: BreakpointObserver, private autenticacionService: ServicioAutenticacionService, private rutas: Router) {
+  constructor(private breakpointObserver: BreakpointObserver, public autenticacionService: ServicioAutenticacionService, private rutas: Router) {
   }
   ngOnInit() {
     this.iniciarPestanas();

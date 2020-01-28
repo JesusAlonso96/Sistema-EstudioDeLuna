@@ -9,7 +9,7 @@ const Usuario = require('../modelos/usuario'),
     Proveedor = require('../modelos/proveedor'),
     ProductoProveedor = require('../modelos/producto_proveedor'),
     momento = require('moment'),
-    config = require('../configuracion/dev');
+    config = require('../configuracion');
 
 exports.login = function (req, res) {
     const { username, contrasena } = req.body;

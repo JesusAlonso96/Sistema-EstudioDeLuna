@@ -133,7 +133,7 @@
                             <mat-form-field class="full-width" appearance="outline">
                                 <mat-label>Ingresa tu estado</mat-label>
                                 <mat-select [(ngModel)]="estado" name="estado" #estado2="ngModel" required>
-                                    <mat-option (click)="buscarMunicipios(cliente.estado)"
+                                    <mat-option (click)="buscarMunicipios()"
                                         *ngFor="let estado of estados" [value]="estado">
                                         {{estado.nombre}}
                                     </mat-option>
@@ -223,7 +223,7 @@
                         </div>
                         <div class="col-lg-12">
                             <button mat-raised-button color="accent" class="float-right" [disabled]="!clienteForm.valid"
-                                (click)="registrarCliente()">Registrar</button>
+                                (click)="abrirRegistrarCliente()">Registrar</button>
                         </div>
 
                     </div>

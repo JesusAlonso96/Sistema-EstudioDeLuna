@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Pedido } from 'src/app/comun/modelos/pedido.model';
 import { EmpleadoService } from '../servicio-empleado/empleado.service';
 import { ServicioAutenticacionService } from 'src/app/autenticacion/servicio-autenticacion/servicio-autenticacion.service';
-import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { MatDialog } from '@angular/material';
